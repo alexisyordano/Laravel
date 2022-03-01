@@ -33,14 +33,23 @@ Route::get('/logout', [SessionController::class, 'destroy'])
 Route::get('/home',   [HomeController::class, 'index'])
         ->name('home.index');
 
+//primero hace referencia a la url del navegador, el segundo hace referencia al controller RegistersUserController
+//y el create del metodo de ese controller.
+//metodo get para llamar el formulario
 Route::get('/registers', [RegistersUserController::class, 'create'])
-        ->name('registers.index');
+        ->name('registers.create');
 
+//metodo post para guardar data en el metodo store de RegistersUserController//
 Route::post('/registers', [RegistersUserController::class, 'store'])
         ->name('registers.store');
 
-Route::get('/registers', [RegistersUserController::class, 'show'])
+//metodo show para listar los usuarios//
+Route::get('/show', [RegistersUserController::class, 'show'])
         ->name('registers.show');
+
+Route::get('/edit', [RegistersUserController::class, 'edit'])
+        ->name('registers.edit');
+
 
 
 

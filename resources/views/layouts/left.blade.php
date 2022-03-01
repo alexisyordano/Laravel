@@ -8,7 +8,7 @@
 							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Control de usuarios</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages" class="collapse ">
 								<ul class="nav">
-									<li><a href="{{ route('registers.index') }}" class="">Crear Usuarios</a></li>
+									<li><a href="{{ route('registers.create') }}" class="">Crear Usuarios</a></li>
 									<li><a href="{{ route('registers.show') }}" class="">Listar Usuarios</a></li>
 								</ul>
 							</div>

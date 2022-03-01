@@ -16,6 +16,7 @@
 	<script src="{{ asset('assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js')}}"></script>
 	<script src="{{ asset('assets/vendor/chartist/js/chartist.min.js')}}"></script>
 	<script src="{{ asset('assets/scripts/klorofil-common.js')}}"></script>
+    <script src="{{ asset('assets/scripts/datatables.min.js')}}"></script>
 
     <!-- Fonts -->
 
@@ -27,6 +28,7 @@
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/linearicons/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
     
 </head>
 <body>

@@ -30,4 +30,9 @@ class RegistersUserController extends Controller
         $users = User::all();
         return view('auth.show', compact('users'));
     }
+
+    public function edit(User $users)
+    { 
+        return view('auth.edit', compact('users'));
+    }
 }
