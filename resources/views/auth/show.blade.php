@@ -14,6 +14,12 @@
 									<h3 class="panel-title">Listar Usuarios</h3>
 								</div>
 								<div class="panel-body">
+                                    @if(session()->has('success'))
+                                        <div class="alert alert-success alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            <i class="fa fa-check-circle"></i> {{ session()->get('success') }}
+                                        </div>
+                                    @endif
 									<table id="table" class="table table-striped table-bordered">
 										<thead>
 											<tr>
@@ -29,11 +35,14 @@
                                                 <td>{{ $user->email }}</td>
 												<td>
 													<a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
-														data-attr="{{ route('registers.edit', $user->id) }}">
+														data-attr="{{ route('registers.edit', $user) }}">
 														Actualizar
 														<i class="fa fa-refresh"></i>
 													</a>
-													<button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar</button>
+                                                    <a  class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('registers.delete', $user->id) }}" title="Eliminar">
+                                                        <i class="fa fa-trash-o"></i>
+                                                        Eliminar
+                                                    </a>
 													<button type="button" class="btn btn-warning"><i class="fa fa-warning"></i> Resetear clave</button>
 											   </td>
 											</tr>
@@ -72,6 +81,52 @@
         </div>
     </div>
 
+    <!-- small modal -->
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="smallBody">
+                <div>
+                    <!-- the result to be displayed apply here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // display a modal (small modal)
+    $(document).on('click', '#smallButton', function(event) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        $.ajax({
+            url: href
+            , beforeSend: function() {
+                $('#loader').show();
+            },
+            // return the result
+            success: function(result) {
+                $('#smallModal').modal("show");
+                $('#smallBody').html(result).show();
+            }
+            , complete: function() {
+                $('#loader').hide();
+            }
+            , error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + href + " cannot open. Error:" + error);
+                $('#loader').hide();
+            }
+            , timeout: 8000
+        })
+    });
+
+</script>
 
 
     <script>

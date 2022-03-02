@@ -47,8 +47,20 @@ Route::post('/registers', [RegistersUserController::class, 'store'])
 Route::get('/show', [RegistersUserController::class, 'show'])
         ->name('registers.show');
 
-Route::get('/edit', [RegistersUserController::class, 'edit'])
+//ruta que hace referencia a la url /{user es la variable id del usuario}
+Route::get('/edit/{user}/edit', [RegistersUserController::class, 'edit'])
         ->name('registers.edit');
+
+Route::put('/update/{user}', [RegistersUserController::class, 'update'])
+        ->name('registers.update');
+
+Route::get('/delete/{id}', [RegistersUserController::class, 'delete'])
+        ->name('registers.delete');
+
+Route::delete('/destroy/{id}', [RegistersUserController::class, 'destroy'])
+        ->name('registers.destroy');
+
+
 
 
 

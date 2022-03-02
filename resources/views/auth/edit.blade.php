@@ -1,4 +1,5 @@
-
+@extends('layouts.app')
+@section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="text-center font-weight-bolder">
@@ -18,7 +19,7 @@
         </div>
     @endif
 
-    <form action="" method="POST">
+    <form action="{{ route('registers.update', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -26,22 +27,20 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Nombre:</strong>
-                    <input type="text" name="name" value="{{ $users->name }}" class="form-control" placeholder="Name">
+                    <input type="text" name="name"  value="{{ $user->name }}" class="form-control" placeholder="Name">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Correo:</strong>
-                    <input type="email" name="name" value="{{ $users->email }}" class="form-control" placeholder="Name">
+                    <input type="email" name="email" value="{{ $user->email }}" class="form-control" placeholder="Name">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <a class="btn btn-primary" href="" data-dismiss="modal"> Cancel</a>
-
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a class="btn btn-primary" href="" data-dismiss="modal"> Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
             </div>
         </div>
 
     </form>
-{{-- @endsection --}}
+@endsection

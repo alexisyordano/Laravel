@@ -31,8 +31,35 @@ class RegistersUserController extends Controller
         return view('auth.show', compact('users'));
     }
 
-    public function edit(User $users)
+    public function edit(Request $request, User $user)
     { 
-        return view('auth.edit', compact('users'));
+        return view('auth.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+
+        $UserName = $request->name;
+        
+        $user->update($request->all());
+        return redirect()->to('show')->with('success', $UserName.' '. 'Usuario Actualizado');
+    }
+
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        return view('auth.delete', compact('user'));
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->to('show')->with('success', 'Usuario Eliminado');
     }
 }
