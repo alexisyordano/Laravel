@@ -20,7 +20,7 @@ class RegistersUserController extends Controller
             'email' => request('email'),
             'password' => request('password'),
         ]);
-
+        
         auth()->login($user);
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');
     }
@@ -61,5 +61,22 @@ class RegistersUserController extends Controller
         $user = User::find($id);
         $user->delete();
         return redirect()->to('show')->with('success', 'Usuario Eliminado');
+    }
+
+    public function password(Request $request, User $user)
+    {
+        return view('auth.password', compact('user'));
+    }
+
+    public function updatePass(Request $request, User $user)
+    {
+        $request->validate([
+            'password' => 'required',
+        ]);
+
+        
+        $user->update($request->all());
+
+        return redirect()->to('show')->with('success', 'Se actualizo la clave');
     }
 }

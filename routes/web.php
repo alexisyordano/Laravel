@@ -60,6 +60,11 @@ Route::get('/delete/{id}', [RegistersUserController::class, 'delete'])
 Route::delete('/destroy/{id}', [RegistersUserController::class, 'destroy'])
         ->name('registers.destroy');
 
+Route::get('/password{user}/password', [RegistersUserController::class, 'password'])
+        ->name('registers.password');
+
+Route::put('/updatePass{user}/updatePass', [RegistersUserController::class, 'updatePass'])
+        ->name('registers.updatePass');
 
 
 

@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="text-center font-weight-bolder">
-                <h2 class="font-weight-bold">Editar Usuario</h2>
+                <h2 class="font-weight-bold">Cambiar la clave</h2>
             </div>
         </div>
     </div>
@@ -19,21 +19,15 @@
         </div>
     @endif
 
-    <form action="{{ route('registers.update', $user->id) }}" method="POST">
+    <form action="{{ route('registers.updatePass', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Nombre:</strong>
-                    <input type="text" name="name"  value="{{ $user->name }}" class="form-control">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Correo:</strong>
-                    <input type="email" name="email" value="{{ $user->email }}" class="form-control">
+                    <strong>Nueva clave:</strong>
+                    <input type="text" name="password"  class="form-control">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

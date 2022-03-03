@@ -35,7 +35,7 @@
                                                 <td>{{ $user->email }}</td>
 												<td>
 													<a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
-														data-attr="{{ route('registers.edit', $user) }}">
+														data-attr="{{ route('registers.edit', $user) }}" title="Actualizar">
 														Actualizar
 														<i class="fa fa-refresh"></i>
 													</a>
@@ -43,7 +43,10 @@
                                                         <i class="fa fa-trash-o"></i>
                                                         Eliminar
                                                     </a>
-													<button type="button" class="btn btn-warning"><i class="fa fa-warning"></i> Resetear clave</button>
+                                                    <a  class="btn btn-success" data-toggle="modal" id="smallButtonPass" data-target="#smallModalPass" data-attr="{{ route('registers.password', $user) }}" title="Password">
+                                                        <i class="fa fa-solid fa-lock"></i>
+                                                        Cambiar clave
+                                                    </a>
 											   </td>
 											</tr>
                                         @endforeach 
@@ -99,6 +102,24 @@
     </div>
 </div>
 
+   <!-- small modal Pass -->
+   <div class="modal fade" id="smallModalPass" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="smallBodyPass">
+                <div>
+                    <!-- the result to be displayed apply here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // display a modal (small modal)
     $(document).on('click', '#smallButton', function(event) {
@@ -143,6 +164,34 @@
                 success: function(result) {
                     $('#mediumModal').modal("show");
                     $('#mediumBody').html(result).show();
+                },
+                complete: function() {
+                    $('#loader').hide();
+                },
+                error: function(jqXHR, testStatus, error) {
+                    console.log(error);
+                    //alert("Page " + href + " cannot open. Error:" + error);
+                    $('#loader').hide();
+                },
+                timeout: 8000
+            })
+        });
+    </script>
+
+<script>
+        // display a modal (modal password)
+        $(document).on('click', '#smallButtonPass', function(event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+                url: href,
+                beforeSend: function() {
+                    $('#loader').show();
+                },
+                // return the result
+                success: function(result) {
+                    $('#smallModalPass').modal("show");
+                    $('#smallBodyPass').html(result).show();
                 },
                 complete: function() {
                     $('#loader').hide();
