@@ -22,13 +22,20 @@
                                         @endif
                                        <form name="form" action="" method="post">
                                             @csrf
-                                            <input type="text" name="name"  id="name" class="form-control" placeholder="Nombre">
+                                            <input type="text" name="name"  id="name" required class="form-control" placeholder="Nombre">
                                             <br>
-                                            <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                                            <input type="email" name="email" id="email" required class="form-control" placeholder="Email">
                                             <br>
-                                            <input type="password" name="password" id="password" class="form-control" placeholder="Clave">
+                                            <input type="password" name="password" required id="password" class="form-control" placeholder="Clave">
                                             <br>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Repetir Clave">
+                                            <input type="password" required name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Repetir Clave">
+                                            <br>
+                                            <select class="form-control" name="rol" required>
+                                                <option value="">-- Selecione un Rol --</option>
+                                                @foreach($role as $rol)
+                                                    <option value={{ $rol['id_role'] }}>{{ $rol['name_role'] }}</option>
+                                                @endforeach
+                                            </select>
                                             <br>
                                             <button type="submit" class="btn btn-primary btn-lg btn-block">Guardar</button>
                                         </form>

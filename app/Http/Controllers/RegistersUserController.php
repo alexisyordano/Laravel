@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 class RegistersUserController extends Controller
 {
     public function create()
     {
-        return view('auth.registers');
+        $role = Role::all();
+        return view('auth.registers', compact('role'));
     }
 
     public function store()
@@ -19,6 +21,7 @@ class RegistersUserController extends Controller
             'name' => request('name'),
             'email' => request('email'),
             'password' => request('password'),
+            'id_rol' => request('rol'),
         ]);
         
         auth()->login($user);
