@@ -33,6 +33,7 @@ Route::get('/logout', [SessionController::class, 'destroy'])
 Route::get('/home',   [HomeController::class, 'index'])
         ->name('home.index');
 
+
 //primero hace referencia a la url del navegador, el segundo hace referencia al controller RegistersUserController
 //y el create del metodo de ese controller.
 //metodo get para llamar el formulario
@@ -66,6 +67,8 @@ Route::get('/password{user}/password', [RegistersUserController::class, 'passwor
 Route::put('/updatePass{user}/updatePass', [RegistersUserController::class, 'updatePass'])
         ->name('registers.updatePass');
 
+
+        
 
 
 

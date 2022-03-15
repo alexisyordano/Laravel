@@ -6,13 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RegistersUserController extends Controller
 {
     public function create()
     {
-        $role = Role::all();
-        return view('auth.registers', compact('role'));
+        if(Auth::check())
+        {
+            $role = Role::all();
+            return view('auth.registers', compact('role'));
+        }
+        else
+        {   
+            return redirect()->to('login');
+        }
+        
     }
 
     public function store()
@@ -24,19 +33,34 @@ class RegistersUserController extends Controller
             'id_rol' => request('rol'),
         ]);
         
-        auth()->login($user);
+        //auth()->login($user);
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');
     }
 
     public function show()
     {
-        $users = User::all();
-        return view('auth.show', compact('users'));
+        if(Auth::check())
+        {
+            $users = User::all();
+            return view('auth.show', compact('users'));
+        }
+        else
+        {   
+            return redirect()->to('login');
+        }
     }
 
     public function edit(Request $request, User $user)
     { 
-        return view('auth.edit', compact('user'));
+        if(Auth::check())
+        {
+            return view('auth.edit', compact('user'));
+        }
+        else
+        {   
+            return redirect()->to('login');
+        }
+        
     }
 
     public function update(Request $request, User $user)
