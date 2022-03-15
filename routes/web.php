@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistersUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,16 @@ Route::get('/logout', [SessionController::class, 'destroy'])
         
 Route::get('/home',   [HomeController::class, 'index'])
         ->name('home.index');
+
+Route::get('/inversion',   [TransactionsController::class, 'inversion'])
+        ->name('transactions.inversion');   
+Route::get('/reinversion',   [TransactionsController::class, 'reinversion'])
+        ->name('transactions.reinversion');
+Route::get('/retiro',   [TransactionsController::class, 'retiro'])
+        ->name('transactions.retiro');  
+Route::get('/estado',   [TransactionsController::class, 'estado'])
+        ->name('transactions.estado');          
+
 
 //primero hace referencia a la url del navegador, el segundo hace referencia al controller RegistersUserController
 //y el create del metodo de ese controller.

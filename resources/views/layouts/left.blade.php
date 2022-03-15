@@ -13,6 +13,16 @@
 								</ul>
 							</div>
 						</li>
+						<li><a href="{{ route('transactions.estado') }}" class="active"><i class="lnr lnr-cog"></i><span>Estado de Inversion</span></a></li>
+						<li>
+							<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Operaciones</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="subPages1" class="collapse ">
+								<ul class="nav">
+									<li><a href="{{ route('transactions.inversion') }}" class="">Inversion</a></li>
+									<li><a href="{{ route('transactions.retiro') }}" class="">Retirar</a></li>
+								</ul>
+							</div>
+						</li>
 					</ul>
 				</nav>
 			</div>
