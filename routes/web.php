@@ -39,21 +39,29 @@ Route::get('/inversion',   [TransactionsController::class, 'inversion'])
 Route::post('/inversion', [TransactionsController::class, 'insert'])
         ->name('inversion.insert');  
 
+
 Route::get('/reinversion',   [TransactionsController::class, 'reinversion'])
         ->name('transactions.reinversion');
 
+
 Route::get('/retiro',   [TransactionsController::class, 'retiro'])
         ->name('transactions.retiro');  
-
 Route::post('/retiro',   [TransactionsController::class, 'insert'])
         ->name('transactions.insert');  
+
+
+Route::get('/abono',   [TransactionsController::class, 'abono'])
+        ->name('transactions.abono');  
+Route::post('/abono',   [TransactionsController::class, 'insert'])
+        ->name('transactions.insert');          
               
+
 Route::get('/solicitudes',   [TransactionsController::class, 'solicitudes'])
         ->name('transactions.solicitudes');     
-
 Route::post('/solicitudes', [TransactionsController::class, 'operacion'])
         ->name('transactions.operacion');
 
+        
 Route::get('/estado',   [TransactionsController::class, 'estado'])
         ->name('transactions.estado');
 

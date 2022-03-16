@@ -21,6 +21,7 @@
 							<div id="subPages1" class="collapse ">
 								<ul class="nav">
 									<li><a href="{{ route('transactions.inversion') }}" class="">Inversion</a></li>
+									<li><a href="{{ route('transactions.abono') }}" class="">Abonar</a></li>
 									<li><a href="{{ route('transactions.retiro') }}" class="">Retirar</a></li>
 								</ul>
 							</div>

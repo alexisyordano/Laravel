@@ -39,7 +39,12 @@
 											@foreach($solicitudes as $solicitud)
 											<tr>																								
 												<!-- <td>{{ $solicitud->id }}</td> -->
-												<input type="hidden" value="{{ $solicitud->id }}" name="id_op">
+												<input type="hidden" value="{{ $solicitud->id }}" name="id_sol">
+												@if($solicitud->tipo == 'I')
+													<input type="hidden" value="{{ $solicitud->id }}" name="id_op">
+												@elseif($solicitud->tipo == 'R' || $solicitud->tipo == 'A')
+													<input type="hidden" value="{{ $solicitud->id_solicitud }}" name="id_op">	
+												@endif
 												<td>{{ $solicitud->id_user }}</td>
 												<input type="hidden" value="{{ $solicitud->id_user }}" name="id_user">
 												<td>{{ $solicitud->monto }}</td>
@@ -49,14 +54,14 @@
 												<td>
 													@if($solicitud->tipo == 'I')
 														<input type="number" name="intereses" id="intereses" required>
-													@elseif($solicitud->tipo == 'R')
+													@elseif($solicitud->tipo == 'R' || $solicitud->tipo == 'A')
 														<input type="number" name="intereses" id="intereses" readonly>
 													@endif
 												</td>
 												<td>
 													@if($solicitud->tipo == 'I')
 														<input type="number" name="dias" id="dias" required>
-													@elseif($solicitud->tipo == 'R')
+													@elseif($solicitud->tipo == 'R' || $solicitud->tipo == 'A')
 														<input type="number" name="dias" id="dias" readonly>
 													@endif
 												</td>

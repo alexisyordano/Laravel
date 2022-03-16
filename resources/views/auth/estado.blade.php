@@ -21,14 +21,14 @@
 									<div class="col-md-3">
 										<h3 class="panel-title">Ultimos movimientos</h3>
 									</div>
-									<div class="col-md-3">
+									<!-- <div class="col-md-3">
 										<select class="form-control" name="id_inv" require>
 											<option value="">-- Seleccione una inversion</option>		
 											@foreach($inversiones as $inversion)	
 												<option value="{{ $inversion->id_solicitud }}">{{ $inversion->id_solicitud }}</option>
 											@endforeach							
 										</select>
-									</div>									
+									</div>									 -->
 								</div>
 							</div>
 							<div class="panel-body">
@@ -39,14 +39,30 @@
 											<tr>
 												<th>#</th>
 												<th>Usuario</th>
-												<th>Monto</th>
+												<th>Solicitud</th>
+												<th>Fecha</th>											
 												<th>Concepto</th>
-												<th>Fecha</th>
-												<th>Opciones</th>
+												<th>Dias</th>
+												<th>Monto</th>
+												<th>%</th>
+												<th>Intereses</th>
+												<th>Saldo</th>
 											</tr>
 										</thead>
 										<tbody>
-											
+											@foreach($transacciones as $transaccion)
+												<tr>
+													<th></th>
+													<th>{{ $transaccion->id_user }}</th>
+													<th>{{ $transaccion->id_solicitud }}</th>
+													<th>{{ $transaccion->concepto }}</th>
+													<th>{{ $transaccion->dias }}</th>
+													<th>{{ $transaccion->monto }}</th>
+													<th>{{ $transaccion->p_intereses }}</th>
+													<th>{{ $transaccion->m_intereses }}</th>
+													<th>{{ $transaccion->saldo }}</th>
+												</tr>
+											@endforeach
 										</tbody>
 									</table>
 								</form>
