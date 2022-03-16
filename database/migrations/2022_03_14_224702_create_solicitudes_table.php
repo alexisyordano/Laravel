@@ -18,6 +18,7 @@ class CreateSolicitudesTable extends Migration
             $table->string("id_user");
             $table->integer("monto");
             $table->string("concepto");
+            $table->string("estatus");
             $table->timestamps();
         });
     }

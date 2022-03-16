@@ -21,6 +21,8 @@
 								@endif
 								<form action="" method="post">
 									@csrf
+									<input type="hidden" value="{{ auth()->id() }}" name="id_user" id="id_user">
+									<input type="hidden" name="concepto" value="Inversion" id="concepto">
 									<input type="number" name="monto"  id="monto" required class="form-control" placeholder="Monto a invertir">
 									<br>
 									<button type="submit" class="btn btn-success btn-lg btn-block">Guardar</button>
