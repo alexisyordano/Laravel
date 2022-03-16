@@ -17,7 +17,7 @@
 						<!-- TABLE HOVER -->
 						<div class="panel">
 							<div class="panel-heading">
-								<h3 class="panel-title">Ultimos movimientos</h3>
+								<h3 class="panel-title">Solicitudes pendientes</h3>
 							</div>
 							<div class="panel-body">
 								<form action="" method="post">
@@ -25,10 +25,12 @@
 									<table id="table" class="table table-hover">
 										<thead>
 											<tr>
-												<th>#</th>
+												<!-- <th>#</th> -->
 												<th>Usuario</th>
 												<th>Monto</th>
 												<th>Concepto</th>
+												<th>Intereses</th>
+												<th>Dias</th>
 												<th>Fecha</th>
 												<th>Opciones</th>
 											</tr>
@@ -36,7 +38,7 @@
 										<tbody>
 											@foreach($solicitudes as $solicitud)
 											<tr>																								
-												<td>{{ $solicitud->id }}</td>
+												<!-- <td>{{ $solicitud->id }}</td> -->
 												<input type="hidden" value="{{ $solicitud->id }}" name="id_op">
 												<td>{{ $solicitud->id_user }}</td>
 												<input type="hidden" value="{{ $solicitud->id_user }}" name="id_user">
@@ -44,10 +46,24 @@
 												<input type="hidden" value="{{ $solicitud->monto }}" name="monto">
 												<td>{{ $solicitud->concepto }}</td>
 												<input type="hidden" value="{{ $solicitud->concepto }}" name="concepto">
+												<td>
+													@if($solicitud->tipo == 'I')
+														<input type="number" name="intereses" id="intereses" required>
+													@elseif($solicitud->tipo == 'R')
+														<input type="number" name="intereses" id="intereses" readonly>
+													@endif
+												</td>
+												<td>
+													@if($solicitud->tipo == 'I')
+														<input type="number" name="dias" id="dias" required>
+													@elseif($solicitud->tipo == 'R')
+														<input type="number" name="dias" id="dias" readonly>
+													@endif
+												</td>
 												<td>{{ $solicitud->created_at }}</td>
 												<td>
-													<input type="submit" class="btn btn-success" name="Aprobar" title="Aprobar" value="Aprobar">		
-													<input type="submit" class="btn btn-danger" name="Rechazar" title="Rechazar" value="Rechazar">																								
+													<input type="submit" class="btn-small btn-success" name="Aprobar" title="Aprobar" value="Aprobar">		
+													<input type="submit" class="btn-small btn-danger" name="Rechazar" title="Rechazar" value="Rechazar">																								
 												</td>
 											</tr>
 											@endforeach

@@ -16,10 +16,14 @@ class Transactions extends Model
      */    
     protected $fillable = [
         'id_user',
-        'id_transaction',
+        'id_solicitud',
         'concepto',
+        'dias',
         'date_mov',
+        'date_sistema',
         'monto',
+        'p_intereses',
+        'm_intereses',
         'saldo',
     ];
 }

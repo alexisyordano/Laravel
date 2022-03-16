@@ -19,5 +19,6 @@ class Solicitudes extends Model
         'monto',
         'concepto',
         'estatus',
+        'tipo',
     ];
 }

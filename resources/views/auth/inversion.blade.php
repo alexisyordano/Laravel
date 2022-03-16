@@ -25,6 +25,7 @@
 									<input type="hidden" name="concepto" value="Inversion" id="concepto">
 									<input type="number" name="monto"  id="monto" required class="form-control" placeholder="Monto a invertir">
 									<br>
+									<input type="hidden" name="tipo" id="tipo" value="I">
 									<button type="submit" class="btn btn-success btn-lg btn-block">Guardar</button>
 								</form>
 							</div>

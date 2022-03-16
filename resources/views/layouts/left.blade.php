@@ -25,6 +25,7 @@
 								</ul>
 							</div>
 						</li>
+						<li><a href="{{ route('transactions.estado') }}" class="active"><i class="lnr lnr-cog"></i><span>Estado de cuenta</span></a></li>
 					</ul>
 				</nav>
 			</div>

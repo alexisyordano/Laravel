@@ -25,13 +25,14 @@
 									<input type="hidden" name="concepto" value="Retiro" id="concepto">
 									<input type="number" name="monto"  id="monto" required class="form-control" placeholder="Monto a retirar">
 									<br>
-									<select class="form-control" name="id_inv" require>
+									<select class="form-control" name="id_inv" required>
 										<option value="">-- Seleccione una inversion</option>		
 										@foreach($inversiones as $inversion)	
 											<option value="{{ $inversion->id_transaction }}">{{ $inversion->id_transaction }}</option>
 										@endforeach							
 									</select>
 									<br>
+									<input type="hidden" name="tipo" id="tipo" value="R">
 									<button type="submit" class="btn btn-success btn-lg btn-block">Guardar</button>
 								</form>
 							</div>

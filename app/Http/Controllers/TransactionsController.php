@@ -15,17 +15,28 @@
             return view('auth.inversion');
         }
 
-        public function reinversion()
+        public function estado()
         {
-            return view('auth.reinversion');
+            if(Auth::check())
+            {
+                $inversiones = DB::table('transactions')->select('id_solicitud')
+                                ->groupBy('id_solicitud')
+                                ->where('id_user', auth()->id())
+                                ->get();
+                return view('auth.estado', compact('inversiones'));
+            }
+            else
+            {   
+                return redirect()->to('login');
+            }            
         }
 
         public function retiro()
         {
             if(Auth::check())
             {
-                $inversiones = DB::table('transactions')->select('id_transaction')
-                                ->groupBy('id_transaction')
+                $inversiones = DB::table('transactions')->select('id_solicitud')
+                                ->groupBy('id_solicitud')
                                 ->where('id_user', auth()->id())
                                 ->get();
                 return view('auth.retiro', compact('inversiones'));
@@ -43,9 +54,13 @@
                 'monto' => request('monto'),
                 'concepto' => request('concepto'),
                 'estatus' => 'P',
+                'tipo' => request('tipo'),
             ]);
             
-            return redirect()->to('inversion')->with('success','Solicitud creada satisfactoriamente');
+            if(request('tipo') == 'I')
+                return redirect()->to('inversion')->with('success','Solicitud creada satisfactoriamente');
+            elseif (request('tipo') == 'R')
+                return redirect()->to('retiro')->with('success','Solicitud creada satisfactoriamente');
         }
 
         public function solicitudes()
@@ -67,12 +82,20 @@
             {
                 $solicitud = Solicitudes::find(request('id_op'));
                 $solicitud->update(['estatus' => 'A']);
+
+                $fecha = date("Y-m-d");
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+              
                 $transaccion = Transactions::create([
                     'id_user' => request('id_user'),
-                    'id_transaction' => request('id_op'),
+                    'id_solicitud' => request('id_op'),
                     'concepto' => request('concepto'),
+                    'dias' => request('dias'),
                     'date_mov' => date('Y-m-d'),
+                    'date_sistema' => $fecha2,
                     'monto' => request('monto'),
+                    'p_intereses' => request('intereses'),
+                    'm_intereses' => 0,
                     'saldo' => request('monto'),
                 ]);
                 return redirect()->to('solicitudes')->with('success', 'Solicitud aprobada');

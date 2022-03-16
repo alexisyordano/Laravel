@@ -35,7 +35,9 @@ Route::get('/home',   [HomeController::class, 'index'])
         ->name('home.index');
 
 Route::get('/inversion',   [TransactionsController::class, 'inversion'])
-        ->name('transactions.inversion');  
+        ->name('transactions.inversion');
+Route::post('/inversion', [TransactionsController::class, 'insert'])
+        ->name('inversion.insert');  
 
 Route::get('/reinversion',   [TransactionsController::class, 'reinversion'])
         ->name('transactions.reinversion');
@@ -48,12 +50,12 @@ Route::post('/retiro',   [TransactionsController::class, 'insert'])
               
 Route::get('/solicitudes',   [TransactionsController::class, 'solicitudes'])
         ->name('transactions.solicitudes');     
-        
-Route::post('/inversion', [TransactionsController::class, 'insert'])
-        ->name('inversion.insert');
 
 Route::post('/solicitudes', [TransactionsController::class, 'operacion'])
         ->name('transactions.operacion');
+
+Route::get('/estado',   [TransactionsController::class, 'estado'])
+        ->name('transactions.estado');
 
 //primero hace referencia a la url del navegador, el segundo hace referencia al controller RegistersUserController
 //y el create del metodo de ese controller.

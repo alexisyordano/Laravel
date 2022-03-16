@@ -16,10 +16,14 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->integer("id_user");
-            $table->integer("id_transaction");
+            $table->integer("id_solicitud");
             $table->string("concepto");
+            $table->integer('dias');
             $table->date("date_mov");
+            $table->date("date_sistema");
             $table->integer("monto");
+            $table->integer("p_intereses");
+            $table->integer("m_intereses");
             $table->integer("saldo");
             $table->timestamps();
         });
