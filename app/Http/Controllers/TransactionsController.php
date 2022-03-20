@@ -23,7 +23,9 @@
                                 ->groupBy('id_solicitud')
                                 ->where('id_user', auth()->id())
                                 ->get();
+
                 $transacciones = DB::table('transactions')->select('*')
+                                ->join('users', 'users.id', '=', 'transactions.id_user')
                                 ->where('id_user', auth()->id())
                                 ->get();
                 return view('auth.estado', compact('inversiones'), compact('transacciones'));
@@ -96,7 +98,10 @@
         {
             if(Auth::check())
             {
-                $solicitudes = Solicitudes::all()->where('estatus', 'P');
+                $solicitudes = Solicitudes::select('*')
+                ->join('users', 'users.id', '=', 'solicitudes.id_user')
+                ->where('solicitudes.estatus', 'P')
+                ->get();
                 return view('auth.solicitudes', compact('solicitudes'));
             }
             else
@@ -109,10 +114,9 @@
         {
             if (request('Aprobar'))
             {
-                $solicitud = Solicitudes::find(request('id_sol'));
+                $solicitud = Solicitudes::select('*')
+                ->where('id_sol',request('id_sol'));
                 $solicitud->update(['estatus' => 'A']);
-
-                
 
                 $saldo = Transactions::select('*')
                                             ->where('id_user',request('id_user'))

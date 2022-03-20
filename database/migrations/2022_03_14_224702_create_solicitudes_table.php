@@ -14,7 +14,7 @@ class CreateSolicitudesTable extends Migration
     public function up()
     {
         Schema::create('solicitudes', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_sol');
             $table->string("id_user");
             $table->char('id_solicitud');
             $table->integer("monto");

@@ -40,20 +40,20 @@
 												<th>#</th>
 												<th>Usuario</th>
 												<th>Solicitud</th>
-												<th>Fecha</th>											
-												<th>Concepto</th>
+												<th>Concepto</th>											
 												<th>Dias</th>
 												<th>Monto</th>
 												<th>%</th>
 												<th>Intereses</th>
 												<th>Saldo</th>
+												<th>Fecha</th>
 											</tr>
 										</thead>
 										<tbody>
 											@foreach($transacciones as $transaccion)
 												<tr>
 													<th></th>
-													<th>{{ $transaccion->id_user }}</th>
+													<th>{{ $transaccion->name }}</th>
 													<th>{{ $transaccion->id_solicitud }}</th>
 													<th>{{ $transaccion->concepto }}</th>
 													<th>{{ $transaccion->dias }}</th>
@@ -61,6 +61,7 @@
 													<th>{{ $transaccion->p_intereses }}</th>
 													<th>{{ $transaccion->m_intereses }}</th>
 													<th>{{ $transaccion->saldo }}</th>
+													<th>{{ $transaccion->date_mov }}</th>
 												</tr>
 											@endforeach
 										</tbody>

@@ -39,11 +39,11 @@
 											@foreach($solicitudes as $solicitud)
 											<tr>																								
 												<!-- <td>{{ $solicitud->id }}</td> -->
-												<input type="hidden" value="{{ $solicitud->id }}" name="id_sol">
+												<input type="text" value="{{ $solicitud->id_sol }}" name="id_sol">
 												@if($solicitud->tipo == 'I')
-													<input type="hidden" value="{{ $solicitud->id }}" name="id_op">
+													<input type="hidden" value="{{ $solicitud->id_sol }}" name="id_op">
 												@elseif($solicitud->tipo == 'R' || $solicitud->tipo == 'A')
-													<input type="hidden" value="{{ $solicitud->id_solicitud }}" name="id_op">	
+													<input type="hidden" value="{{ $solicitud->id_sol }}" name="id_op">	
 												@endif
 												<td>{{ $solicitud->id_user }}</td>
 												<input type="hidden" value="{{ $solicitud->id_user }}" name="id_user">

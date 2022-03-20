@@ -15,6 +15,7 @@ class Solicitudes extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id_sol',
         'id_user',
         'id_solicitud',
         'monto',

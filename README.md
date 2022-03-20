@@ -63,6 +63,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-token : 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 
+token : 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 
+
+
+
+ $solicitudes = Solicitudes::select('*')
+                ->join('users', 'users.id', '=', 'solicitudes.id_user')
+                ->where('solicitudes.estatus', 'P')
+                ->get();
 
 
