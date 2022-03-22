@@ -5,6 +5,7 @@ use App\Http\Controllers\RegistersUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\BonosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,33 @@ Route::get('/password{user}/password', [RegistersUserController::class, 'passwor
 
 Route::put('/updatePass{user}/updatePass', [RegistersUserController::class, 'updatePass'])
         ->name('registers.updatePass');
+
+//Ruta Bonos//
+
+Route::get('/bonosregister', [BonosController::class, 'index'])
+        ->name('bonosregister.index');
+
+Route::post('/bonosregister', [BonosController::class, 'store'])
+        ->name('bonosregister.store');
+
+Route::get('/bonos', [BonosController::class, 'show'])
+        ->name('bonos.show');
+     
+Route::get('/bonos/{bono}/bonos', [BonosController::class, 'edit'])
+        ->name('bonos.edit');
+
+Route::put('/update/{bono}/update', [BonosController::class, 'update'])
+       ->name('bonos.update');
+
+Route::get('/delete/{id}', [BonosController::class, 'delete'])
+       ->name('bonos.delete');
+
+Route::delete('/destroy/{id}', [BonosController::class, 'destroy'])
+       ->name('bonos.destroy');
+
+
+
+
 
 
         

@@ -15,6 +15,15 @@
 									</ul>
 								</div>
 						    </li>
+							<li>
+								<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Bonos</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<div id="subPages2" class="collapse ">
+									<ul class="nav">
+										<li><a href="{{ route('bonosregister.index') }}" class="">Crear</a></li>
+										<li><a href="{{ route('bonos.show') }}" class="">Listar Bonos</a></li>
+									</ul>
+								</div>
+						    </li>
 							<li><a href="{{ route('transactions.solicitudes') }}" class="active"><i class="lnr lnr-cog"></i><span>Solicitudes</span></a></li>
 						@endif
 						<!-- End view Admin !-->
