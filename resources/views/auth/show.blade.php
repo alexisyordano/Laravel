@@ -39,7 +39,7 @@
 														Actualizar
 														<i class="fa fa-refresh"></i>
 													</a>
-                                                    <a  class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('registers.delete', $user->id) }}" title="Eliminar">
+                                                    <a  class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('registers.deleteusers', $user->id) }}" title="Eliminar">
                                                         <i class="fa fa-trash-o"></i>
                                                         Eliminar
                                                     </a>
@@ -47,7 +47,11 @@
                                                         <i class="fa fa-solid fa-lock"></i>
                                                         Cambiar clave
                                                     </a>
-											   </td>
+                                                    <a  class="btn btn-info" href="{{route('registers.add', $user->id)}}" title="Agregar">
+                                                        <i class="fa fa-solid fa-plus"></i>
+                                                        Añadir
+                                                    </a>
+											    </td>
 											</tr>
                                         @endforeach 
 										</tbody>

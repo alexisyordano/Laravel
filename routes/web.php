@@ -87,10 +87,10 @@ Route::get('/edit/{user}/edit', [RegistersUserController::class, 'edit'])
 Route::put('/update/{user}', [RegistersUserController::class, 'update'])
         ->name('registers.update');
 
-Route::get('/delete/{id}', [RegistersUserController::class, 'delete'])
-        ->name('registers.delete');
+Route::get('/deleteusers/{id}', [RegistersUserController::class, 'delete'])
+        ->name('registers.deleteusers');
 
-Route::delete('/destroy/{id}', [RegistersUserController::class, 'destroy'])
+Route::delete('/destroyusers/{id}', [RegistersUserController::class, 'destroy'])
         ->name('registers.destroy');
 
 Route::get('/password{user}/password', [RegistersUserController::class, 'password'])
@@ -98,6 +98,12 @@ Route::get('/password{user}/password', [RegistersUserController::class, 'passwor
 
 Route::put('/updatePass{user}/updatePass', [RegistersUserController::class, 'updatePass'])
         ->name('registers.updatePass');
+
+Route::get('/add/{id}', [RegistersUserController::class, 'add'])
+        ->name('registers.add');
+
+Route::post('/InsertAdd', [RegistersUserController::class, 'InsertAdd'])
+        ->name('registers.InsertAdd');
 
 //Ruta Bonos//
 
@@ -121,6 +127,12 @@ Route::get('/delete/{id}', [BonosController::class, 'delete'])
 
 Route::delete('/destroy/{id}', [BonosController::class, 'destroy'])
        ->name('bonos.destroy');
+
+
+//Ajax//
+
+Route::get('/select/{id}', [RegistersUserController::class, 'select'])
+       ->name('registers.select');
 
 
 
