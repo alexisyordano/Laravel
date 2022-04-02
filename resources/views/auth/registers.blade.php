@@ -132,6 +132,10 @@
                                                     <input type="hidden" name="modalidad" id="modalidad">
                                                     
                                                     <div class="col-md-6">
+                                                        <input type="text" name="code_transaction"  id="code_transaction" class="form-control" placeholder="Codigo transacción">
+                                                        <br>
+                                                    </div>
+                                                    <div class="col-md-6">
                                                         <button type="submit" class="btn btn-primary btn-lg btn-block">Guardar</button>
                                                     </div>
                                                 </div>

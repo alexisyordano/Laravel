@@ -37,6 +37,8 @@
                                             <br>
                                             <input type="number" name="interests"  id="interests" required class="form-control" placeholder="Interese">
                                             <br>
+                                            <input type="number" name="cicles"  id="cicles" class="form-control" placeholder="Ciclos">
+                                            <br>
                                             <button type="submit" class="btn btn-primary btn-lg btn-block">Guardar</button>
                                         </form>
                                     </div>

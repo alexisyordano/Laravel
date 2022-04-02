@@ -20,7 +20,8 @@ class Banco extends Model
         'tipo_cuenta',
         'titular',
         'numero',
-        'id_user'
+        'id_user',
+        'code_transaction',
 
     ];
 }

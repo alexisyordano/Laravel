@@ -50,10 +50,11 @@ class BonosController extends Controller
         $bonos = Bonos::create([
             'name' => request('name'),
             'days' => request('days'),
-            'interests' => request('interests')
+            'interests' => request('interests'),
+            'cicles' => request('cicles'),
         ]);
         
-        return redirect()->to('registers')->with('success','El bono fue creado satisfactoriamente');
+        return redirect()->to('bonosregister')->with('success','El bono fue creado satisfactoriamente');
     }
 
     /**

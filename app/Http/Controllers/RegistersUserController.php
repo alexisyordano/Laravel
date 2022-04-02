@@ -44,6 +44,7 @@ class RegistersUserController extends Controller
         ]);
 
            $id = $user->id;
+        //    $id = 15;
 
             $datos_users = DatosUsers::create([
                 'telefono' => request('tele'),
@@ -57,17 +58,81 @@ class RegistersUserController extends Controller
                 'id_user' => $id,
             ]);
 
+            $fecha = date("Y-m-d");            
+            $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+            $dia = date("w", strtotime($fecha2));
+            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+            if ($dia == 6)
+            {
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+            }
+            if ($dia == 0)
+            {
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+            }
+            if ($dia == 1)
+            {
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+            }
+
+            $dias = request('dias');
+            $aux =  request('dias');
+            
+            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
+            $dia = date("w", strtotime($date_close));
+            if ($dia == 6)
+            {
+                $aux = $aux + 2;
+                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+            }
+            if ($dia == 0)
+            {
+                $aux = $aux + 2;
+                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+            }
+
+            $date_pay = date("Y-m-d",strtotime($date_close."+ 3 days"));
+            $dia = date("w", strtotime($date_pay));
+            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+            if ($dia == 6)
+            {
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+            }
+            if ($dia == 0)
+            {
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+            }
+            if ($dia == 1)
+            {
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+            }
+
+            $monto = request('monto');
+            $p_intereses = request('p_intereses');
+            $m_intereses = $monto * ($p_intereses / 100);
+            $saldo = $monto + $m_intereses;
+
+            // $inversiones = DB::select('SELECT MAX(id) FROM transactions WHERE id_user = '.$id.'');
+
+            // echo "<pre>";
+            // print_r($inversiones);
+            // echo "</pre>";
+
+            // $solicitud = 1;
+
             $transaciones = Transactions::create([
                 'id_user' => $id,
-                'id_solicitud' => '0',
+                'id_solicitud' => 0,
                 'concepto' => request('modalidad'),
-                'dias' => request('dias'),     
-                'date_mov' => $fecha = date("Y-m-d"),
-                'date_sistema' => $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days")),
+                'dias' => $dias,     
+                'date_mov' => $fecha,
+                'date_sistema' => $fecha2,
+                'date_close' => $date_close,
+                'date_pay' => $date_pay,
                 'monto' => request('monto'),
-                'p_intereses' => request('p_intereses'),
-                'm_intereses' => '0',
-                'saldo' => request('monto'),
+                'p_intereses' => $p_intereses,
+                'm_intereses' => $m_intereses,
+                'saldo' => $saldo,
             ]);
 
             $banco = Banco::create([
@@ -76,6 +141,7 @@ class RegistersUserController extends Controller
                 'titular' => request('anombre'),
                 'numero' => request('ncuenta'),
                 'id_user' => $id,     
+                'code_transaction' => request('code_transaction'),
             ]);
         
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');
@@ -96,17 +162,89 @@ class RegistersUserController extends Controller
 
     public function InsertAdd(Request $request)
     {
+
+        $fecha = date("Y-m-d");
+        $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+        $dia = date("w", strtotime($fecha2));
+        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+        if ($dia == 6)
+        {
+            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+        }
+        if ($dia == 0)
+        {
+            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+        }
+        if ($dia == 1)
+        {
+            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+        }
+
+
+        $dias = request('dias');
+        $aux =  request('dias');
+
+        $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
+        $dia = date("w", strtotime($date_close));
+        if ($dia == 6)
+        {
+            $aux = $aux + 2;
+            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+        }
+        if ($dia == 0)
+        {
+            $aux = $aux + 2;
+            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+        }
+
+        $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
+        $dia = date("w", strtotime($date_pay));
+        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+        if ($dia == 6)
+        {
+            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+        }
+        if ($dia == 0)
+        {
+            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+        }
+        if ($dia == 1)
+        {
+            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+        }
+
+        $monto = request('monto');
+        $p_intereses = request('p_intereses');
+        $m_intereses = $monto * ($p_intereses / 100);
+        $saldo = $monto + $m_intereses;
+       
+        // $id = request('id');
+       
+        // $inversiones = DB::select('SELECT MAX(id) FROM transactions WHERE id_user = '.$id.'');
+        // echo "<pre>";
+        // print_r($inversiones);
+        // echo "</pre>";
+        
+        // foreach ($inversiones as $id)
+        // {
+        //     print_r($id);
+        // }
+
+        // $solicitud = 1;
+
         $transaciones = Transactions::create([
             'id_user' => request('id'),
-            'id_solicitud' => '0',
+            'id_solicitud' => 0,
             'concepto' => request('modalidad'),
             'dias' => request('dias'),     
-            'date_mov' => $fecha = date("Y-m-d"),
-            'date_sistema' => $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days")),
+            'date_mov' => $fecha,
+            'date_sistema' => $fecha2,
+            'date_close' => $date_close,
+            'date_pay' => $date_pay,
             'monto' => request('monto'),
-            'p_intereses' => request('p_intereses'),
-            'm_intereses' => '0',
-            'saldo' => request('monto'),
+            'p_intereses' => $p_intereses,
+            'm_intereses' => $m_intereses,
+            'saldo' => $saldo,
         ]);
 
         $banco = Banco::create([
@@ -115,6 +253,7 @@ class RegistersUserController extends Controller
             'titular' => request('anombre'),
             'numero' => request('ncuenta'),
             'id_user' => request('id'),     
+            'code_transaction' => request('code_transaction'),
         ]);
 
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');

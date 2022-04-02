@@ -21,6 +21,8 @@ class Transactions extends Model
         'dias',
         'date_mov',
         'date_sistema',
+        'date_close',
+        'date_pay',
         'monto',
         'p_intereses',
         'm_intereses',

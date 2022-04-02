@@ -45,7 +45,7 @@
 												@elseif($solicitud->tipo == 'R' || $solicitud->tipo == 'A')
 													<input type="hidden" value="{{ $solicitud->id_sol }}" name="id_op">	
 												@endif
-												<td>{{ $solicitud->id_user }}</td>
+												<td>{{ $solicitud->name }}</td>
 												<input type="hidden" value="{{ $solicitud->id_user }}" name="id_user">
 												<td>{{ $solicitud->monto }}</td>
 												<input type="hidden" value="{{ $solicitud->monto }}" name="monto">

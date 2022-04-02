@@ -56,8 +56,8 @@
         {
             if(Auth::check())
             {
-                $inversiones = DB::table('transactions')->select('id_solicitud')
-                                ->groupBy('id_solicitud')
+                $inversiones = DB::table('transactions')->select('id')
+                                ->groupBy('id')
                                 ->where('id_user', auth()->id())
                                 ->get();
                 return view('auth.abono', compact('inversiones'));
@@ -125,7 +125,7 @@
                                             ->first();             
             
                 $concepto = request('concepto');
-
+                
                 if ($concepto == 'Retiro')
                 {
                     $dias = 0;   
@@ -147,8 +147,20 @@
                     $dias = request('dias');
                     $intereses = request('intereses');
                     $monto = request('monto');
+
                     $fecha = date("Y-m-d");
-                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                    $dia = date("w", strtotime($fecha));
+
+                    //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                    if ($dia == 6 || $dia == 0 || $dia == 1)
+                    {
+                        $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                    }
+                    else
+                    {
+                        $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                    }
+                    
                 }
                     
             

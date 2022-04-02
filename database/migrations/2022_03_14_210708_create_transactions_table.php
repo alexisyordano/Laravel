@@ -22,6 +22,8 @@ class CreateTransactionsTable extends Migration
             $table->integer('dias');
             $table->date("date_mov");
             $table->date("date_sistema");
+            $table->date("date_close");
+            $table->date("date_pay");
             $table->integer("monto");
             $table->integer("p_intereses");
             $table->integer("m_intereses");

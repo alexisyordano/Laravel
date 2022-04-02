@@ -18,6 +18,7 @@ class CreateBonosTable extends Migration
             $table->string("name");
             $table->string('days');
             $table->integer("interests");
+            $table->string('cicles');
             $table->timestamps();
         });
         

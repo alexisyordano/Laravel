@@ -32,41 +32,43 @@
 								</div>
 							</div>
 							<div class="panel-body">
-								<form action="" method="post">
-									@csrf
 									<table id="table" class="table table-hover">
 										<thead>
 											<tr>
-												<th>#</th>
-												<th>Usuario</th>
-												<th>Solicitud</th>
-												<th>Concepto</th>											
-												<th>Dias</th>
+												<th>Ciclo</th>
+												<th>Fecha de deposito</th>
+												<th>Entrada Sistema</th>
+												<th>Modalidad</th>										
+												<th>Fecha de cierre</th>
+												<th>Fecha de pago</th>
 												<th>Monto</th>
-												<th>%</th>
-												<th>Intereses</th>
-												<th>Saldo</th>
-												<th>Fecha</th>
+												<th>Ganancias</th>
+												<th>Total</th>
+												<th>Opciones</th>
 											</tr>
 										</thead>
 										<tbody>
 											@foreach($transacciones as $transaccion)
 												<tr>
 													<th></th>
-													<th>{{ $transaccion->name }}</th>
-													<th>{{ $transaccion->id_solicitud }}</th>
+													<th>{{ $transaccion->date_mov }}</th>
+													<th>{{ $transaccion->date_sistema }}</th>
 													<th>{{ $transaccion->concepto }}</th>
-													<th>{{ $transaccion->dias }}</th>
+													<th>{{ $transaccion->date_close }}</th>
+													<th>{{ $transaccion->date_pay }}</th>
 													<th>{{ $transaccion->monto }}</th>
-													<th>{{ $transaccion->p_intereses }}</th>
 													<th>{{ $transaccion->m_intereses }}</th>
 													<th>{{ $transaccion->saldo }}</th>
-													<th>{{ $transaccion->date_mov }}</th>
+													<th>
+														
+														<button class="btn btn-xs btn-success"><a href="{{ route('transactions.inversion') }}" style="color: white;">RI</a></button>
+														<button class="btn btn-xs btn-info"><a href="{{ route('transactions.abono') }}" style="color: white;">A</a></button>
+														<button class="btn btn-xs btn-danger"><a href="{{ route('transactions.retiro') }}" style="color: white;">R</a></button>
+													</th>
 												</tr>
 											@endforeach
 										</tbody>
 									</table>
-								</form>
 							</div>
 						</div>
 						<!-- END TABLE HOVER -->
