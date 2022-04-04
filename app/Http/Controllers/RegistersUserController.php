@@ -9,6 +9,7 @@ use App\Models\Bonos;
 use App\Models\Banco;
 use App\Models\DatosUsers;
 use App\Models\Transactions;
+use App\Models\Preregistros;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -160,6 +161,42 @@ class RegistersUserController extends Controller
         }
     }
 
+    public function bloqueo(Request $request, $id)
+    {
+        if(Auth::check())
+        {   
+            $id = $id;
+            $bloqueo = 1;
+            DB::update('update users set bloqueo = ? where id = ?',[$bloqueo,$id]);  
+            echo '<div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <i class="fa fa-check-circle"></i>Usuario Bloqueado
+                </div>'; 
+        }
+        else
+        {   
+            return redirect()->to('show');
+        }
+    }
+
+    public function activar(Request $request, $id)
+    {
+        if(Auth::check())
+        {   
+            $id = $id;
+            $bloqueo = 0;
+            DB::update('update users set bloqueo = ? where id = ?',[$bloqueo,$id]);  
+            echo '<div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <i class="fa fa-check-circle"></i>Usuario Activado
+                </div>'; 
+        }
+        else
+        {   
+            return redirect()->to('show');
+        }
+    }
+
     public function InsertAdd(Request $request)
     {
 
@@ -283,6 +320,13 @@ class RegistersUserController extends Controller
     { 
         if(Auth::check())
         {
+            $id = $user->id; 
+            $user = DB::table('users')->select('*')
+                        ->join('datos_users', 'users.id', '=', 'datos_users.id_user')
+                        ->join('bancos', 'bancos.id_user', '=', 'users.id')
+                        ->where('users.id', $id)
+                        ->first();
+
             return view('auth.edit', compact('user'));
         }
         else
@@ -292,17 +336,94 @@ class RegistersUserController extends Controller
         
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
+
+        $UserName = $name = $request->input('name');
+
+        $name = $request->input('name');
+        $email = $request->input('email');
+        DB::update('update users set name = ?, email= ? where id = ?',[$name,$email,$id]);
+
+        $telefono = $request->input('telefono');
+        $fecha_n = $request->input('fecha_n');
+        $nacionalidad = $request->input('nacionalidad');
+        $pais = $request->input('pais');
+        $nombre_referido = $request->input('nombre_referido');
+        $f_primer_pago = $request->input('f_primer_pago');
+        $monto = $request->input('monto');
+        $identificador = $request->input('identificador');
+        DB::update('update datos_users set telefono = ?, fecha_nacimiento =?, 
+                    nacionalidad = ?,
+                    pais = ?,
+                    nombre_referido = ?,
+                    f_primer_pago = ?,
+                    monto = ?,
+                    identificador = ?
+                    where id_user = ?',[$telefono,$fecha_n,$nacionalidad,$pais,$nombre_referido,
+                                  $f_primer_pago, $monto, $identificador,$id]);
+
+        $name_banco = $request->input('name_banco');
+        $tipo_cuenta = $request->input('tipo_cuenta');
+        $titular = $request->input('titular');
+        $numero = $request->input('numero');
+        $code_transaction = $request->input('code_transaction');
+        DB::update('update bancos set name_banco = ?, tipo_cuenta =?, 
+                    titular = ?,
+                    numero = ?,
+                    code_transaction = ?
+                    where id_user = ?',[$name_banco,$tipo_cuenta,$titular,$numero,$code_transaction,$id]);
+  
+        //$user->update($request->all());
+        return redirect()->to('show')->with('success', $UserName.' '. 'Usuario Actualizado');
+    }
+
+    public function search(Request $request)
+    {
+        $results = User::where('name', 'LIKE', "%{$request->search}%")->get();
+        $response = array();
+        foreach($results as $results)
+        {
+            $response[] = array("value"=>$results->name,"label"=>$results->name);
+        }
+
+        echo json_encode($response);
+    }
+
+    public function preregister()
+    {
+        return view('auth.preregisters');
+    }
+
+    public function InsertRegister()
+    {
+        $pre = Preregistros::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'telefono' => request('tele'),
+            'pais' => request('pais'),
         ]);
 
-        $UserName = $request->name;
-        
-        $user->update($request->all());
-        return redirect()->to('show')->with('success', $UserName.' '. 'Usuario Actualizado');
+        return redirect()->to('preregister')->with('success','Registro creado satisfactoriamente');
+    }
+
+    public function inversionita()
+    {
+        if(Auth::check())
+        {
+            $inv = Preregistros::all();
+            return view('auth.showInve', compact('inv'));
+        }
+        else
+        {   
+            return redirect()->to('login');
+        }
+    }
+
+    public function deletepre($id)
+    {
+        $inv = Preregistros::where('id_registro', $id)->delete();
+        return redirect()->to('inversionita')->with('success', 'Inversionita Eliminado');
     }
 
 

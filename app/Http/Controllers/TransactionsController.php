@@ -186,7 +186,7 @@
                 $transaccion = Transactions::create([
                     'id_user' => request('id_user'),
                     'id_solicitud' => request('id_op'),
-                    'concepto' => request('concepto'),
+                    'concepto' => request('modalidad'),
                     'dias' => 0,
                     'date_mov' => date('Y-m-d'),
                     'date_sistema' => date('Y-m-d'),

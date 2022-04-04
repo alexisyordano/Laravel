@@ -79,8 +79,8 @@
                 <script type="text/javascript">
                     $('#modalidad').on('change', function(e)
                     {
-                        var ciudad_id = e.target.value;
-                        $.get('{{ url("/") }}/select/'+ciudad_id, function(data){
+                        var id = e.target.value;
+                        $.get('{{ url("/") }}/select/'+id, function(data){
                             var dia = $.parseJSON(data);
                             $('#dias').val(dia.days);
                             $('#p_intereses').val(dia.interests); 

@@ -74,8 +74,9 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="nombre_r" id="nombre_r" required class="form-control" placeholder="Nombres y Apellidos de Punto Raíz">
-                                                        <br>    
+                                                        <input type="text" name="nombre_r" id="nombre_r" required class="form-control search" placeholder="Nombres y Apellidos de Punto Raíz">
+                                                        <div id="suggesstion-box"></div>
+                                                        <br> 
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -145,6 +146,17 @@
 								</div>
 							</div>
 							<!-- END INPUTS -->
+
+                        <script>
+                            $(document).ready(function(){
+                                $('#nombre_r').focus();
+                            });
+                            $(document).ready(function() {
+                                $('#nombre_r').autocomplete({
+                                source: "{{ route('registers.search') }}"
+                                });
+                            });
+                        </script>
                             <script type="text/javascript">
                                 $('#modalidad_buscar').on('change', function(e)
                                 {

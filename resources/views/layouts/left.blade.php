@@ -12,6 +12,7 @@
 									<ul class="nav">
 										<li><a href="{{ route('registers.create') }}" class="">Crear Usuarios</a></li>
 										<li><a href="{{ route('registers.show') }}" class="">Listar Usuarios</a></li>
+										<li><a href="{{ route('registers.inversionita') }}" class="">Inversionista registrados</a></li>
 									</ul>
 								</div>
 						    </li>

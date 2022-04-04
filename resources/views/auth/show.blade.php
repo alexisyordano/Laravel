@@ -14,12 +14,15 @@
 									<h3 class="panel-title">Listar Usuarios</h3>
 								</div>
 								<div class="panel-body">
+                                   <div id="resp"></div>
                                     @if(session()->has('success'))
                                         <div class="alert alert-success alert-dismissible" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             <i class="fa fa-check-circle"></i> {{ session()->get('success') }}
                                         </div>
                                     @endif
+
+                                    <div id="refres">
 									<table id="table" class="table table-striped table-bordered">
 										<thead>
 											<tr>
@@ -34,7 +37,7 @@
 												<td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
 												<td>
-													<a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
+													<a class="btn btn-primary btn-sm" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
 														data-attr="{{ route('registers.edit', $user) }}" title="Actualizar">
 														Actualizar
 														<i class="fa fa-refresh"></i>
@@ -43,21 +46,34 @@
                                                         <i class="fa fa-trash-o"></i>
                                                         Eliminar
                                                     </a>
-                                                    <a  class="btn btn-success" data-toggle="modal" id="smallButtonPass" data-target="#smallModalPass" data-attr="{{ route('registers.password', $user) }}" title="Password">
+                                                    <a  class="btn btn-success btn-sm" data-toggle="modal" id="smallButtonPass" data-target="#smallModalPass" data-attr="{{ route('registers.password', $user) }}" title="Password">
                                                         <i class="fa fa-solid fa-lock"></i>
                                                         Cambiar clave
                                                     </a>
-                                                    <a  class="btn btn-info" href="{{route('registers.add', $user->id)}}" title="Agregar">
+                                                    <a  class="btn btn-info btn-sm" href="{{route('registers.add', $user->id)}}" title="Agregar">
                                                         <i class="fa fa-solid fa-plus"></i>
                                                         Añadir
                                                     </a>
+                                                    
+                                                    @if($user->bloqueo == 0)
+                                                        <button class="btn btn-warning btn-sm"  type="submit" id="{{$user->id}}"  value="{{route('registers.bloqueo', $user->id)}}">
+                                                            <i class="fa fa-solid fa-lock"></i> Bloquear    
+                                                        </button>
+                                                    @endif
+
+                                                    @if($user->bloqueo != 0)
+                                                        <button class="btn btn-default btn-sm" type="submit" id="{{$user->id}}" value="{{route('registers.activar', $user->id)}}">
+                                                            <i class="fa fa-solid fa-check"></i> Activar    
+                                                        </button>
+                                                    @endif
 											    </td>
 											</tr>
                                         @endforeach 
 										</tbody>
 									</table>
-								</div>
-							</div>
+                                  </div>
+							    </div>
+                            </div>
 							<!-- END TABLE STRIPED -->
 						</div>
 				</div>
@@ -123,6 +139,39 @@
             </div>
         </div>
     </div>
+
+<script>
+$("button").click(function(){
+
+    var id = ($(this).val());
+    $.ajax({
+        type: "GET",
+        url: id,
+        //data: value,
+        success: function(data) {
+            $("#refres").load(window.location.href + " #refres" );
+            $('#resp').html(data);           
+        }
+    });
+})
+</script>
+
+<script>
+
+$("button").click(function(){
+   var id = ($(this).val());
+   $.ajax({
+        type: "GET",
+        url: id,
+        //data: value,
+        success: function(data) {
+            $("#refres").load(window.location.href + " #refres" );
+            $('#resp').html(data);           
+        }
+    });
+});
+
+</script>
 
 <script>
     // display a modal (small modal)
