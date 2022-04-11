@@ -161,7 +161,8 @@ Route::get('/activar/{id}', [RegistersUserController::class, 'activar'])
 Route::get('/search', [RegistersUserController::class, 'search'])
        ->name('registers.search');
 
-
+Route::get('/searchT', [TransactionsController::class, 'searchT'])
+        ->name('transactions.searchT');
 
 
 

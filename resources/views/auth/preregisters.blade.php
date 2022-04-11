@@ -48,9 +48,72 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="pais" id="pais" required class="form-control" placeholder="Nacionalidad">
+                                                        <input type="text" name="pais" id="pais" required class="form-control" placeholder="Pais">
                                                         <br>
                                                     </div>
+
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="nacion" id="nacion" required class="form-control" placeholder="Nacionalidad">
+                                                        <br>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="fecha_nacimiento" class="form-control" placeholder="Fecha de nacimiento" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                                        <br>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <select class="form-control" name="modalidad" id="modalidad" required>
+                                                            <option value="">-- Selecione una modalidad --</option>
+                                                                @foreach($bonos as $bono)
+                                                                    <option value="{{ $bono['id_bono'] }}">{{ $bono['name'] }}</option>
+                                                                @endforeach
+                                                        </select>
+                                                        <br>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="nombre_r" id="nombre_r" required class="form-control search" placeholder="Nombres y Apellidos de Punto Raíz">
+                                                        <div id="suggesstion-box"></div>
+                                                        <br> 
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                    <input type="text" name="fecha_primer_pago" class="form-control" placeholder="Fecha del Primer pago" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                                        <br>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="monto" required id="monto" class="form-control" placeholder="Monto en $">
+                                                        <br>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="n_banco"  id="n_banco" class="form-control" placeholder="Nombre del Banco">
+                                                        <br>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="t_cuenta"  id="t_cuenta" class="form-control" placeholder="Tipo de cuenta">
+                                                        <br>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="anombre"  id="anombre" class="form-control" placeholder="A Nombre de">
+                                                        <br>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="ncuenta"  id="ncuenta" class="form-control" placeholder="Numero de Cuenta">
+                                                        <br>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="identificador" required id="identificador" class="form-control" placeholder="DNI/Cédula/Pasaporte">
+                                                        <br>
+                                                    </div>
+
                                                     <div class="col-md-2">
                                                         <button type="submit" class="btn btn-primary btn-lg btn-block">Guardar</button>
                                                     </div>

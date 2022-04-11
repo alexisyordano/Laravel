@@ -6,9 +6,11 @@
     use App\Models\User;
     use App\Models\Solicitudes;
     use App\Models\Transactions;
+    use App\Models\Lines;
     use Illuminate\Support\Facades\DB;
 
-    Class TransactionsController extends Controller {
+    Class TransactionsController extends Controller 
+    {
 
         public function inversion()
         {
@@ -19,8 +21,8 @@
         {
             if(Auth::check())
             {
-                $inversiones = DB::table('transactions')->select('id_solicitud')
-                                ->groupBy('id_solicitud')
+                $inversiones = DB::table('lines')->select('*')
+                                ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
                                 ->where('id_user', auth()->id())
                                 ->get();
 
@@ -28,7 +30,9 @@
                                 ->join('users', 'users.id', '=', 'transactions.id_user')
                                 ->where('id_user', auth()->id())
                                 ->get();
-                return view('auth.estado', compact('inversiones'), compact('transacciones'));
+
+                $date = date("Y-m-d");
+                return view('auth.estado', compact('inversiones'), compact('transacciones'), compact('date'));
             }
             else
             {   
@@ -56,8 +60,8 @@
         {
             if(Auth::check())
             {
-                $inversiones = DB::table('transactions')->select('id')
-                                ->groupBy('id')
+                $inversiones = DB::table('lines')->select('*')
+                                ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
                                 ->where('id_user', auth()->id())
                                 ->get();
                 return view('auth.abono', compact('inversiones'));
@@ -198,6 +202,29 @@
 
                 return redirect()->to('solicitudes')->with('success', 'Solicitud rechazada');
             }            
+        }
+
+        public function lines()
+        {
+            
+        }
+
+        public function searchT(Request $request)
+        {
+            $id_bono = request('id_bono');
+            $id_user = request('id_user');
+            $results = Transactions::select('cicle', 'date_mov','date_sistema','id_bono','date_close','date_pay','monto','m_intereses','saldo','id')
+                                    ->where('id_user', '=', "{$id_user}")
+                                    ->where('id_bono', '=', "{$id_bono}")
+                                    ->get();
+            $info = array();
+            foreach($results as $result)
+            {
+                $info["myData"] = array($result);
+                
+            }              
+            header('Content-type:application/json;charset=utf-8');
+                echo json_encode($info, JSON_PRETTY_PRINT);          
         }
     }
 ?>

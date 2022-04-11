@@ -35,10 +35,14 @@
                                             <br>
                                             <input type="number" name="days"  id="days" required class="form-control" placeholder="Días">
                                             <br>
-                                            <input type="number" name="interests"  id="interests" required class="form-control" placeholder="Interese">
+                                            <input type="number" name="interests"  id="interests" required class="form-control" placeholder="Intereses">
                                             <br>
-                                            <input type="number" name="cicles"  id="cicles" class="form-control" placeholder="Ciclos">
+                                            <input type="number" name="cicles"  id="cicles" class="form-control" placeholder="Ciclos" required>                                                                                       
                                             <br>
+                                            <input type="checkbox" name="check_cicles" id="check_cicles" value="1">
+										    <span>Validar ciclos</span> 
+                                            <br>
+                                            <br>                                            
                                             <button type="submit" class="btn btn-primary btn-lg btn-block">Guardar</button>
                                         </form>
                                     </div>

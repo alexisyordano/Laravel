@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Bonos;
 use App\Models\Banco;
+use App\Models\Lines;
 use App\Models\DatosUsers;
 use App\Models\Transactions;
 use App\Models\Preregistros;
@@ -32,119 +33,306 @@ class RegistersUserController extends Controller
 
     public function store(Request $request)
     {
-        $validator  = $request->validate([
-            'email' => 'required|unique:users',
-            'identificador' => 'required|unique:datos_users',
-        ]);
+        // $validator  = $request->validate([
+        //     'email' => 'required|unique:users',
+        //     'identificador' => 'required|unique:datos_users',
+        // ]);
 
-        $user = User::create([
-            'name' => request('name'),
-            'email' => request('email'),
-            'password' => request('password'),
-            'id_rol' => request('rol'),
-        ]);
+        $id_rol = request('rol');
 
-           $id = $user->id;
-        //    $id = 15;
+        if($id_rol == "")
+        {
+            try {
 
-            $datos_users = DatosUsers::create([
-                'telefono' => request('tele'),
-                'fecha_nacimiento' => request('fecha_n'),
-                'nacionalidad' => request('nacion'),
-                'pais' => request('pais_i'),
-                'nombre_referido' => request('nombre_r'),
-                'f_primer_pago' => request('fecha_primer_pago'),
-                'monto' => request('monto'),
-                'identificador' => request('identificador'),
-                'id_user' => $id,
-            ]);
+                $user = User::create([
+                'name' => request('name'),
+                'email' => request('email'),
+                'password' => request('password'),
+                'id_rol' => '2',
+                'bloqueo' => 0,
+                ]);
 
-            $fecha = date("Y-m-d");            
-            $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
-            $dia = date("w", strtotime($fecha2));
-            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
-            if ($dia == 6)
-            {
-                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                $id = $user->id;
+
+                try {
+
+                    $datos_users = DatosUsers::create([
+                    'telefono' => request('tele'),
+                    'fecha_nacimiento' => request('fecha_n'),
+                    'nacionalidad' => request('nacion'),
+                    'pais' => request('pais_i'),
+                    'nombre_referido' => request('nombre_r'),
+                    'f_primer_pago' => request('fecha_primer_pago'),
+                    'monto' => request('monto'),
+                    'identificador' => request('identificador'),
+                    'id_user' => $id,
+                    ]);
+
+                    try {
+
+                        $fecha = request('fecha_primer_pago');            
+                        $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                        $dia = date("w", strtotime($fecha2));
+                        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                        if ($dia == 6)
+                        {
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                        }
+                        if ($dia == 0)
+                        {
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                        }
+                        if ($dia == 1)
+                        {
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                        }
+
+                        $sql = DB::table('bonos')->select('days')
+                                    ->where('id_bono', request('modalidad'))
+                                    ->get();
+
+                        $dias = $sql[0]->days;                        
+                        $aux =  $dias;
+                        
+                        $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
+                        $dia = date("w", strtotime($date_close));
+                        if ($dia == 6)
+                        {
+                            $aux = $aux + 2;
+                            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+                        }
+                        if ($dia == 0)
+                        {
+                            $aux = $aux + 2;
+                            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+                        }
+
+                        $date_pay = date("Y-m-d",strtotime($date_close."+ 3 days"));
+                        $dia = date("w", strtotime($date_pay));
+                        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                        if ($dia == 6)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                        }
+                        if ($dia == 0)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                        }
+                        if ($dia == 1)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                        }
+
+                        $sql = DB::table('bonos')->select('interests')
+                                    ->where('id_bono', request('modalidad'))
+                                    ->get();
+
+                        $monto = request('monto');
+                        $p_intereses = $sql[0]->interests;
+                        $m_intereses = $monto * ($p_intereses / 100);
+                        $saldo = $monto + $m_intereses;
+                
+                        $transaciones = Transactions::create([
+                            'id_user' => $id,
+                            'id_solicitud' => 0,
+                            'id_bono' => request('modalidad'),
+                            'cicle' => 1,
+                            'dias' => $dias,     
+                            'date_mov' => $fecha,
+                            'date_sistema' => $fecha2,
+                            'date_close' => $date_close,
+                            'date_pay' => $date_pay,
+                            'monto' => request('monto'),
+                            'p_intereses' => $p_intereses,
+                            'm_intereses' => $m_intereses,
+                            'saldo' => $saldo,
+                        ]);
+
+                        try {
+
+                            $banco = Banco::create([
+                                'name_banco' => request('n_banco'),
+                                'tipo_cuenta' => request('t_cuenta'),
+                                'titular' => request('anombre'),
+                                'numero' => request('ncuenta'),
+                                'id_user' => $id,     
+                                'code_transaction' => "Null",
+                            ]);
+
+                            try {
+
+                                $line = Lines::create([
+                                    'id_bono' => request('modalidad'),
+                                    'id_user' => $id,
+                                    'block' => 0,
+                                ]);
+
+                                if($banco == TRUE)
+                                {
+                                    $email = request('email');
+                                    $creado = 1;
+                                    DB::update('update preregistros set creado = ? where email = ?',[$creado,$email]); 
+                                }
+
+                            } catch (\Exception $e) {
+                                return $e->getMessage();
+                            }
+
+                            } catch (\Exception $e) {
+                            return $e->getMessage();
+                        }
+
+                        } catch (\Exception $e) {
+                        return $e->getMessage();
+                    }
+
+                    } catch (\Exception $e) {
+                    return $e->getMessage();
+                }       
+
+                } catch (\Exception $e) {
+                return $e->getMessage();
+            }        
+        }
+        else
+        {
+            try {
+
+                $user = User::create([
+                'name' => request('name'),
+                'email' => request('email'),
+                'password' => request('password'),
+                'id_rol' => request('rol'),
+                'bloqueo' => 0,
+                ]);
+
+                $id = $user->id;
+
+                try {
+
+                    $datos_users = DatosUsers::create([
+                    'telefono' => request('tele'),
+                    'fecha_nacimiento' => request('fecha_n'),
+                    'nacionalidad' => request('nacion'),
+                    'pais' => request('pais_i'),
+                    'nombre_referido' => request('nombre_r'),
+                    'f_primer_pago' => request('fecha_primer_pago'),
+                    'monto' => request('monto'),
+                    'identificador' => request('identificador'),
+                    'id_user' => $id,
+                    ]);
+
+                    try {
+
+                        $fecha = request('fecha_primer_pago');            
+                        $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                        $dia = date("w", strtotime($fecha2));
+                        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                        if ($dia == 6)
+                        {
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                        }
+                        if ($dia == 0)
+                        {
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                        }
+                        if ($dia == 1)
+                        {
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                        }
+
+                        $dias = request('dias');
+                        $aux =  request('dias');
+                        
+                        $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
+                        $dia = date("w", strtotime($date_close));
+                        if ($dia == 6)
+                        {
+                            $aux = $aux + 2;
+                            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+                        }
+                        if ($dia == 0)
+                        {
+                            $aux = $aux + 2;
+                            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+                        }
+
+                        $date_pay = date("Y-m-d",strtotime($date_close."+ 3 days"));
+                        $dia = date("w", strtotime($date_pay));
+                        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                        if ($dia == 6)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                        }
+                        if ($dia == 0)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                        }
+                        if ($dia == 1)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                        }
+
+                        $monto = request('monto');
+                        $p_intereses = request('p_intereses');
+                        $m_intereses = $monto * ($p_intereses / 100);
+                        $saldo = $monto + $m_intereses;
+                
+                        $transaciones = Transactions::create([
+                            'id_user' => $id,
+                            'id_solicitud' => 0,
+                            'id_bono' => request('id_bono'),
+                            'cicle' => 1,
+                            'dias' => $dias,     
+                            'date_mov' => $fecha,
+                            'date_sistema' => $fecha2,
+                            'date_close' => $date_close,
+                            'date_pay' => $date_pay,
+                            'monto' => request('monto'),
+                            'p_intereses' => $p_intereses,
+                            'm_intereses' => $m_intereses,
+                            'saldo' => $saldo,
+                        ]);
+
+                        try {
+
+                            $banco = Banco::create([
+                                'name_banco' => request('n_banco'),
+                                'tipo_cuenta' => request('t_cuenta'),
+                                'titular' => request('anombre'),
+                                'numero' => request('ncuenta'),
+                                'id_user' => $id,     
+                                'code_transaction' => request('code_transaction'),
+                            ]);
+
+                            try {
+
+                                $line = Lines::create([
+                                    'id_bono' => request('id_bono'),
+                                    'id_user' => $id,
+                                    'block' => 0,
+                                ]);
+
+                            } catch (\Exception $e) {
+                                return $e->getMessage();
+                            }
+
+                            } catch (\Exception $e) {
+                            return $e->getMessage();
+                        }
+
+                        } catch (\Exception $e) {
+                        return $e->getMessage();
+                    }
+
+                    } catch (\Exception $e) {
+                    return $e->getMessage();
+                }       
+
+                } catch (\Exception $e) {
+                return $e->getMessage();
             }
-            if ($dia == 0)
-            {
-                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
-            }
-            if ($dia == 1)
-            {
-                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
-            }
-
-            $dias = request('dias');
-            $aux =  request('dias');
-            
-            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
-            $dia = date("w", strtotime($date_close));
-            if ($dia == 6)
-            {
-                $aux = $aux + 2;
-                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
-            }
-            if ($dia == 0)
-            {
-                $aux = $aux + 2;
-                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
-            }
-
-            $date_pay = date("Y-m-d",strtotime($date_close."+ 3 days"));
-            $dia = date("w", strtotime($date_pay));
-            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
-            if ($dia == 6)
-            {
-                $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
-            }
-            if ($dia == 0)
-            {
-                $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
-            }
-            if ($dia == 1)
-            {
-                $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
-            }
-
-            $monto = request('monto');
-            $p_intereses = request('p_intereses');
-            $m_intereses = $monto * ($p_intereses / 100);
-            $saldo = $monto + $m_intereses;
-
-            // $inversiones = DB::select('SELECT MAX(id) FROM transactions WHERE id_user = '.$id.'');
-
-            // echo "<pre>";
-            // print_r($inversiones);
-            // echo "</pre>";
-
-            // $solicitud = 1;
-
-            $transaciones = Transactions::create([
-                'id_user' => $id,
-                'id_solicitud' => 0,
-                'concepto' => request('modalidad'),
-                'dias' => $dias,     
-                'date_mov' => $fecha,
-                'date_sistema' => $fecha2,
-                'date_close' => $date_close,
-                'date_pay' => $date_pay,
-                'monto' => request('monto'),
-                'p_intereses' => $p_intereses,
-                'm_intereses' => $m_intereses,
-                'saldo' => $saldo,
-            ]);
-
-            $banco = Banco::create([
-                'name_banco' => request('n_banco'),
-                'tipo_cuenta' => request('t_cuenta'),
-                'titular' => request('anombre'),
-                'numero' => request('ncuenta'),
-                'id_user' => $id,     
-                'code_transaction' => request('code_transaction'),
-            ]);
-        
+        }    
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');
     }
 
@@ -199,99 +387,110 @@ class RegistersUserController extends Controller
 
     public function InsertAdd(Request $request)
     {
+        try {
+            $fecha = request('fecha_primer_pago');
+            $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+            $dia = date("w", strtotime($fecha2));
+            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+            if ($dia == 6)
+            {
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+            }
+            if ($dia == 0)
+            {
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+            }
+            if ($dia == 1)
+            {
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+            }
 
-        $fecha = date("Y-m-d");
-        $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
-        $dia = date("w", strtotime($fecha2));
-        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
-        if ($dia == 6)
-        {
-            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
-        }
-        if ($dia == 0)
-        {
-            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
-        }
-        if ($dia == 1)
-        {
-            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
-        }
 
+            $dias = request('dias');
+            $aux =  request('dias');
 
-        $dias = request('dias');
-        $aux =  request('dias');
+            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
+            $dia = date("w", strtotime($date_close));
+            if ($dia == 6)
+            {
+                $aux = $aux + 2;
+                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+            }
+            if ($dia == 0)
+            {
+                $aux = $aux + 2;
+                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+            }
 
-        $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
-        $dia = date("w", strtotime($date_close));
-        if ($dia == 6)
-        {
-            $aux = $aux + 2;
-            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
-        }
-        if ($dia == 0)
-        {
-            $aux = $aux + 2;
-            $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
-        }
+            $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
+            $dia = date("w", strtotime($date_pay));
+            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+            if ($dia == 6)
+            {
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+            }
+            if ($dia == 0)
+            {
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+            }
+            if ($dia == 1)
+            {
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+            }
 
-        $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
-        $dia = date("w", strtotime($date_pay));
-        //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
-        if ($dia == 6)
-        {
-            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
-        }
-        if ($dia == 0)
-        {
-            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
-        }
-        if ($dia == 1)
-        {
-            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
-        }
+            $monto = request('monto');
+            $p_intereses = request('p_intereses');
+            $m_intereses = $monto * ($p_intereses / 100);
+            $saldo = $monto + $m_intereses;
 
-        $monto = request('monto');
-        $p_intereses = request('p_intereses');
-        $m_intereses = $monto * ($p_intereses / 100);
-        $saldo = $monto + $m_intereses;
-       
-        // $id = request('id');
-       
-        // $inversiones = DB::select('SELECT MAX(id) FROM transactions WHERE id_user = '.$id.'');
-        // echo "<pre>";
-        // print_r($inversiones);
-        // echo "</pre>";
+            try {
         
-        // foreach ($inversiones as $id)
-        // {
-        //     print_r($id);
-        // }
+                $transaciones = Transactions::create([
+                    'id_user' => request('id'),
+                    'id_solicitud' => 0,
+                    'id_bono' => request('id_bono'),
+                    'cicle' => 1,
+                    'dias' => request('dias'),     
+                    'date_mov' => $fecha,
+                    'date_sistema' => $fecha2,
+                    'date_close' => $date_close,
+                    'date_pay' => $date_pay,
+                    'monto' => request('monto'),
+                    'p_intereses' => $p_intereses,
+                    'm_intereses' => $m_intereses,
+                    'saldo' => $saldo,
+                ]);
 
-        // $solicitud = 1;
+                try {
+                    $banco = Banco::create([
+                        'name_banco' => request('n_banco'),
+                        'tipo_cuenta' => request('t_cuenta'),
+                        'titular' => request('anombre'),
+                        'numero' => request('ncuenta'),
+                        'id_user' => request('id'),     
+                        'code_transaction' => request('code_transaction'),
+                    ]);
+                    try {
 
-        $transaciones = Transactions::create([
-            'id_user' => request('id'),
-            'id_solicitud' => 0,
-            'concepto' => request('modalidad'),
-            'dias' => request('dias'),     
-            'date_mov' => $fecha,
-            'date_sistema' => $fecha2,
-            'date_close' => $date_close,
-            'date_pay' => $date_pay,
-            'monto' => request('monto'),
-            'p_intereses' => $p_intereses,
-            'm_intereses' => $m_intereses,
-            'saldo' => $saldo,
-        ]);
+                        $line = Lines::create([
+                            'id_bono' => request('id_bono'),
+                            'id_user' => request('id'),
+                            'block' => 0,
+                        ]);
 
-        $banco = Banco::create([
-            'name_banco' => request('n_banco'),
-            'tipo_cuenta' => request('t_cuenta'),
-            'titular' => request('anombre'),
-            'numero' => request('ncuenta'),
-            'id_user' => request('id'),     
-            'code_transaction' => request('code_transaction'),
-        ]);
+                    } catch (\Exception $e) {
+                        return $e->getMessage();
+                    }
+                }   catch (\Exception $e) {
+                    return $e->getMessage();
+                }
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+        
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
 
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');
     }
@@ -392,7 +591,8 @@ class RegistersUserController extends Controller
 
     public function preregister()
     {
-        return view('auth.preregisters');
+        $bonos = Bonos::all();
+        return view('auth.preregisters', compact('bonos'));
     }
 
     public function InsertRegister()
@@ -402,6 +602,18 @@ class RegistersUserController extends Controller
             'email' => request('email'),
             'telefono' => request('tele'),
             'pais' => request('pais'),
+            'nacionalidad' => request('nacion'),
+            'fecha_nacimiento' => request('fecha_nacimiento'),
+            'modalidad' => request('modalidad'),
+            'nombre_r' => request('nombre_r'),
+            'fecha_primer_pago' => request('fecha_primer_pago'),
+            'monto' => request('monto'),
+            'n_banco' => request('n_banco'),
+            't_cuenta' => request('t_cuenta'),
+            'anombre' => request('anombre'),
+            'ncuenta' => request('ncuenta'),
+            'identificador' => request('identificador'),
+            'creado' => "0"
         ]);
 
         return redirect()->to('preregister')->with('success','Registro creado satisfactoriamente');

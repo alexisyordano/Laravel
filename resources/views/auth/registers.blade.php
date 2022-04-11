@@ -130,10 +130,10 @@
 
                                                     <input type="hidden" name="dias" id="dias">
                                                     <input type="hidden" name="p_intereses" id="p_intereses">
-                                                    <input type="hidden" name="modalidad" id="modalidad">
+                                                    <input type="hidden" name="id_bono" id="id_bono">
                                                     
                                                     <div class="col-md-6">
-                                                        <input type="text" name="code_transaction"  id="code_transaction" class="form-control" placeholder="Codigo transacción">
+                                                        <input type="text" name="code_transaction"  id="code_transaction" class="form-control" placeholder="Codigo transacción" required>
                                                         <br>
                                                     </div>
                                                     <div class="col-md-6">
@@ -167,7 +167,7 @@
                                         var dia = $.parseJSON(data);
                                         $('#dias').val(dia.days);
                                         $('#p_intereses').val(dia.interests); 
-                                        $('#modalidad').val(dia.name); 
+                                        $('#id_bono').val(dia.id_bono); 
                                     });
                                 });
                             </script>

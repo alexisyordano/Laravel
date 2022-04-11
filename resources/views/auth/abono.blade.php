@@ -28,7 +28,7 @@
 									<select class="form-control" name="id_inv" required>
 										<option value="">-- Seleccione una inversion</option>		
 										@foreach($inversiones as $inversion)	
-											<option value="{{ $inversion->id }}">{{ $inversion->id }}</option>
+											<option value="{{ $inversion->id_line }}">{{ $inversion->id_line }}</option>
 										@endforeach							
 									</select>
 									<br>

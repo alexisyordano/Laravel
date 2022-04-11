@@ -14,9 +14,10 @@ class CreateLinesTable extends Migration
     public function up()
     {
         Schema::create('lines', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_line');
             $table->integer('id_bono');
             $table->integer('id_user');
+            $table->integer('block');
             $table->timestamps();
         });
     }

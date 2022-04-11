@@ -17,7 +17,8 @@ class Transactions extends Model
     protected $fillable = [
         'id_user',
         'id_solicitud',
-        'concepto',
+        'id_bono',
+        'cicle',
         'dias',
         'date_mov',
         'date_sistema',

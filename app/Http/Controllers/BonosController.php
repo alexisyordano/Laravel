@@ -47,11 +47,17 @@ class BonosController extends Controller
         $validator  = $request->validate([
             'name' => 'required|unique:bonos',
         ]);
+        $marca = request('check_cicles');
+        if($marca != 1)
+        {
+            $marca = 0;
+        }
         $bonos = Bonos::create([
             'name' => request('name'),
             'days' => request('days'),
             'interests' => request('interests'),
             'cicles' => request('cicles'),
+            'marca' => $marca,
         ]);
         
         return redirect()->to('bonosregister')->with('success','El bono fue creado satisfactoriamente');

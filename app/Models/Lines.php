@@ -12,5 +12,6 @@ class Lines extends Model
     protected $fillable = [
         'id_bono',
         'id_user',
+        'block',
     ];
 }

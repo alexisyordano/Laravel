@@ -20,5 +20,6 @@ class Bonos extends Model
         'days',
         'interests',
         'cicles',
+        'marca',
     ];
 }

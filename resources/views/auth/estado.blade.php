@@ -21,62 +21,94 @@
 									<div class="col-md-3">
 										<h3 class="panel-title">Ultimos movimientos</h3>
 									</div>
-									<!-- <div class="col-md-3">
-										<select class="form-control" name="id_inv" require>
+									<div class="col-md-3">
+										<input type="hidden" value="{{ auth()->id() }}" name="id_user" id="id_user">
+										<select class="form-control" name="id_line" id="id_line" onchange="search()">
 											<option value="">-- Seleccione una inversion</option>		
 											@foreach($inversiones as $inversion)	
-												<option value="{{ $inversion->id_solicitud }}">{{ $inversion->id_solicitud }}</option>
+												<option value="{{ $inversion->id_bono }}">{{ $inversion->name }}</option>
+												<?php $name = $inversion->name ?>
 											@endforeach							
 										</select>
-									</div>									 -->
+									</div>									
 								</div>
 							</div>
 							<div class="panel-body">
-									<table id="table" class="table table-hover">
+									<table id="table_s" class="table table-striped" style="width:100%">
 										<thead>
 											<tr>
-												<th>Ciclo</th>
-												<th>Fecha de deposito</th>
-												<th>Entrada Sistema</th>
-												<th>Modalidad</th>										
-												<th>Fecha de cierre</th>
-												<th>Fecha de pago</th>
-												<th>Monto</th>
-												<th>Ganancias</th>
-												<th>Total</th>
-												<th>Opciones</th>
+												<th><h5>Ciclo</h5></th>
+												<th><h5>Fecha de deposito</h5></th>
+												<th><h5>Entrada Sistema</h5></th>
+												<th><h5>Modalidad</h5></th>										
+												<th><h5>Fecha de cierre</h5></th>
+												<th><h5>Fecha de pago</h5></th>
+												<th><h5>Monto</h5></th>
+												<th><h5>Ganancias</h5></th>	
+												<th><h5>Total</h5></th>
+												<th><h5>Opciones</h5></th>
 											</tr>
 										</thead>
-										<tbody>
-											@foreach($transacciones as $transaccion)
-												<tr>
-													<th></th>
-													<th>{{ $transaccion->date_mov }}</th>
-													<th>{{ $transaccion->date_sistema }}</th>
-													<th>{{ $transaccion->concepto }}</th>
-													<th>{{ $transaccion->date_close }}</th>
-													<th>{{ $transaccion->date_pay }}</th>
-													<th>{{ $transaccion->monto }}</th>
-													<th>{{ $transaccion->m_intereses }}</th>
-													<th>{{ $transaccion->saldo }}</th>
-													<th>
-														
-														<button class="btn btn-xs btn-success"><a href="{{ route('transactions.inversion') }}" style="color: white;">RI</a></button>
-														<button class="btn btn-xs btn-info"><a href="{{ route('transactions.abono') }}" style="color: white;">A</a></button>
-														<button class="btn btn-xs btn-danger"><a href="{{ route('transactions.retiro') }}" style="color: white;">R</a></button>
-													</th>
-												</tr>
-											@endforeach
-										</tbody>
+										
 									</table>
 							</div>
 						</div>
 						<!-- END TABLE HOVER -->
+						<script>
+							// $(document).ready(function() {
+							// 	$('#table').DataTable();
+							// } );
+						</script>
 					</div>
 				</div>
 			</div>
 			<!-- END MAIN CONTENT -->
 		</div>
+		<script type="text/javascript" charset="utf-8">
+
+			function search() {
+				var id_bono = $('#id_line').val();
+				var id_user = $("#id_user").val();
+
+
+var dataset = [
+	["1", "2022-04-07", "2022-04-12","1","2022-05-17","2022-05-20","4600","1380","5980","3"]
+]
+
+
+				$('#table_s').dataTable({
+					// bDestroy: true,
+					// processing: true,
+                  	// serverSide: true,
+					
+						
+					// ajax : {
+					// 	type: 'GET',
+						// url: "{{route('transactions.searchT')}}",
+						data : dataset,
+						// data : { 
+						// 		'id_bono' : id_bono,
+						// 		'id_user' : id_user,
+						// 		},
+						//dataSrc : "myData",
+						columns: [
+							{ data: "cicle"},
+							{ data: "date_mov"},
+							{ data: "date_sistema"},
+							{ data: "id_bono"},
+							{ data: "date_close"},
+							{ data: "date_pay"},
+							{ data: "monto"},
+							{ data: "m_intereses"},
+							{ data: "saldo"},
+							{ data: "id"}
+						],
+					// },					
+				});
+				
+
+			}
+		</script> 
 		<!-- END MAIN -->
     @extends('layouts.footer')
 </div>

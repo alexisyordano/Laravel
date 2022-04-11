@@ -25,7 +25,7 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <select class="form-control" name="modalidad" id="modalidad" required>
+                                                        <select class="form-control" name="id_bono" id="id_bono" required>
                                                             <option value="">-- Selecione una modalidad --</option>
                                                             @foreach($bonos as $bono)
                                                                 <option value="{{ $bono['id_bono'] }}">{{ $bono['name'] }}</option>
@@ -38,6 +38,11 @@
 
                                                     <div class="col-md-6">
                                                         <input type="text" name="monto" required id="monto" class="form-control" placeholder="Monto en $">
+                                                        <br>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="fecha_primer_pago" required id="fecha_primer_pago" class="form-control" placeholder="Fecha de pago" onfocus="(this.type='date')" onblur="(this.type='text')">
                                                         <br>
                                                     </div> 
 
@@ -60,6 +65,11 @@
                                                         <input type="text" name="ncuenta"  id="ncuenta" class="form-control" placeholder="Numero de Cuenta">
                                                         <br>
                                                     </div> 
+                                                    
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="code_transaction"  id="code_transaction" class="form-control" placeholder="Codigo transacción" required>
+                                                        <br>
+                                                    </div>
 
                                                     <input type="hidden" name="dias" id="dias">
                                                     <input type="hidden" name="p_intereses" id="p_intereses">
@@ -77,7 +87,7 @@
 			     </div>
 			<!-- END MAIN CONTENT -->
                 <script type="text/javascript">
-                    $('#modalidad').on('change', function(e)
+                    $('#id_bono').on('change', function(e)
                     {
                         var id = e.target.value;
                         $.get('{{ url("/") }}/select/'+id, function(data){

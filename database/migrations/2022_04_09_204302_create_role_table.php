@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePreregistrosTable extends Migration
+class CreateRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreatePreregistrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('preregistros', function (Blueprint $table) {
-            $table->id('id_registro');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('telefono');
-            $table->string('pais');
+        Schema::create('role', function (Blueprint $table) {
+            $table->id('id_role');
+            $table->string('name_role');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreatePreregistrosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('preregistros');
+        Schema::dropIfExists('role');
     }
 }
