@@ -21,6 +21,12 @@
 										<i class="fa fa-times-circle"></i> Usuario Bloqueado
 									</div>
 								@enderror
+                                @error('messagenoexiste')
+								<div class="alert alert-danger alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+										<i class="fa fa-times-circle"></i> Usuario no existe
+									</div>
+								@enderror
 								<div class="logo text-center"><img src="assets/img/logo.png" alt="Logo"></div>
 							</div>
 							<form class="form-auth-small" method="post" action="">
