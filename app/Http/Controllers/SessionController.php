@@ -23,6 +23,13 @@ class SessionController extends Controller
         //print_r($queries);
         $usersBloqueo = $request->input('email');
         $data = User::select('*')->where('email', $usersBloqueo)->first();
+        if (empty($data))
+        {
+            return back()->withErrors([
+                'messagenoexiste' => 'Usuario no existe',
+            ]);
+        }
+        
         $data->bloqueo;
 
         if($data->bloqueo == 1)
