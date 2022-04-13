@@ -28,5 +28,7 @@ class Transactions extends Model
         'p_intereses',
         'm_intereses',
         'saldo',
+        'id_line',
+        'solicitud',
     ];
 }

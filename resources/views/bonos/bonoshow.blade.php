@@ -26,6 +26,7 @@
 												<th>Nombre</th>
 												<th>Dias</th>
 												<th>Intereses</th>
+                                                <th>Ciclos</th>
                                                 <th>Acciones</th>
 											</tr>
 										</thead>
@@ -33,8 +34,9 @@
                                         @foreach($bonos as $bono)
 											<tr>
 												<td>{{ $bono->name }}</td>
-                                                <td>{{ $bono->days }}</td>
+                                                <td>{{ $bono->days }}</td>                                                
                                                 <td>{{ $bono->interests }}</td>
+                                                <td>{{ $bono->cicles }}</td>
 												<td>
 													<a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
 														data-attr="{{ route('bonos.edit', $bono->id_bono) }}" title="Actualizar">

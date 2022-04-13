@@ -69,7 +69,7 @@ Route::post('/solicitudes', [TransactionsController::class, 'operacion'])
         ->name('transactions.operacion');
 
         
-Route::get('/estado',   [TransactionsController::class, 'estado'])
+Route::get('/estado/{id}',   [TransactionsController::class, 'estado'])
         ->name('transactions.estado');
 
 //primero hace referencia a la url del navegador, el segundo hace referencia al controller RegistersUserController
@@ -164,18 +164,17 @@ Route::get('/search', [RegistersUserController::class, 'search'])
 Route::get('/searchT', [TransactionsController::class, 'searchT'])
         ->name('transactions.searchT');
 
+Route::get('/reinvertir/{id_line}/', [TransactionsController::class, 'reinvertir'])
+        ->name('transactions.reinvertir');
 
+Route::get('/abono/{id_line}/', [TransactionsController::class, 'abono'])
+        ->name('transactions.abono');
+Route::post('/abono', [TransactionsController::class, 'upAbono'])
+        ->name('transactions.upAbono');
 
-
-        
-
-
-
-
-
-
-
-
-
-
-
+Route::get('/retiro/{id_line}/', [TransactionsController::class, 'retiro'])
+        ->name('transactions.retiro');
+Route::post('/retiro', [TransactionsController::class, 'upRetiro'])
+        ->name('transactions.upRetiro');
+        Route::get('/showLines', [TransactionsController::class, 'showLines'])
+        ->name('transactions.showLines');

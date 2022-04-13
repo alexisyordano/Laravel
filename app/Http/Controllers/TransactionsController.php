@@ -17,19 +17,24 @@
             return view('auth.inversion');
         }
 
-        public function estado()
-        {
+        public function estado($id)
+        {            
             if(Auth::check())
             {
                 $inversiones = DB::table('lines')->select('*')
-                                ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
-                                ->where('id_user', auth()->id())
-                                ->get();
+                                    ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
+                                    ->where('id_user', auth()->id())
+                                    ->get();
 
                 $transacciones = DB::table('transactions')->select('*')
-                                ->join('users', 'users.id', '=', 'transactions.id_user')
-                                ->where('id_user', auth()->id())
+                                ->join('bonos', 'bonos.id_bono', '=', 'transactions.id_bono')
+                                ->where('transactions.id_user', '=', auth()->id())
+                                ->where('transactions.id_line', '=', $id)
                                 ->get();
+
+                // $id_user = auth()->id();
+                // echo $sql = "SELECT * FROM transactions WHERE id_user = '$id_user' AND id_bono = '$id'";
+                // $transacciones = DB::select($sql);                                
 
                 $date = date("Y-m-d");
                 return view('auth.estado', compact('inversiones'), compact('transacciones'), compact('date'));
@@ -40,70 +45,13 @@
             }            
         }
 
-        public function retiro()
-        {
-            if(Auth::check())
-            {
-                $inversiones = DB::table('transactions')->select('id_solicitud')
-                                ->groupBy('id_solicitud')
-                                ->where('id_user', auth()->id())
-                                ->get();
-                return view('auth.retiro', compact('inversiones'));
-            }
-            else
-            {   
-                return redirect()->to('login');
-            }
-        }
-
-        public function abono()
-        {
-            if(Auth::check())
-            {
-                $inversiones = DB::table('lines')->select('*')
-                                ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
-                                ->where('id_user', auth()->id())
-                                ->get();
-                return view('auth.abono', compact('inversiones'));
-            }
-            else
-            {   
-                return redirect()->to('login');
-            }
-        }
-
-        public function insert()
-        {
-
-            if(request('tipo') == 'I')
-                $id_inv = 0;
-            else
-                $id_inv = request('id_inv');
-
-
-            $user = Solicitudes::create([
-                'id_user' => request('id_user'),
-                'id_solicitud' => $id_inv,
-                'monto' => request('monto'),
-                'concepto' => request('concepto'),
-                'estatus' => 'P',
-                'tipo' => request('tipo'),
-            ]);
-            
-            if(request('tipo') == 'I')
-                return redirect()->to('inversion')->with('success','Solicitud creada satisfactoriamente');
-            elseif (request('tipo') == 'R')
-                return redirect()->to('retiro')->with('success','Solicitud creada satisfactoriamente');
-            elseif (request('tipo') == 'A')
-                return redirect()->to('retiro')->with('success','Solicitud creada satisfactoriamente');
-        }
-
         public function solicitudes()
         {
             if(Auth::check())
             {
-                $solicitudes = Solicitudes::select('*')
-                ->join('users', 'users.id', '=', 'solicitudes.id_user')
+                $solicitudes = Solicitudes::select('solicitudes.id_sol','u.name', 'solicitudes.monto', 'solicitudes.concepto', 'solicitudes.created_at')
+                ->join('lines as l', 'l.id_line', '=', 'solicitudes.id_line')
+                ->join('users as u', 'u.id', '=', 'l.id_user')
                 ->where('solicitudes.estatus', 'P')
                 ->get();
                 return view('auth.solicitudes', compact('solicitudes'));
@@ -114,117 +62,201 @@
             }
         }
 
-        public function operacion()
-        {
-            if (request('Aprobar'))
+        public function reinvertir($id_line)
+        {        
+            try 
             {
-                $solicitud = Solicitudes::select('*')
-                ->where('id_sol',request('id_sol'));
-                $solicitud->update(['estatus' => 'A']);
+                $update = Transactions::where('id_line', $id_line)
+                                        ->update(([
+                                            'solicitud' => '1',
+                                         ]));
 
-                $saldo = Transactions::select('*')
-                                            ->where('id_user',request('id_user'))
-                                            ->where('id_solicitud',request('id_op'))
-                                            ->orderBy('created_at', 'desc')
-                                            ->first();             
-            
-                $concepto = request('concepto');
-                
-                if ($concepto == 'Retiro')
+                $info = Transactions::select('*')
+                                        ->where('id_line', $id_line)
+                                        ->orderBy('created_at', 'desc')
+                                        ->first();
+
+                $fecha = $info->date_pay;
+                $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                $dia = date("w", strtotime($fecha2));
+                //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                if ($dia == 6)
                 {
-                    $dias = 0;   
-                    $intereses = 0;
-                    $monto = $saldo->saldo - request('monto');
-                    $fecha2 = date("Y-m-d");
+                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                }
+                if ($dia == 0)
+                {
+                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                }
+                if ($dia == 1)
+                {
+                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
                 }
 
-                if ($concepto == 'Abono')
+                $dias = $info->dias;
+                $aux =  $info->dias;
+
+                $date_close = date("Y-m-d",strtotime($fecha2."+ ".$dias." days"));
+                $dia = date("w", strtotime($date_close));
+                if ($dia == 6)
                 {
-                    $dias = 0;   
-                    $intereses = 0;
-                    $monto = $saldo->saldo + request('monto');
-                    $fecha2 = date("Y-m-d");
+                    $aux = $aux + 2;
+                    $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
+                }
+                if ($dia == 0)
+                {
+                    $aux = $aux + 2;
+                    $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
                 }
 
-                if ($concepto == 'Inversion')
+                $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
+                $dia = date("w", strtotime($date_pay));
+                //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+                if ($dia == 6)
                 {
-                    $dias = request('dias');
-                    $intereses = request('intereses');
-                    $monto = request('monto');
-
-                    $fecha = date("Y-m-d");
-                    $dia = date("w", strtotime($fecha));
-
-                    //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
-                    if ($dia == 6 || $dia == 0 || $dia == 1)
-                    {
-                        $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
-                    }
-                    else
-                    {
-                        $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
-                    }
-                    
+                    $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                 }
-                    
-            
-                $transaccion = Transactions::create([
-                    'id_user' => request('id_user'),
-                    'id_solicitud' => request('id_op'),
-                    'concepto' => $concepto,
-                    'dias' => $dias,
-                    'date_mov' => date('Y-m-d'),
+                if ($dia == 0)
+                {
+                    $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+                }
+                if ($dia == 1)
+                {
+                    $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+                }
+
+                $m_intereses = $info->saldo * ($info->p_intereses / 100);
+                $saldo = $info->saldo + $m_intereses;
+
+                $reinvertir = Transactions::create([
+                    'id_user' => $info->id_user,
+                    'id_solicitud' => $info->id_solicitud,
+                    'id_bono' => $info->id_bono,
+                    'cicle' => $info->cicle + 1,
+                    'dias' => $info->dias,     
+                    'date_mov' => $info->date_pay,
                     'date_sistema' => $fecha2,
-                    'monto' => request('monto'),
-                    'p_intereses' => $intereses,
-                    'm_intereses' => 0,
-                    'saldo' => $monto,
+                    'date_close' => $date_close,
+                    'date_pay' => $date_pay,
+                    'monto' => $info->saldo,
+                    'p_intereses' => $info->p_intereses,
+                    'm_intereses' => $m_intereses,
+                    'saldo' => $saldo,
+                    'id_line' => $info->id_line,
+                    'solicitud' => '0',
                 ]);
-                return redirect()->to('solicitudes')->with('success', 'Solicitud aprobada');
+
+                $vista = 'estado/'.strval($id_line);
+                return redirect()->to($vista);
             }
-            if (request('Rechazar'))
+            catch (\Exception $e)
             {
-                $solicitud = Solicitudes::find(request('id_sol'));
-                $solicitud->update(['estatus' => 'R']);
-
-                $transaccion = Transactions::create([
-                    'id_user' => request('id_user'),
-                    'id_solicitud' => request('id_op'),
-                    'concepto' => request('modalidad'),
-                    'dias' => 0,
-                    'date_mov' => date('Y-m-d'),
-                    'date_sistema' => date('Y-m-d'),
-                    'monto' => request('monto'),
-                    'p_intereses' => 0,
-                    'm_intereses' => 0,
-                    'saldo' => request('monto'),
-                ]);
-
-                return redirect()->to('solicitudes')->with('success', 'Solicitud rechazada');
+                return $e->getMessage();
             }            
         }
-
-        public function lines()
+        
+        public function abono($id_line)
         {
-            
+            if(Auth::check())
+            {
+                return view('auth.abono', compact('id_line'));
+            }
+            else
+            {   
+                return redirect()->to('login');
+            }
         }
 
-        public function searchT(Request $request)
+        public function retiro($id_line)
         {
-            $id_bono = request('id_bono');
-            $id_user = request('id_user');
-            $results = Transactions::select('cicle', 'date_mov','date_sistema','id_bono','date_close','date_pay','monto','m_intereses','saldo','id')
-                                    ->where('id_user', '=', "{$id_user}")
-                                    ->where('id_bono', '=', "{$id_bono}")
-                                    ->get();
-            $info = array();
-            foreach($results as $result)
+            if(Auth::check())
             {
-                $info["myData"] = array($result);
+                return view('auth.retiro', compact('id_line'));
+            }            
+            else
+            {   
+                return redirect()->to('login');
+            }
+        }
+
+        public function upAbono()
+        {
+            $update = Transactions::where('id_line', request('line'))
+                                        ->update([
+                                            'solicitud' => '1',
+                                         ]);
+                                        
+            $reinversion = Solicitudes::create([
+                'id_line' => request('line'),
+                'monto' => request('m_abono'),
+                'concepto' => 'Abono',
+                'estatus' => 'P',
+                'tipo' => 'A',
+            ]);
+
+            $vista = 'estado/'.request('line');
+            return redirect()->to($vista);
+        }
+        public function upRetiro()
+        {
+            $monto = Transactions::select('*')
+                                        ->where('id_line', request('line'))
+                                        ->orderBy('created_at', 'desc')
+                                        ->first()
+                                        ->saldo;
+
+            if (request('m_retiro') < $monto)
+            {
+                $update = Transactions::where('id_line', request('line'))
+                                        ->update(([
+                                            'solicitud' => '1',
+                                         ]));
+
+                $retiro = Solicitudes::create([
+                    'id_line' => request('line'),
+                    'monto' => request('m_retiro'),
+                    'concepto' => 'Retiro',
+                    'estatus' => 'P',
+                    'tipo' => 'R',
+                ]);
+            }          
+
+            $vista = 'estado/'.request('line');
+            return redirect()->to($vista);
+        }
+
+        public function operacion()
+        {
+            if(request('Aprobar'))
+            {
+                $estatus = 'A';
+            }
+            if(request('Rechazar'))
+            {
+                $estatus = 'R';
+            }
+            $update = Solicitudes::where('id_sol', request('id_sol'))
+                        ->update([
+                            'monto' => request('monto'),
+                            'estatus' =>  $estatus,
+                         ]);
+
+            $solicitudes = Solicitudes::select('solicitudes.id_sol','u.name', 'solicitudes.monto', 'solicitudes.concepto', 'solicitudes.created_at')
+                ->join('lines as l', 'l.id_line', '=', 'solicitudes.id_line')
+                ->join('users as u', 'u.id', '=', 'l.id_user')
+                ->where('solicitudes.estatus', 'P')
+                ->get();
+                return view('auth.solicitudes', compact('solicitudes'));
+        }
+
+        public function showLines()
+        {
+            $list = Lines::select('*')
+                            ->join('users as u', 'u.id', '=', 'lines.id_user')
+                            ->join('bonos as b', 'b.id_bono', '=', 'lines.id_bono')
+                            ->get();
                 
-            }              
-            header('Content-type:application/json;charset=utf-8');
-                echo json_encode($info, JSON_PRETTY_PRINT);          
+            return view('auth.showLines', compact('list'));
         }
     }
 ?>

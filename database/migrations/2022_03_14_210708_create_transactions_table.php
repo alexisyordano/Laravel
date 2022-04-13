@@ -29,6 +29,8 @@ class CreateTransactionsTable extends Migration
             $table->integer("p_intereses");
             $table->integer("m_intereses");
             $table->integer("saldo");
+            $table->integer("id_line");
+            $table->integer("solicitud");
             $table->timestamps();
         });
     }

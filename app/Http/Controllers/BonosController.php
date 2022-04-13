@@ -53,7 +53,7 @@ class BonosController extends Controller
             $marca = 0;
         }
         $bonos = Bonos::create([
-            'name' => request('name'),
+            'b_name' => request('name'),
             'days' => request('days'),
             'interests' => request('interests'),
             'cicles' => request('cicles'),
@@ -108,7 +108,7 @@ class BonosController extends Controller
         $name = $request->input('name');
         $days = $request->input('days');
         $interests = $request->input('interests');
-        DB::update('update bonos set name = ?,days=?,interests= ? where id_bono = ?',[$name,$days,$interests,$id]);
+        DB::update('update bonos set b_name = ?,days=?,interests= ? where id_bono = ?',[$name,$days,$interests,$id]);
         return redirect()->to('bonos')->with('success', 'Bono Actualizado');
     }
 

@@ -16,7 +16,7 @@ class Bonos extends Model
      */
     protected $fillable = [
         'id_bono',
-        'name',
+        'b_name',
         'days',
         'interests',
         'cicles',

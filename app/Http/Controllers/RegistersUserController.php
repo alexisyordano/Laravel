@@ -131,22 +131,20 @@ class RegistersUserController extends Controller
                         $p_intereses = $sql[0]->interests;
                         $m_intereses = $monto * ($p_intereses / 100);
                         $saldo = $monto + $m_intereses;
-                
-                        $transaciones = Transactions::create([
-                            'id_user' => $id,
-                            'id_solicitud' => 0,
+
+                        $modalidad = request('modalidad');
+
+                        $line = Lines::create([
                             'id_bono' => request('modalidad'),
-                            'cicle' => 1,
-                            'dias' => $dias,     
-                            'date_mov' => $fecha,
-                            'date_sistema' => $fecha2,
-                            'date_close' => $date_close,
-                            'date_pay' => $date_pay,
-                            'monto' => request('monto'),
-                            'p_intereses' => $p_intereses,
-                            'm_intereses' => $m_intereses,
-                            'saldo' => $saldo,
+                            'id_user' => $id,
+                            'block' => 0,
                         ]);
+
+                        $id_line = Lines::select('id_line')
+                                        ->where('id_bono', $modalidad)
+                                        ->where ('id_user', $id)
+                                        ->first()
+                                        ->id_line;
 
                         try {
 
@@ -161,10 +159,22 @@ class RegistersUserController extends Controller
 
                             try {
 
-                                $line = Lines::create([
-                                    'id_bono' => request('modalidad'),
+                                $transaciones = Transactions::create([
                                     'id_user' => $id,
-                                    'block' => 0,
+                                    'id_solicitud' => 0,
+                                    'id_bono' => request('modalidad'),
+                                    'cicle' => 1,
+                                    'dias' => $dias,     
+                                    'date_mov' => $fecha,
+                                    'date_sistema' => $fecha2,
+                                    'date_close' => $date_close,
+                                    'date_pay' => $date_pay,
+                                    'monto' => request('monto'),
+                                    'p_intereses' => $p_intereses,
+                                    'm_intereses' => $m_intereses,
+                                    'saldo' => $saldo,
+                                    'id_line' => $id_line,
+                                    'solicitud' => '0',
                                 ]);
 
                                 if($banco == TRUE)
@@ -277,22 +287,20 @@ class RegistersUserController extends Controller
                         $p_intereses = request('p_intereses');
                         $m_intereses = $monto * ($p_intereses / 100);
                         $saldo = $monto + $m_intereses;
-                
-                        $transaciones = Transactions::create([
-                            'id_user' => $id,
-                            'id_solicitud' => 0,
+
+                        $modalidad = request('id_bono');
+
+                        $line = Lines::create([
                             'id_bono' => request('id_bono'),
-                            'cicle' => 1,
-                            'dias' => $dias,     
-                            'date_mov' => $fecha,
-                            'date_sistema' => $fecha2,
-                            'date_close' => $date_close,
-                            'date_pay' => $date_pay,
-                            'monto' => request('monto'),
-                            'p_intereses' => $p_intereses,
-                            'm_intereses' => $m_intereses,
-                            'saldo' => $saldo,
-                        ]);
+                            'id_user' => $id,
+                            'block' => 0,
+                        ]);                        
+                        
+                        $id_line = Lines::select('id_line')
+                                    ->where('id_bono', $modalidad)
+                                    ->where ('id_user', $id)
+                                    ->first()
+                                    ->id_line;
 
                         try {
 
@@ -307,10 +315,22 @@ class RegistersUserController extends Controller
 
                             try {
 
-                                $line = Lines::create([
-                                    'id_bono' => request('id_bono'),
+                                $transaciones = Transactions::create([
                                     'id_user' => $id,
-                                    'block' => 0,
+                                    'id_solicitud' => 0,
+                                    'id_bono' => request('id_bono'),
+                                    'cicle' => 1,
+                                    'dias' => $dias,     
+                                    'date_mov' => $fecha,
+                                    'date_sistema' => $fecha2,
+                                    'date_close' => $date_close,
+                                    'date_pay' => $date_pay,
+                                    'monto' => request('monto'),
+                                    'p_intereses' => $p_intereses,
+                                    'm_intereses' => $m_intereses,
+                                    'saldo' => $saldo,
+                                    'id_line' => $id_line,
+                                    'solicitud' => '0',
                                 ]);
 
                             } catch (\Exception $e) {
@@ -444,23 +464,21 @@ class RegistersUserController extends Controller
             $saldo = $monto + $m_intereses;
 
             try {
-        
-                $transaciones = Transactions::create([
-                    'id_user' => request('id'),
-                    'id_solicitud' => 0,
+
+                $modalidad = request('id_bono');
+                $id = request('id');
+                $line = Lines::create([
                     'id_bono' => request('id_bono'),
-                    'cicle' => 1,
-                    'dias' => request('dias'),     
-                    'date_mov' => $fecha,
-                    'date_sistema' => $fecha2,
-                    'date_close' => $date_close,
-                    'date_pay' => $date_pay,
-                    'monto' => request('monto'),
-                    'p_intereses' => $p_intereses,
-                    'm_intereses' => $m_intereses,
-                    'saldo' => $saldo,
+                    'id_user' => request('id'),
+                    'block' => 0,
                 ]);
 
+                $id_line = Lines::select('id_line')
+                                    ->where('id_bono', $modalidad)
+                                    ->where ('id_user', $id)
+                                    ->first()
+                                    ->id_line;
+                        
                 try {
                     $banco = Banco::create([
                         'name_banco' => request('n_banco'),
@@ -472,11 +490,24 @@ class RegistersUserController extends Controller
                     ]);
                     try {
 
-                        $line = Lines::create([
-                            'id_bono' => request('id_bono'),
+                        $transaciones = Transactions::create([
                             'id_user' => request('id'),
-                            'block' => 0,
+                            'id_solicitud' => 0,
+                            'id_bono' => request('id_bono'),
+                            'cicle' => 1,
+                            'dias' => request('dias'),     
+                            'date_mov' => $fecha,
+                            'date_sistema' => $fecha2,
+                            'date_close' => $date_close,
+                            'date_pay' => $date_pay,
+                            'monto' => request('monto'),
+                            'p_intereses' => $p_intereses,
+                            'm_intereses' => $m_intereses,
+                            'saldo' => $saldo,
+                            'id_line' => $id_line,
+                            'solicitud' => '0',
                         ]);
+        
 
                     } catch (\Exception $e) {
                         return $e->getMessage();

@@ -20,21 +20,11 @@
 								<div class="row">
 									<div class="col-md-3">
 										<h3 class="panel-title">Ultimos movimientos</h3>
-									</div>
-									<div class="col-md-3">
-										<input type="hidden" value="{{ auth()->id() }}" name="id_user" id="id_user">
-										<select class="form-control" name="id_line" id="id_line" onchange="search()">
-											<option value="">-- Seleccione una inversion</option>		
-											@foreach($inversiones as $inversion)	
-												<option value="{{ $inversion->id_bono }}">{{ $inversion->name }}</option>
-												<?php $name = $inversion->name ?>
-											@endforeach							
-										</select>
-									</div>									
+									</div>								
 								</div>
 							</div>
 							<div class="panel-body">
-									<table id="table_s" class="table table-striped" style="width:100%">
+									<table id="table" class="table table-striped" style="width:100%">
 										<thead>
 											<tr>
 												<th><h5>Ciclo</h5></th>
@@ -49,67 +39,129 @@
 												<th><h5>Opciones</h5></th>
 											</tr>
 										</thead>
-										
+										<tbody>
+											@foreach($transacciones as $transaccion)
+												<tr>
+												<th>{{ $transaccion->cicle }}</th>
+												<th>{{ $transaccion->date_mov }}</th>
+												<th>{{ $transaccion->date_sistema }}</th>
+												<th>{{ $transaccion->name }}</th>
+												<th>{{ $transaccion->date_close }}</th>
+												<th>{{ $transaccion->date_pay }}</th>
+												<th>{{ $transaccion->monto }}</th>
+												<th>{{ $transaccion->m_intereses }}</th>
+												<th>{{ $transaccion->saldo }}</th>
+												<th>
+													<?php $date = date('Y-m-d'); ?>
+													@if($date >= $transaccion->date_sistema && $date <= $transaccion->date_close && $transaccion->solicitud == 0)
+													<a  class="btn btn-info btn-xs" id="BtnReinvetir" href="{{ route('transactions.reinvertir', $transaccion->id_line) }}" title="Reinvertir">
+                                                        RI
+                                                    </a>
+													<a  class="btn btn-success btn-xs" data-toggle="modal" id="BtnAbono" data-target="#ModalAbono" data-attr="{{ route('transactions.abono', $transaccion->id_line) }}" title="Abonar">
+                                                        A
+                                                    </a>
+													<a  class="btn btn-primary btn-xs" data-toggle="modal" id="BtnRetiro" data-target="#ModalRetiro" data-attr="{{ route('transactions.retiro', $transaccion->id_line) }}" title="Retirar">
+                                                        R
+                                                    </a>
+													@endif
+												</th>
+												</tr>
+											@endforeach
+										</tbody>
 									</table>
 							</div>
 						</div>
 						<!-- END TABLE HOVER -->
 						<script>
-							// $(document).ready(function() {
-							// 	$('#table').DataTable();
-							// } );
+							$(document).ready(function() {
+								$('#table').DataTable();
+							} );
 						</script>
 					</div>
 				</div>
 			</div>
 			<!-- END MAIN CONTENT -->
 		</div>
-		<script type="text/javascript" charset="utf-8">
-
-			function search() {
-				var id_bono = $('#id_line').val();
-				var id_user = $("#id_user").val();
-
-
-var dataset = [
-	["1", "2022-04-07", "2022-04-12","1","2022-05-17","2022-05-20","4600","1380","5980","3"]
-]
-
-
-				$('#table_s').dataTable({
-					// bDestroy: true,
-					// processing: true,
-                  	// serverSide: true,
-					
-						
-					// ajax : {
-					// 	type: 'GET',
-						// url: "{{route('transactions.searchT')}}",
-						data : dataset,
-						// data : { 
-						// 		'id_bono' : id_bono,
-						// 		'id_user' : id_user,
-						// 		},
-						//dataSrc : "myData",
-						columns: [
-							{ data: "cicle"},
-							{ data: "date_mov"},
-							{ data: "date_sistema"},
-							{ data: "id_bono"},
-							{ data: "date_close"},
-							{ data: "date_pay"},
-							{ data: "monto"},
-							{ data: "m_intereses"},
-							{ data: "saldo"},
-							{ data: "id"}
-						],
-					// },					
-				});
-				
-
-			}
-		</script> 
 		<!-- END MAIN -->
     @extends('layouts.footer')
 </div>
+<!-- ModalAbono -->
+<div class="modal fade" id="ModalAbono" tabindex="-1" role="dialog" aria-labelledby="LabelModalAbono" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body" id="BodyModalAbono">
+				<div>
+					<!-- the result to be displayed apply here -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// display ModalAbono
+	$(document).on('click', '#BtnAbono', function(event) {
+		event.preventDefault();
+		let href = $(this).attr('data-attr');
+		$.ajax({
+			url: href,
+			beforeSend: function() {
+				$('#loader').show();
+			},
+			// return the result
+			success: function(result) {
+				$('#ModalAbono').modal("show");
+				$('#BodyModalAbono').html(result).show();
+			},
+			complete: function() {
+				$('#loader').hide();
+			},
+			error: function(jqXHR, testStatus, error) {
+				console.log(error);
+				//alert("Page " + href + " cannot open. Error:" + error);
+				$('#loader').hide();
+			},
+			timeout: 8000
+		})
+	});
+    </script>
+
+<!-- ModalRetiro -->
+<div class="modal fade" id="ModalRetiro" tabindex="-1" role="dialog" aria-labelledby="LabelModalRetiro" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body" id="BodyModalRetiro">
+				<div>
+					<!-- the result to be displayed apply here -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// display ModalRetiro
+	$(document).on('click', '#BtnRetiro', function(event) {
+		event.preventDefault();
+		let href = $(this).attr('data-attr');
+		$.ajax({
+			url: href,
+			beforeSend: function() {
+				$('#loader').show();
+			},
+			// return the result
+			success: function(result) {
+				$('#ModalRetiro').modal("show");
+				$('#BodyModalRetiro').html(result).show();
+			},
+			complete: function() {
+				$('#loader').hide();
+			},
+			error: function(jqXHR, testStatus, error) {
+				console.log(error);
+				//alert("Page " + href + " cannot open. Error:" + error);
+				$('#loader').hide();
+			},
+			timeout: 8000
+		})
+	});
+    </script>
 @endsection
