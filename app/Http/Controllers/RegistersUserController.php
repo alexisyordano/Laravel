@@ -622,7 +622,7 @@ class RegistersUserController extends Controller
 
     public function preregister()
     {
-        $bonos = Bonos::all();
+        $bonos = Bonos::limit(1)->get();
         return view('auth.preregisters', compact('bonos'));
     }
 
