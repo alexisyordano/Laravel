@@ -31,7 +31,7 @@
                                         @endif
                                        <form name="form" action="" method="post">
                                             @csrf
-                                            <input type="text" name="name"  id="name" required class="form-control" placeholder="Nombre del bono">
+                                            <input type="text" name="b_name"  id="b_name" required class="form-control" placeholder="Nombre del bono">
                                             <br>
                                             <input type="number" name="days"  id="days" required class="form-control" placeholder="Días">
                                             <br>

@@ -45,22 +45,22 @@
 												<th>{{ $transaccion->cicle }}</th>
 												<th>{{ $transaccion->date_mov }}</th>
 												<th>{{ $transaccion->date_sistema }}</th>
-												<th>{{ $transaccion->name }}</th>
+												<th>{{ $transaccion->b_name }}</th>
 												<th>{{ $transaccion->date_close }}</th>
 												<th>{{ $transaccion->date_pay }}</th>
 												<th>{{ $transaccion->monto }}</th>
 												<th>{{ $transaccion->m_intereses }}</th>
 												<th>{{ $transaccion->saldo }}</th>
 												<th>
-													<?php $date = date('Y-m-d'); ?>
+													<?php $date = date('Y-m-d'); $date = '2022-04-22'; ?>
 													@if($date >= $transaccion->date_sistema && $date <= $transaccion->date_close && $transaccion->solicitud == 0)
-													<a  class="btn btn-info btn-xs" id="BtnReinvetir" href="{{ route('transactions.reinvertir', $transaccion->id_line) }}" title="Reinvertir">
+													<a  class="btn btn-info btn-xs" id="BtnReinvetir" href="{{ route('transactions.reinvertir', $transaccion->id) }}" title="Reinvertir">
                                                         RI
                                                     </a>
-													<a  class="btn btn-success btn-xs" data-toggle="modal" id="BtnAbono" data-target="#ModalAbono" data-attr="{{ route('transactions.abono', $transaccion->id_line) }}" title="Abonar">
+													<a  class="btn btn-success btn-xs" data-toggle="modal" id="BtnAbono" data-target="#ModalAbono" data-attr="{{ route('transactions.abono', $transaccion->id) }}" title="Abonar">
                                                         A
                                                     </a>
-													<a  class="btn btn-primary btn-xs" data-toggle="modal" id="BtnRetiro" data-target="#ModalRetiro" data-attr="{{ route('transactions.retiro', $transaccion->id_line) }}" title="Retirar">
+													<a  class="btn btn-primary btn-xs" data-toggle="modal" id="BtnRetiro" data-target="#ModalRetiro" data-attr="{{ route('transactions.retiro', $transaccion->id) }}" title="Retirar">
                                                         R
                                                     </a>
 													@endif

@@ -21,7 +21,8 @@
 
     <form action="{{ route('transactions.upRetiro') }}" method="POST">
         @csrf
-		<input type="hidden" value="{{ $id_line }}" name="line">
+		<input type="hidden" value="{{ $id }}" name="id_transaction">
+        <input type="hidden" value="{{ $id_line }}" name="id_line">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">

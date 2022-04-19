@@ -33,7 +33,7 @@
 										<tbody>
                                         @foreach($bonos as $bono)
 											<tr>
-												<td>{{ $bono->name }}</td>
+												<td>{{ $bono->b_name }}</td>
                                                 <td>{{ $bono->days }}</td>                                                
                                                 <td>{{ $bono->interests }}</td>
                                                 <td>{{ $bono->cicles }}</td>

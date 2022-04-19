@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Lines;
 use App\Models\DatosUsers;
+use App\Models\Solicitudes;
 use Response;
 
 class TaskReport extends Command
@@ -50,6 +51,16 @@ class TaskReport extends Command
                     ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')
                     ->join('solicitudes', 'solicitudes.id_user', '=', 'u.id') 
                     ->where('u.bloqueo', 0)->get();
+
+
+      $data = Solicitudes::from('solicitudes as s')
+                          ->select('u.name', 's.monto', 's.concepto', 'b.b_name', 's.created_at')
+                          ->join('lines as l', 'l.id_line', '=', 's.id_line')
+                          ->join('users as u', 'u.id', '=', 'l.id_user')
+                          ->join('bonos as b', 'b.id_bono', '=', 'l.id_bono')
+                          ->where('u.bloqueo', 0)
+                          ->where('l.block', 0)
+                          ->where('s.estatus', 'P');
       foreach ($data as $item) 
       {
         fputcsv($handle, $item->toArray(), ';');

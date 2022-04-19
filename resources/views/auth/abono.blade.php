@@ -21,7 +21,8 @@
 
     <form action="{{ route('transactions.upAbono') }}" method="POST">
         @csrf
-		<input type="hidden" value="{{ $id_line }}" name="line">
+        <input type="hidden" value="{{ $id_line }}" name="id_line">
+        <input type="hidden" value="{{ $id }}" name="id_transaction">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
@@ -34,6 +35,5 @@
                 <button type="submit" class="btn btn-success">Guardar</button>
             </div>
         </div>
-
     </form>
 @endsection

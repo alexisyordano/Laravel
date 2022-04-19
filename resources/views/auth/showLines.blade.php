@@ -20,32 +20,34 @@
 								<h3 class="panel-title">Solicitudes pendientes</h3>
 							</div>
 							<div class="panel-body">																	
-									<table id="table" class="table table-striped">
-										<thead>
-											<tr>
-												<th>Usuario</th>
-												<th>Linea</th>
-												<th>Opciones</th>
-											</tr>											
-										</thead>
-										<tbody>										
-											@foreach($list as $lineas)
-											<form action="" method="post">
-											@csrf
-											<tr>												
-													<input type="hidden" value="{{ $lineas->id_sol }}" name="id_sol">
-													<th>{{ $lineas->name }}</th>
-													<th><input type="text" value="{{ $lineas->concepto }}" name="monto"></th>
-													<th>
-														<input type="submit" class="btn btn-success" value="Desbloquear" name="Desbloquear">
-														<input type="submit" class="btn btn-danger" value="Bloquear" name="Bloquear">
-													</th>		
-											</tr>		
-											</form>								
-											@endforeach											
-										</tbody>
-									</table>
-								
+								<table id="table" class="table table-striped">
+									<thead>
+										<tr>
+											<th>Usuario</th>
+											<th>Linea</th>
+											<th>Opciones</th>
+										</tr>											
+									</thead>
+									<tbody>										
+										@foreach($list as $lineas)
+										<form action="" method="post">
+										@csrf
+										<tr>												
+											<input type="hidden" value="{{ $lineas->id_line }}" name="id_line">
+											<th>{{ $lineas->name }}</th>
+											<th>{{ $lineas->b_name }}</th>
+											<th>
+												@if($lineas->block == 1)
+													<input type="submit" class="btn btn-success" value="Desbloquear" name="Desbloquear">
+												@elseif($lineas->block == 0)
+													<input type="submit" class="btn btn-danger" value="Bloquear" name="Bloquear">
+												@endif
+											</th>		
+										</tr>
+										</form>								
+										@endforeach											
+									</tbody>
+								</table>								
 							</div>
 						</div>
 					</div>

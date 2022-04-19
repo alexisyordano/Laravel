@@ -176,5 +176,8 @@ Route::get('/retiro/{id_line}/', [TransactionsController::class, 'retiro'])
         ->name('transactions.retiro');
 Route::post('/retiro', [TransactionsController::class, 'upRetiro'])
         ->name('transactions.upRetiro');
-        Route::get('/showLines', [TransactionsController::class, 'showLines'])
+
+Route::get('/showLines', [TransactionsController::class, 'showLines'])
         ->name('transactions.showLines');
+Route::post('/showLines', [TransactionsController::class, 'block'])
+        ->name('transactions.block');

@@ -28,7 +28,7 @@
                                                         <select class="form-control" name="id_bono" id="id_bono" required>
                                                             <option value="">-- Selecione una modalidad --</option>
                                                             @foreach($bonos as $bono)
-                                                                <option value="{{ $bono['id_bono'] }}">{{ $bono['name'] }}</option>
+                                                                <option value="{{ $bono['id_bono'] }}">{{ $bono['b_name'] }}</option>
                                                             @endforeach
                                                         </select>
                                                         <br>
