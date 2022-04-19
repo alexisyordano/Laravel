@@ -15,8 +15,19 @@
 										<i class="fa fa-times-circle"></i> Usuario o clave incorrectas
 									</div>
 								@enderror
-								<div class="logo text-center"><img src="assets/img/logo-dark.png" alt="Klorofil Logo"></div>
-								<p class="lead">Login to your account</p>
+								@error('messageBloqueo')
+								<div class="alert alert-danger alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+										<i class="fa fa-times-circle"></i> Usuario Bloqueado
+									</div>
+								@enderror
+                                @error('messagenoexiste')
+								<div class="alert alert-danger alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+										<i class="fa fa-times-circle"></i> Usuario no existe
+									</div>
+								@enderror
+								<div class="logo text-center"><img src="assets/img/logo.png" alt="Logo"></div>
 							</div>
 							<form class="form-auth-small" method="post" action="">
 							   @csrf
@@ -27,25 +38,16 @@
 								<div class="form-group">
 									<label for="signin-password" class="control-label sr-only">Password</label>
 									<input type="password" class="form-control" name="password" id="password"  placeholder="Password">
-								</div>
-								<div class="form-group clearfix">
-									<label class="fancy-checkbox element-left">
-										<input type="checkbox">
-										<span>Remember me</span>
-									</label>
-								</div>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
-								<div class="bottom">
-									<span class="helper-text"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
-								</div>
+                                    <button type="submit" class="btn btn-primary">Ingresar</button>
+								</div>	
 							</form>
 						</div>
 					</div>
 					<div class="right">
 						<div class="overlay"></div>
 						<div class="content text">
-							<h1 class="heading">Free Bootstrap dashboard template</h1>
-							<p>by The Develovers</p>
+							<h1 class="heading">Bienvenido</h1>
+							<p><a style="color:#fff; cursor:pointer;" href="{{ route('registers.preregister') }}">Pre-Registro</a></p>
 						</div>
 					</div>
 					<div class="clearfix"></div>

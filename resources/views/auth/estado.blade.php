@@ -20,51 +20,51 @@
 								<div class="row">
 									<div class="col-md-3">
 										<h3 class="panel-title">Ultimos movimientos</h3>
-									</div>
-									<!-- <div class="col-md-3">
-										<select class="form-control" name="id_inv" require>
-											<option value="">-- Seleccione una inversion</option>		
-											@foreach($inversiones as $inversion)	
-												<option value="{{ $inversion->id_solicitud }}">{{ $inversion->id_solicitud }}</option>
-											@endforeach							
-										</select>
-									</div>									 -->
+									</div>								
 								</div>
 							</div>
 							<div class="panel-body">
-									<table id="table" class="table table-hover">
+									<table id="table" class="table table-striped" style="width:100%">
 										<thead>
 											<tr>
-												<th>Ciclo</th>
-												<th>Fecha de deposito</th>
-												<th>Entrada Sistema</th>
-												<th>Modalidad</th>										
-												<th>Fecha de cierre</th>
-												<th>Fecha de pago</th>
-												<th>Monto</th>
-												<th>Ganancias</th>
-												<th>Total</th>
-												<th>Opciones</th>
+												<th><h5>Ciclo</h5></th>
+												<th><h5>Fecha de deposito</h5></th>
+												<th><h5>Entrada Sistema</h5></th>
+												<th><h5>Modalidad</h5></th>										
+												<th><h5>Fecha de cierre</h5></th>
+												<th><h5>Fecha de pago</h5></th>
+												<th><h5>Monto</h5></th>
+												<th><h5>Ganancias</h5></th>	
+												<th><h5>Total</h5></th>
+												<th><h5>Opciones</h5></th>
 											</tr>
 										</thead>
 										<tbody>
 											@foreach($transacciones as $transaccion)
 												<tr>
-													<th></th>
-													<th>{{ $transaccion->date_mov }}</th>
-													<th>{{ $transaccion->date_sistema }}</th>
-													<th>{{ $transaccion->concepto }}</th>
-													<th>{{ $transaccion->date_close }}</th>
-													<th>{{ $transaccion->date_pay }}</th>
-													<th>{{ $transaccion->monto }}</th>
-													<th>{{ $transaccion->m_intereses }}</th>
-													<th>{{ $transaccion->saldo }}</th>
-													<th>
-														
-														<button class="btn btn-xs btn-success"><a href="{{ route('transactions.inversion') }}" style="color: white;">RI</a></button>
-														<button class="btn btn-xs btn-info"><a href="{{ route('transactions.abono') }}" style="color: white;">A</a></button>
-														<button class="btn btn-xs btn-danger"><a href="{{ route('transactions.retiro') }}" style="color: white;">R</a></button>
-													</th>
+												<th>{{ $transaccion->cicle }}</th>
+												<th>{{ $transaccion->date_mov }}</th>
+												<th>{{ $transaccion->date_sistema }}</th>
+												<th>{{ $transaccion->b_name }}</th>
+												<th>{{ $transaccion->date_close }}</th>
+												<th>{{ $transaccion->date_pay }}</th>
+												<th>{{ $transaccion->monto }}</th>
+												<th>{{ $transaccion->m_intereses }}</th>
+												<th>{{ $transaccion->saldo }}</th>
+												<th>
+													<?php $date = date('Y-m-d'); $date = '2022-04-22'; ?>
+													@if($date >= $transaccion->date_sistema && $date <= $transaccion->date_close && $transaccion->solicitud == 0)
+													<a  class="btn btn-info btn-xs" id="BtnReinvetir" href="{{ route('transactions.reinvertir', $transaccion->id) }}" title="Reinvertir">
+                                                        RI
+                                                    </a>
+													<a  class="btn btn-success btn-xs" data-toggle="modal" id="BtnAbono" data-target="#ModalAbono" data-attr="{{ route('transactions.abono', $transaccion->id) }}" title="Abonar">
+                                                        A
+                                                    </a>
+													<a  class="btn btn-primary btn-xs" data-toggle="modal" id="BtnRetiro" data-target="#ModalRetiro" data-attr="{{ route('transactions.retiro', $transaccion->id) }}" title="Retirar">
+                                                        R
+                                                    </a>
+													@endif
+												</th>
 												</tr>
 											@endforeach
 										</tbody>
@@ -72,6 +72,11 @@
 							</div>
 						</div>
 						<!-- END TABLE HOVER -->
+						<script>
+							$(document).ready(function() {
+								$('#table').DataTable();
+							} );
+						</script>
 					</div>
 				</div>
 			</div>
@@ -80,4 +85,83 @@
 		<!-- END MAIN -->
     @extends('layouts.footer')
 </div>
+<!-- ModalAbono -->
+<div class="modal fade" id="ModalAbono" tabindex="-1" role="dialog" aria-labelledby="LabelModalAbono" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body" id="BodyModalAbono">
+				<div>
+					<!-- the result to be displayed apply here -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// display ModalAbono
+	$(document).on('click', '#BtnAbono', function(event) {
+		event.preventDefault();
+		let href = $(this).attr('data-attr');
+		$.ajax({
+			url: href,
+			beforeSend: function() {
+				$('#loader').show();
+			},
+			// return the result
+			success: function(result) {
+				$('#ModalAbono').modal("show");
+				$('#BodyModalAbono').html(result).show();
+			},
+			complete: function() {
+				$('#loader').hide();
+			},
+			error: function(jqXHR, testStatus, error) {
+				console.log(error);
+				//alert("Page " + href + " cannot open. Error:" + error);
+				$('#loader').hide();
+			},
+			timeout: 8000
+		})
+	});
+    </script>
+
+<!-- ModalRetiro -->
+<div class="modal fade" id="ModalRetiro" tabindex="-1" role="dialog" aria-labelledby="LabelModalRetiro" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body" id="BodyModalRetiro">
+				<div>
+					<!-- the result to be displayed apply here -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// display ModalRetiro
+	$(document).on('click', '#BtnRetiro', function(event) {
+		event.preventDefault();
+		let href = $(this).attr('data-attr');
+		$.ajax({
+			url: href,
+			beforeSend: function() {
+				$('#loader').show();
+			},
+			// return the result
+			success: function(result) {
+				$('#ModalRetiro').modal("show");
+				$('#BodyModalRetiro').html(result).show();
+			},
+			complete: function() {
+				$('#loader').hide();
+			},
+			error: function(jqXHR, testStatus, error) {
+				console.log(error);
+				//alert("Page " + href + " cannot open. Error:" + error);
+				$('#loader').hide();
+			},
+			timeout: 8000
+		})
+	});
+    </script>
 @endsection

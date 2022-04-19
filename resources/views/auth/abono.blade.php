@@ -1,48 +1,39 @@
 @extends('layouts.app')
-<div id="wrapper">
-    @section('content')
-    @extends('layouts.nav')
-    @extends('layouts.left')
-    <div class="main">
-			<!-- MAIN CONTENT -->
-			<div class="main-content">
-				<div class="container-fluid">
-					<div class="col-md-6">
-						<div class="panel" style="text-align:center;">
-							<div class="panel-heading">
-								<h3>Retiro de Inversion</h3>
-							</div>
-							<div class="panel-body">
-								@if(session()->has('success'))
-									<div class="alert alert-success alert-dismissible" role="alert">
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-										<i class="fa fa-check-circle"></i> {{ session()->get('success') }}
-									</div>
-								@endif
-								<form action="" method="post">
-									@csrf
-									<input type="hidden" value="{{ auth()->id() }}" name="id_user" id="id_user">
-									<input type="hidden" name="concepto" value="Abono" id="concepto">
-									<input type="number" name="monto"  id="monto" required class="form-control" placeholder="Monto a abonar">
-									<br>
-									<select class="form-control" name="id_inv" required>
-										<option value="">-- Seleccione una inversion</option>		
-										@foreach($inversiones as $inversion)	
-											<option value="{{ $inversion->id }}">{{ $inversion->id }}</option>
-										@endforeach							
-									</select>
-									<br>
-									<input type="hidden" name="tipo" id="tipo" value="A">
-									<button type="submit" class="btn btn-success btn-lg btn-block">Guardar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- END MAIN CONTENT -->
-		</div>
-		<!-- END MAIN -->
-    @extends('layouts.footer')
-</div>
+@section('content')
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="text-center font-weight-bolder">
+                <h3 class="font-weight-bold">Abono de inversion</h3>
+            </div>
+        </div>
+    </div>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('transactions.upAbono') }}" method="POST">
+        @csrf
+        <input type="hidden" value="{{ $id_line }}" name="id_line">
+        <input type="hidden" value="{{ $id }}" name="id_transaction">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Monto a abonar:</strong>
+                    <input type="number" name="m_abono"  class="form-control" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                <a class="btn btn-danger" href="" data-dismiss="modal"> Cancelar</a>
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+        </div>
+    </form>
 @endsection

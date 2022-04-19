@@ -15,10 +15,11 @@ class CreateBonosTable extends Migration
     {
         Schema::create('bonos', function (Blueprint $table) {
             $table->id('id_bono');
-            $table->string("name");
+            $table->string("b_name");
             $table->string('days');
             $table->integer("interests");
-            $table->string('cicles');
+            $table->integer('cicles');
+            $table->integer('marca');
             $table->timestamps();
         });
         

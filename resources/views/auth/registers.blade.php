@@ -62,7 +62,7 @@
                                                         <select class="form-control" name="modalidad_buscar" id="modalidad_buscar" required>
                                                             <option value="">-- Selecione una modalidad --</option>
                                                                 @foreach($bonos as $bono)
-                                                                    <option value="{{ $bono['id_bono'] }}">{{ $bono['name'] }}</option>
+                                                                    <option value="{{ $bono['id_bono'] }}">{{ $bono['b_name'] }}</option>
                                                                 @endforeach
                                                         </select>
                                                         <br>
@@ -74,8 +74,9 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="nombre_r" id="nombre_r" required class="form-control" placeholder="Nombres y Apellidos de Punto Raíz">
-                                                        <br>    
+                                                        <input type="text" name="nombre_r" id="nombre_r" required class="form-control search" placeholder="Nombres y Apellidos de Punto Raíz">
+                                                        <div id="suggesstion-box"></div>
+                                                        <br> 
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -129,10 +130,10 @@
 
                                                     <input type="hidden" name="dias" id="dias">
                                                     <input type="hidden" name="p_intereses" id="p_intereses">
-                                                    <input type="hidden" name="modalidad" id="modalidad">
+                                                    <input type="hidden" name="id_bono" id="id_bono">
                                                     
                                                     <div class="col-md-6">
-                                                        <input type="text" name="code_transaction"  id="code_transaction" class="form-control" placeholder="Codigo transacción">
+                                                        <input type="text" name="code_transaction"  id="code_transaction" class="form-control" placeholder="Codigo transacción" required>
                                                         <br>
                                                     </div>
                                                     <div class="col-md-6">
@@ -145,6 +146,17 @@
 								</div>
 							</div>
 							<!-- END INPUTS -->
+
+                        <script>
+                            $(document).ready(function(){
+                                $('#nombre_r').focus();
+                            });
+                            $(document).ready(function() {
+                                $('#nombre_r').autocomplete({
+                                source: "{{ route('registers.search') }}"
+                                });
+                            });
+                        </script>
                             <script type="text/javascript">
                                 $('#modalidad_buscar').on('change', function(e)
                                 {
@@ -155,7 +167,7 @@
                                         var dia = $.parseJSON(data);
                                         $('#dias').val(dia.days);
                                         $('#p_intereses').val(dia.interests); 
-                                        $('#modalidad').val(dia.name); 
+                                        $('#id_bono').val(dia.id_bono); 
                                     });
                                 });
                             </script>

@@ -26,15 +26,17 @@
 												<th>Nombre</th>
 												<th>Dias</th>
 												<th>Intereses</th>
+                                                <th>Ciclos</th>
                                                 <th>Acciones</th>
 											</tr>
 										</thead>
 										<tbody>
                                         @foreach($bonos as $bono)
 											<tr>
-												<td>{{ $bono->name }}</td>
-                                                <td>{{ $bono->days }}</td>
+												<td>{{ $bono->b_name }}</td>
+                                                <td>{{ $bono->days }}</td>                                                
                                                 <td>{{ $bono->interests }}</td>
+                                                <td>{{ $bono->cicles }}</td>
 												<td>
 													<a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
 														data-attr="{{ route('bonos.edit', $bono->id_bono) }}" title="Actualizar">

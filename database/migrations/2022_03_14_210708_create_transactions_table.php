@@ -18,7 +18,8 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->integer("id_user");
             $table->integer("id_solicitud");
-            $table->string("concepto");
+            $table->integer("id_bono");
+            $table->integer("cicle");
             $table->integer('dias');
             $table->date("date_mov");
             $table->date("date_sistema");
@@ -28,6 +29,8 @@ class CreateTransactionsTable extends Migration
             $table->integer("p_intereses");
             $table->integer("m_intereses");
             $table->integer("saldo");
+            $table->integer("id_line");
+            $table->integer("solicitud");
             $table->timestamps();
         });
     }

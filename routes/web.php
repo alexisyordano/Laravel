@@ -31,6 +31,12 @@ Route::post('/login', [SessionController::class, 'store'])
 
 Route::get('/logout', [SessionController::class, 'destroy'])
         ->name('login.destroy');
+
+Route::get('/profile', [SessionController::class, 'profile'])
+        ->name('login.profile');
+
+Route::post('/changePass', [SessionController::class, 'changePass'])
+        ->name('login.changePass');
         
 Route::get('/home',   [HomeController::class, 'index'])
         ->name('home.index');
@@ -63,7 +69,7 @@ Route::post('/solicitudes', [TransactionsController::class, 'operacion'])
         ->name('transactions.operacion');
 
         
-Route::get('/estado',   [TransactionsController::class, 'estado'])
+Route::get('/estado/{id}',   [TransactionsController::class, 'estado'])
         ->name('transactions.estado');
 
 //primero hace referencia a la url del navegador, el segundo hace referencia al controller RegistersUserController
@@ -105,6 +111,18 @@ Route::get('/add/{id}', [RegistersUserController::class, 'add'])
 Route::post('/InsertAdd', [RegistersUserController::class, 'InsertAdd'])
         ->name('registers.InsertAdd');
 
+Route::get('/preregister', [RegistersUserController::class, 'preregister'])
+        ->name('registers.preregister');
+
+Route::post('/InsertRegister', [RegistersUserController::class, 'InsertRegister'])
+        ->name('registers.InsertRegister');
+
+Route::get('/inversionita', [RegistersUserController::class, 'inversionita'])
+        ->name('registers.inversionita');
+
+Route::get('/deletepre/{id}', [RegistersUserController::class, 'deletepre'])
+        ->name('registers.deletepre');
+
 //Ruta Bonos//
 
 Route::get('/bonosregister', [BonosController::class, 'index'])
@@ -134,20 +152,32 @@ Route::delete('/destroy/{id}', [BonosController::class, 'destroy'])
 Route::get('/select/{id}', [RegistersUserController::class, 'select'])
        ->name('registers.select');
 
+Route::get('/bloqueo/{id}', [RegistersUserController::class, 'bloqueo'])
+       ->name('registers.bloqueo');
 
+Route::get('/activar/{id}', [RegistersUserController::class, 'activar'])
+       ->name('registers.activar');
 
+Route::get('/search', [RegistersUserController::class, 'search'])
+       ->name('registers.search');
 
+Route::get('/searchT', [TransactionsController::class, 'searchT'])
+        ->name('transactions.searchT');
 
+Route::get('/reinvertir/{id_line}/', [TransactionsController::class, 'reinvertir'])
+        ->name('transactions.reinvertir');
 
-        
+Route::get('/abono/{id_line}/', [TransactionsController::class, 'abono'])
+        ->name('transactions.abono');
+Route::post('/abono', [TransactionsController::class, 'upAbono'])
+        ->name('transactions.upAbono');
 
+Route::get('/retiro/{id_line}/', [TransactionsController::class, 'retiro'])
+        ->name('transactions.retiro');
+Route::post('/retiro', [TransactionsController::class, 'upRetiro'])
+        ->name('transactions.upRetiro');
 
-
-
-
-
-
-
-
-
-
+Route::get('/showLines', [TransactionsController::class, 'showLines'])
+        ->name('transactions.showLines');
+Route::post('/showLines', [TransactionsController::class, 'block'])
+        ->name('transactions.block');

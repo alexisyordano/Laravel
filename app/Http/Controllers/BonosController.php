@@ -45,13 +45,19 @@ class BonosController extends Controller
     public function store(Request $request)
     {
         $validator  = $request->validate([
-            'name' => 'required|unique:bonos',
+            'b_name' => 'required|unique:bonos',
         ]);
+        $marca = request('check_cicles');
+        if($marca != 1)
+        {
+            $marca = 0;
+        }
         $bonos = Bonos::create([
-            'name' => request('name'),
+            'b_name' => request('b_name'),
             'days' => request('days'),
             'interests' => request('interests'),
             'cicles' => request('cicles'),
+            'marca' => $marca,
         ]);
         
         return redirect()->to('bonosregister')->with('success','El bono fue creado satisfactoriamente');
@@ -99,10 +105,10 @@ class BonosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $name = $request->input('name');
+        $name = $request->input('b_name');
         $days = $request->input('days');
         $interests = $request->input('interests');
-        DB::update('update bonos set name = ?,days=?,interests= ? where id_bono = ?',[$name,$days,$interests,$id]);
+        DB::update('update bonos set b_name = ?,days=?,interests= ? where id_bono = ?',[$name,$days,$interests,$id]);
         return redirect()->to('bonos')->with('success', 'Bono Actualizado');
     }
 

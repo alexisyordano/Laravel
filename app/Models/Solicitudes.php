@@ -16,8 +16,8 @@ class Solicitudes extends Model
      */
     protected $fillable = [
         'id_sol',
-        'id_user',
-        'id_solicitud',
+        'id_line',
+        'id_transaction',
         'monto',
         'concepto',
         'estatus',
