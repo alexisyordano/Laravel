@@ -54,7 +54,7 @@ class RegistersUserController extends Controller
 
                 $id = $user->id;
 
-                /*try {
+                try {
 
                     $datos_users = DatosUsers::create([
                     'telefono' => request('tele'),
@@ -198,7 +198,7 @@ class RegistersUserController extends Controller
 
                     } catch (\Exception $e) {
                     return $e->getMessage();
-                }   */    
+                }   
 
                 } catch (\Exception $e) {
                 return $e->getMessage();
