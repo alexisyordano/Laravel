@@ -165,8 +165,7 @@
                 $id_line = Transactions::select('*')
                                         ->where('id', $id)
                                         ->first()
-                                        ->id_line;
-                
+                                        ->id_line;                
                 return view('auth.abono', compact('id_line'), compact('id'));
             }
             else
@@ -288,7 +287,6 @@
                 'solicitud' => '1',
             ]);
             
-
             return view('auth.solicitudes', compact('solicitudes'));
         }
 
