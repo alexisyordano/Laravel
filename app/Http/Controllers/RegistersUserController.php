@@ -47,7 +47,7 @@ class RegistersUserController extends Controller
                 $user = User::create([
                 'name' => request('name'),
                 'email' => request('email'),
-                'password' => request('password'),
+                'password' => '1234',
                 'id_rol' => '2',
                 'bloqueo' => 0,
                 ]);
@@ -194,15 +194,15 @@ class RegistersUserController extends Controller
 
                         } catch (\Exception $e) {
                         return $e->getMessage();
-                    }
+                    } 
 
                     } catch (\Exception $e) {
                     return $e->getMessage();
-                }       
+                }   
 
                 } catch (\Exception $e) {
                 return $e->getMessage();
-            }        
+            }       
         }
         else
         {
@@ -622,7 +622,7 @@ class RegistersUserController extends Controller
 
     public function preregister()
     {
-        $bonos = Bonos::all();
+        $bonos = Bonos::limit(1)->get();
         return view('auth.preregisters', compact('bonos'));
     }
 
