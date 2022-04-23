@@ -11,7 +11,7 @@
 							<!-- TABLE STRIPED -->
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">Listar Usuarios</h3>
+									<h3 class="panel-title">Lista de Inversores</h3>
 								</div>
 								<div class="panel-body">
                                    <div id="resp"></div>
@@ -96,9 +96,28 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-    	$('#table').dataTable();
-    } );
+    var table = $('#table').DataTable({
+    language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+      },
+   });
 </script> 
 @endsection
 

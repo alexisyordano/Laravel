@@ -33,10 +33,10 @@ class RegistersUserController extends Controller
 
     public function store(Request $request)
     {
-        // $validator  = $request->validate([
-        //     'email' => 'required|unique:users',
-        //     'identificador' => 'required|unique:datos_users',
-        // ]);
+        $validator  = $request->validate([
+            'email' => 'required|unique:users',
+            'identificador' => 'required|unique:datos_users',
+        ]);
 
         $id_rol = request('rol');
 

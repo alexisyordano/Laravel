@@ -20,8 +20,6 @@
 								<h3 class="panel-title">Solicitudes pendientes</h3>
 							</div>
 							<div class="panel-body">
-								
-									
 									<table id="table" class="table table-striped">
 										<thead>
 											<tr>
@@ -42,7 +40,7 @@
 											<tr>												
 													<input type="hidden" value="{{ $solicitud->id_sol }}" name="id_sol">
 													<th>{{ $solicitud->name }}</th>
-													<th><input type="text" value="{{ $solicitud->monto }}" name="monto"></th>
+													<th><input type="text" value="{{ $valor =  number_format($solicitud->monto, 2, ',', '.') }}" name="monto"></th>
 													<th>{{ $solicitud->concepto }}</th>
 													<th>{{ $solicitud->created_at }}</th>
 													<th>

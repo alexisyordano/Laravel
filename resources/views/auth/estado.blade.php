@@ -28,7 +28,7 @@
 										<thead>
 											<tr>
 												<th><h5>Ciclo</h5></th>
-												<th><h5>Fecha de deposito</h5></th>
+												<th><h5>Fecha de Ingreso</h5></th>
 												<th><h5>Entrada Sistema</h5></th>
 												<th><h5>Modalidad</h5></th>										
 												<th><h5>Fecha de cierre</h5></th>
@@ -43,14 +43,14 @@
 											@foreach($transacciones as $transaccion)
 												<tr>
 												<th>{{ $transaccion->cicle }}</th>
-												<th>{{ $transaccion->date_mov }}</th>
-												<th>{{ $transaccion->date_sistema }}</th>
+												<th>{{ $newDate = date("m-d-Y", strtotime($transaccion->date_mov)); }}</th>
+												<th>{{ $newDate = date("m-d-Y", strtotime($transaccion->date_sistema)); }}</th>
 												<th>{{ $transaccion->b_name }}</th>
-												<th>{{ $transaccion->date_close }}</th>
-												<th>{{ $transaccion->date_pay }}</th>
-												<th>{{ $transaccion->monto }}</th>
-												<th>{{ $transaccion->m_intereses }}</th>
-												<th>{{ $transaccion->saldo }}</th>
+												<th>{{ $newDate = date("m-d-Y", strtotime($transaccion->date_close)); }}</th>
+												<th>{{ $newDate = date("m-d-Y", strtotime($transaccion->date_pay)); }}</th>
+												<th>{{ $valor =  number_format($transaccion->monto, 2, ',', '.') }}$</th>
+												<th>{{ $valor =  number_format($transaccion->m_intereses, 2, ',', '.') }}$</th>
+												<th>{{ $valor =  number_format($transaccion->saldo, 2, ',', '.') }}$</th>
 												<th>
 													<?php $date = date('Y-m-d');  ?>
 													@if($date >= $transaccion->date_sistema && $date <= $transaccion->date_close && $transaccion->solicitud == 0)
@@ -72,11 +72,7 @@
 							</div>
 						</div>
 						<!-- END TABLE HOVER -->
-						<script>
-							$(document).ready(function() {
-								$('#table').DataTable();
-							} );
-						</script>
+
 					</div>
 				</div>
 			</div>
@@ -137,6 +133,31 @@
 		</div>
 	</div>
 </div>
+
+<script>
+   var table = $('#table').DataTable({
+    language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+      },
+   });
+</script>
 <script>
 	// display ModalRetiro
 	$(document).on('click', '#BtnRetiro', function(event) {
