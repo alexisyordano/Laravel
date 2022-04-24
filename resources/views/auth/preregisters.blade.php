@@ -48,7 +48,7 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="pais" id="pais" required class="form-control" placeholder="País donde vive">
+                                                        <input type="text" name="pais" id="pais" required class="form-control" placeholder="País de residencia">
                                                         <br>
                                                     </div>
 
