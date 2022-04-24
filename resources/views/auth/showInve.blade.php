@@ -43,41 +43,38 @@
 											</tr>
 										</thead>
 										<tbody>
-											
-                                        @foreach($inv as $fila)
-										
+										@foreach($inv as $fila)
+											@if($fila->creado == 0)
 											<tr>
-												@if($fila->creado == 0)
-													<input type="hidden" name="nacion" value="<?= $fila->nacionalidad ?>">
-													<input type="hidden" name="fecha_n" value="<?= $fila->fecha_nacimiento ?>">
-													<input type="hidden" name="nombre_r" value="<?= $fila->nombre_r ?>">
-													<input type="hidden" name="anombre" value="<?= $fila->anombre ?>">
-													<input type="hidden" name="ncuenta" value="<?= $fila->ncuenta ?>">
-													<td><input name="name" type="text" readonly value="<?= $fila->name ?>"</td>
-													<td><input name="identificador" type="text" readonly value="<?= $fila->identificador ?>"</td>
-													<td><input name="email" type="text" readonly value="<?= $fila->email ?>"</td>
-													<td><input name="tele" type="text" readonly value="<?= $fila->telefono ?>"</td>
-													<td><input name="pais_i" type="text" readonly value="<?= $fila->pais ?>"</td>
-													<td><input name="modalidad" type="text" readonly value="<?= $fila->modalidad ?>"</td>
-													<td><input name="fecha_primer_pago" type="text" readonly value="<?= $fila->fecha_primer_pago ?>"</td>
-													<td><input name="monto" type="text" readonly value="<?= $fila->monto ?>"</td>
-													<td><input name="n_banco" type="text" readonly value="<?= $fila->n_banco ?>"</td>
-													<td><input name="t_cuenta" type="text" readonly value="<?= $fila->t_cuenta ?>"</td>
-													<td>
-														<a  class="btn btn-danger" href="{{ route('registers.deletepre', $fila->id_registro) }}" title="Eliminar">
-															<i class="fa fa-trash-o"></i>
-															Eliminar
-														</a>
-														<hr> 
-														<button type="submit" class="btn btn-info" title="Aprobar">
-															<i class="fa fa-check"></i>
-															Aprobar
-														</button>
-													</td>
+												<input type="hidden" name="nacion" value="<?= $fila->nacionalidad ?>">
+												<input type="hidden" name="fecha_n" value="<?= $fila->fecha_nacimiento ?>">
+												<input type="hidden" name="nombre_r" value="<?= $fila->nombre_r ?>">
+												<input type="hidden" name="anombre" value="<?= $fila->anombre ?>">
+												<input type="hidden" name="ncuenta" value="<?= $fila->ncuenta ?>">
+												<td><input name="name" type="text" readonly value="<?= $fila->name ?>"</td>
+												<td><input name="identificador" type="text" readonly value="<?= $fila->identificador ?>"</td>
+												<td><input name="email" type="text" readonly value="<?= $fila->email ?>"</td>
+												<td><input name="tele" type="text" readonly value="<?= $fila->telefono ?>"</td>
+												<td><input name="pais_i" type="text" readonly value="<?= $fila->pais ?>"</td>
+												<td><input name="modalidad" type="text" readonly value="<?= $fila->modalidad ?>"</td>
+												<td><input name="fecha_primer_pago" type="text" readonly value="<?= $fila->fecha_primer_pago ?>"</td>
+												<td><input name="monto" type="text" readonly value="<?= $fila->monto ?>"</td>
+												<td><input name="n_banco" type="text" readonly value="<?= $fila->n_banco ?>"</td>
+												<td><input name="t_cuenta" type="text" readonly value="<?= $fila->t_cuenta ?>"</td>
+												<td>
+												<a  class="btn btn-danger" href="{{ route('registers.deletepre', $fila->id_registro) }}" title="Eliminar">
+												<i class="fa fa-trash-o"></i>
+													Eliminar
+												</a>
+												<hr> 
+												<button type="submit" class="btn btn-info" title="Aprobar">
+												<i class="fa fa-check"></i>
+													Aprobar
+												</button>
+												</td>
+											 @endif
 											</tr>
-											@endif
-                                        @endforeach 
-										
+										@endforeach 
 										</tbody>
 									</table>
                                  </div>
