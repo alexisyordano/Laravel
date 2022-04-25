@@ -85,7 +85,7 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="monto" required id="monto" class="form-control" placeholder="Monto en $">
+                                                        <input type="number" step="any" name="monto" required id="monto" class="form-control" placeholder="Monto en $">
                                                         <br>
                                                     </div> 
 

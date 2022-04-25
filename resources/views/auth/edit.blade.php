@@ -75,7 +75,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Monto:</strong>
-                    <input type="text" name="monto" value="{{ $user->monto }}" class="form-control">
+                    <input type="number" step="any" name="monto" value="{{ $user->monto }}" class="form-control">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
