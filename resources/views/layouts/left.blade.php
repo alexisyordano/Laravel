@@ -37,7 +37,7 @@
 								<div id="subPages2" class="collapse ">
 									<ul class="nav">
 										@foreach($inversiones as $inversion)	
-										<li><a href="{{ route('transactions.estado', $inversion->id_line) }}" class="">{{ $inversion->b_name }}</a></li>
+											<li><a href="{{ route('transactions.estado', $inversion->id_line) }}" class="">{{ $inversion->b_name }}</a></li>
 										@endforeach
 									</ul>
 								</div>

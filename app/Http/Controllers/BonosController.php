@@ -44,9 +44,14 @@ class BonosController extends Controller
      */
     public function store(Request $request)
     {
+        $messages=[
+            'b_name.unique' => 'Este bono ya existe',
+        ];
+
         $validator  = $request->validate([
             'b_name' => 'required|unique:bonos',
-        ]);
+        ],$messages);
+
         $marca = request('check_cicles');
         if($marca != 1)
         {
