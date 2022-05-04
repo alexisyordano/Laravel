@@ -181,3 +181,8 @@ Route::get('/showLines', [TransactionsController::class, 'showLines'])
         ->name('transactions.showLines');
 Route::post('/showLines', [TransactionsController::class, 'block'])
         ->name('transactions.block');
+
+Route::get('/handle', [TransactionsController::class, 'handle'])
+        ->name('transactions.handle');
+Route::get('/script2', [TransactionsController::class, 'script2'])
+        ->name('transactions.script2');        

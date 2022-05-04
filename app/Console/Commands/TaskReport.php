@@ -44,17 +44,21 @@ class TaskReport extends Command
      */
     public function handle()
     { 
-      
+      $date = date('Y-m-d');
+      $date2 = date("Y-m-d",strtotime($date."- 1 days"));      
       $handle = fopen('export.xls', 'w');
 
-      $data = Solicitudes::from('solicitudes as s')
-                          ->select('u.name', 's.monto', 's.concepto', 'b.b_name', 's.created_at')
-                          ->join('lines as l', 'l.id_line', '=', 's.id_line')
-                          ->join('users as u', 'u.id', '=', 'l.id_user')
-                          ->join('bonos as b', 'b.id_bono', '=', 'l.id_bono')
-                          ->where('u.bloqueo', 0)
-                          ->where('l.block', 0)
-                          ->where('s.estatus', 'P');
+      $data = DB::table('users as s')
+                ->select('u.name', 's.monto', 's.concepto', 'b.b_name', 's.created_at')
+                ->join('lines as l', 'l.id_line', '=', 'u.id')
+                ->join('transactions as t', 't.id_linea', '=', 'l.id_line')
+                ->join('bonos as b', 'b.id_bono', '=', 'l.id_bono')
+                ->join('solicitudes as s', 's.id_transaction', '=', 't.id')
+                ->where('u.bloqueo', 0)
+                ->where('l.block', 0)
+                ->where('t.date_close', $date2)
+                ->where('s.estatus', 'P')
+                ->get();
       foreach ($data as $item) 
       {
         fputcsv($handle, $item->toArray(), ';');

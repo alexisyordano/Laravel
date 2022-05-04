@@ -56,13 +56,14 @@ class RegistersUserController extends Controller
 
                 try {
 
+                    $date_first_pay = date("Y-m-d");
                     $datos_users = DatosUsers::create([
                     'telefono' => request('tele'),
                     'fecha_nacimiento' => request('fecha_n'),
                     'nacionalidad' => request('nacion'),
                     'pais' => request('pais_i'),
                     'nombre_referido' => request('nombre_r'),
-                    'f_primer_pago' => request('fecha_primer_pago'),
+                    'f_primer_pago' => $date_first_pay,
                     'monto' => request('monto'),
                     'identificador' => request('identificador'),
                     'id_user' => $id,
@@ -70,7 +71,7 @@ class RegistersUserController extends Controller
 
                     try {
 
-                        $fecha = request('fecha_primer_pago');            
+                        $fecha = $date_first_pay;            
                         $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
                         $dia = date("w", strtotime($fecha2));
                         //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
@@ -107,20 +108,20 @@ class RegistersUserController extends Controller
                             $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
                         }
 
-                        $date_pay = date("Y-m-d",strtotime($date_close."+ 3 days"));
+                        $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
                         $dia = date("w", strtotime($date_pay));
                         //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
                         if ($dia == 6)
                         {
-                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
                         if ($dia == 0)
                         {
-                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
                         if ($dia == 1)
                         {
-                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
 
                         $sql = DB::table('bonos')->select('interests')
@@ -220,13 +221,14 @@ class RegistersUserController extends Controller
 
                 try {
 
+                    $date_first_pay = date("Y-m-d");
                     $datos_users = DatosUsers::create([
                     'telefono' => request('tele'),
                     'fecha_nacimiento' => request('fecha_n'),
                     'nacionalidad' => request('nacion'),
                     'pais' => request('pais_i'),
                     'nombre_referido' => request('nombre_r'),
-                    'f_primer_pago' => request('fecha_primer_pago'),
+                    'f_primer_pago' => $date_first_pay,
                     'monto' => request('monto'),
                     'identificador' => request('identificador'),
                     'id_user' => $id,
@@ -234,7 +236,7 @@ class RegistersUserController extends Controller
 
                     try {
 
-                        $fecha = request('fecha_primer_pago');            
+                        $fecha = $date_first_pay;            
                         $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
                         $dia = date("w", strtotime($fecha2));
                         //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
@@ -267,20 +269,20 @@ class RegistersUserController extends Controller
                             $date_close = date("Y-m-d",strtotime($fecha2."+ ".$aux." days"));
                         }
 
-                        $date_pay = date("Y-m-d",strtotime($date_close."+ 3 days"));
+                        $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
                         $dia = date("w", strtotime($date_pay));
                         //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
                         if ($dia == 6)
                         {
-                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
                         if ($dia == 0)
                         {
-                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
                         if ($dia == 1)
                         {
-                            $date_pay = date("Y-m-d",strtotime($date_close."+ 5 days"));
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
 
                         $monto = request('monto');
@@ -408,7 +410,8 @@ class RegistersUserController extends Controller
     public function InsertAdd(Request $request)
     {
         try {
-            $fecha = request('fecha_primer_pago');
+            $date_first_pay = date("Y-m-d");
+            $fecha = $date_first_pay;
             $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
             $dia = date("w", strtotime($fecha2));
             //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
@@ -444,7 +447,7 @@ class RegistersUserController extends Controller
 
             $date_pay = date("Y-m-d",strtotime($date_close."+ 4 days"));
             $dia = date("w", strtotime($date_pay));
-            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
+            //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 6 dias
             if ($dia == 6)
             {
                 $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
