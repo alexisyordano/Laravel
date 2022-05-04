@@ -27,7 +27,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Nueva clave:</strong>
-                    <input type="text" name="password"  class="form-control">
+                    <input type="text" maxlength="8" name="password" placeholder="Clave de 8 digitos"  class="form-control">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

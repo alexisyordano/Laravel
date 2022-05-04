@@ -27,7 +27,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Monto a abonar:</strong>
-                    <input type="number" name="m_abono"  class="form-control" required>
+                    <input type="number" name="m_abono" step="any" class="form-control" required>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

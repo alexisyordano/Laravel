@@ -14,7 +14,15 @@
 
         public function inversion()
         {
-            return view('auth.inversion');
+            if(Auth::check())
+            {
+                return view('auth.inversion');
+            }
+            else
+            {
+                return redirect()->to('login');
+            }
+            
         }
 
         public function estado($id)

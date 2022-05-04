@@ -11,7 +11,7 @@
 							<!-- TABLE STRIPED -->
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">Listar Usuarios</h3>
+									<h3 class="panel-title">Lista de Inversores</h3>
 								</div>
 								<div class="panel-body">
                                    <div id="resp"></div>
@@ -43,41 +43,38 @@
 											</tr>
 										</thead>
 										<tbody>
-											
-                                        @foreach($inv as $fila)
-										
+										@foreach($inv as $fila)
+											@if($fila->creado == 0)
 											<tr>
-												@if($fila->creado == 0)
-													<input type="hidden" name="nacion" value="<?= $fila->nacionalidad ?>">
-													<input type="hidden" name="fecha_n" value="<?= $fila->fecha_nacimiento ?>">
-													<input type="hidden" name="nombre_r" value="<?= $fila->nombre_r ?>">
-													<input type="hidden" name="anombre" value="<?= $fila->anombre ?>">
-													<input type="hidden" name="ncuenta" value="<?= $fila->ncuenta ?>">
-													<td><input name="name" type="text" readonly value="<?= $fila->name ?>"</td>
-													<td><input name="identificador" type="text" readonly value="<?= $fila->identificador ?>"</td>
-													<td><input name="email" type="text" readonly value="<?= $fila->email ?>"</td>
-													<td><input name="tele" type="text" readonly value="<?= $fila->telefono ?>"</td>
-													<td><input name="pais_i" type="text" readonly value="<?= $fila->pais ?>"</td>
-													<td><input name="modalidad" type="text" readonly value="<?= $fila->modalidad ?>"</td>
-													<td><input name="fecha_primer_pago" type="text" readonly value="<?= $fila->fecha_primer_pago ?>"</td>
-													<td><input name="monto" type="text" readonly value="<?= $fila->monto ?>"</td>
-													<td><input name="n_banco" type="text" readonly value="<?= $fila->n_banco ?>"</td>
-													<td><input name="t_cuenta" type="text" readonly value="<?= $fila->t_cuenta ?>"</td>
-													<td>
-														<a  class="btn btn-danger" href="{{ route('registers.deletepre', $fila->id_registro) }}" title="Eliminar">
-															<i class="fa fa-trash-o"></i>
-															Eliminar
-														</a>
-														<hr> 
-														<button type="submit" class="btn btn-info" title="Aprobar">
-															<i class="fa fa-check"></i>
-															Aprobar
-														</button>
-													</td>
+												<input type="hidden" name="nacion" value="<?= $fila->nacionalidad ?>">
+												<input type="hidden" name="fecha_n" value="<?= $fila->fecha_nacimiento ?>">
+												<input type="hidden" name="nombre_r" value="<?= $fila->nombre_r ?>">
+												<input type="hidden" name="anombre" value="<?= $fila->anombre ?>">
+												<input type="hidden" name="ncuenta" value="<?= $fila->ncuenta ?>">
+												<td><input name="name" type="text" readonly value="<?= $fila->name ?>"</td>
+												<td><input name="identificador" type="text" readonly value="<?= $fila->identificador ?>"</td>
+												<td><input name="email" type="text" readonly value="<?= $fila->email ?>"</td>
+												<td><input name="tele" type="text" readonly value="<?= $fila->telefono ?>"</td>
+												<td><input name="pais_i" type="text" readonly value="<?= $fila->pais ?>"</td>
+												<td><input name="modalidad" type="text" readonly value="<?= $fila->modalidad ?>"</td>
+												<td><input name="fecha_primer_pago" type="text" readonly value="<?= $fila->fecha_primer_pago ?>"</td>
+												<td><input name="monto" type="text" readonly value="<?= $fila->monto ?>"</td>
+												<td><input name="n_banco" type="text" readonly value="<?= $fila->n_banco ?>"</td>
+												<td><input name="t_cuenta" type="text" readonly value="<?= $fila->t_cuenta ?>"</td>
+												<td>
+												<a  class="btn btn-danger" href="{{ route('registers.deletepre', $fila->id_registro) }}" title="Eliminar">
+												<i class="fa fa-trash-o"></i>
+													Eliminar
+												</a>
+												<hr> 
+												<button type="submit" class="btn btn-info" title="Aprobar">
+												<i class="fa fa-check"></i>
+													Aprobar
+												</button>
+												</td>
+											 @endif
 											</tr>
-											@endif
-                                        @endforeach 
-										
+										@endforeach 
 										</tbody>
 									</table>
                                  </div>
@@ -96,9 +93,28 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-    	$('#table').dataTable();
-    } );
+    var table = $('#table').DataTable({
+    language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+      },
+   });
 </script> 
 @endsection
 

@@ -7,7 +7,7 @@
 						<!--  Begin view Admin  !-->
 						@if( Auth::user()->id_rol  == '1' )
 							<li>
-								<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Control de usuarios</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Control de Inversores</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 								<div id="subPages" class="collapse ">
 									<ul class="nav">
 										<li><a href="{{ route('registers.create') }}" class="">Crear Usuarios</a></li>
@@ -33,11 +33,11 @@
 						<!--  Begin view Invitado  !-->
 						@if( Auth::user()->id_rol  == '2' )													
 							<li>
-								<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Invsersiones</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr lnr-cog"></i> <span>Inversiones</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 								<div id="subPages2" class="collapse ">
 									<ul class="nav">
 										@foreach($inversiones as $inversion)	
-										<li><a href="{{ route('transactions.estado', $inversion->id_line) }}" class="">{{ $inversion->b_name }}</a></li>
+											<li><a href="{{ route('transactions.estado', $inversion->id_line) }}" class="">{{ $inversion->b_name }}</a></li>
 										@endforeach
 									</ul>
 								</div>

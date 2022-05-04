@@ -69,7 +69,7 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="pais_i" id="pais_i" required class="form-control" placeholder="País">
+                                                        <input type="text" name="pais_i" id="pais_i" required class="form-control" placeholder="País de residencia">
                                                         <br>
                                                     </div>
 
@@ -115,7 +115,7 @@
                                                     </div> 
                                                     
                                                     <div class="col-md-6">
-                                                        <input type="password" name="password" required id="password" class="form-control" placeholder="Clave">
+                                                        <input type="password" name="password" maxlength="8" required id="password" class="form-control" placeholder="Clave de 8 digitos">
                                                         <br>
                                                     </div> 
                                                     
