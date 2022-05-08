@@ -6,8 +6,8 @@
     $database = "Laravel";
     $mysqli = new mysqli("localhost", $username, $password, $database);
 
-    // header('Content-type:application/xls');
-    // header('Content-Disposition: attachment; filename=usersList.xls');
+    header('Content-type:application/xls');
+    header('Content-Disposition: attachment; filename=usersList.xls');
     $dateActual = date('Y-m-d');
 
     $sql = "SELECT t.date_close, u.name, u.email, du.telefono, du.pais, b.b_name, t.monto AS montoT , t.p_intereses, t.m_intereses, t.saldo, s.concepto,  s.monto AS montoS FROM transactions t
