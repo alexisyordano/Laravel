@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bonos;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
@@ -25,5 +26,10 @@ class HomeController extends Controller
             return redirect()->to('login');
         }
         
+    }
+
+    public function download()
+    {
+        return redirect()->to('/Scripts/Report.php');
     }
 }

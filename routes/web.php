@@ -22,6 +22,9 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/home/download',  [HomeController::class, 'download'])
+        ->name('home.download');
+
         
 Route::get('/login',  [SessionController::class, 'create'])
         ->name('login.index');
