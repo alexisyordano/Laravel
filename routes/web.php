@@ -85,6 +85,9 @@ Route::get('/registers', [RegistersUserController::class, 'create'])
 Route::post('/registers', [RegistersUserController::class, 'store'])
         ->name('registers.store');
 
+Route::get('/preadd/{id}', [RegistersUserController::class, 'pregistro'])
+        ->name('registers.pregistro');
+
 //metodo show para listar los usuarios//
 Route::get('/show', [RegistersUserController::class, 'show'])
         ->name('registers.show');
@@ -187,5 +190,6 @@ Route::post('/showLines', [TransactionsController::class, 'block'])
 
 Route::get('/handle', [TransactionsController::class, 'handle'])
         ->name('transactions.handle');
+
 Route::get('/script2', [TransactionsController::class, 'script2'])
         ->name('transactions.script2');        

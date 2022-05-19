@@ -5,7 +5,7 @@
 <div id="wrapper">
 		<div class="vertical-align-wrap">
 			<div class="vertical-align-middle">
-				<div class="auth-box ">
+				<div class="auth-box" id="alt">
 					<div class="left">
 						<div class="content">
 							<div class="header">
@@ -47,7 +47,7 @@
 						<div class="overlay"></div>
 						<div class="content text">
 							<h1 class="heading">Bienvenido</h1>
-							<p><a style="color:#fff; cursor:pointer;" href="{{ route('registers.preregister') }}">Pre-Registro</a></p>
+							<p class="prueba"><a style="color:#fff; cursor:pointer;" href="{{ route('registers.preregister') }}">Pre-Registro</a></p>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -57,3 +57,31 @@
 	</div>
 	<!-- END WRAPPER -->
 @endsection
+
+<style>
+
+	@media only screen and (min-width : 300px) and (max-width : 730px){
+		.left{
+				position:relative;
+				margin-left: 0px;
+				margin-top: 0px;
+			}
+			#alt
+			{
+				position: relative;
+				top: -100px;
+				height: auto;
+			}
+			.logo{
+				position: relative;
+				top: -20px;
+			}
+
+			div.right{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+	}
+	
+</style>

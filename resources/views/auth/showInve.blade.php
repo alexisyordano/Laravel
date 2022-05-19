@@ -51,33 +51,35 @@
 												<input type="hidden" name="nombre_r" value="<?= $fila->nombre_r ?>">
 												<input type="hidden" name="anombre" value="<?= $fila->anombre ?>">
 												<input type="hidden" name="ncuenta" value="<?= $fila->ncuenta ?>">
-												<td><input name="name" type="text" readonly value="<?= $fila->name ?>"</td>
-												<td><input name="identificador" type="text" readonly value="<?= $fila->identificador ?>"</td>
-												<td><input name="email" type="text" readonly value="<?= $fila->email ?>"</td>
-												<td><input name="tele" type="text" readonly value="<?= $fila->telefono ?>"</td>
-												<td><input name="pais_i" type="text" readonly value="<?= $fila->pais ?>"</td>
-												<td><input name="modalidad" type="text" readonly value="<?= $fila->modalidad ?>"</td>
-												<td><input name="fecha_primer_pago" type="text" readonly value="<?= $fila->fecha_primer_pago ?>"</td>
-												<td><input name="monto" type="text" readonly value="<?= $fila->monto ?>"</td>
-												<td><input name="n_banco" type="text" readonly value="<?= $fila->n_banco ?>"</td>
-												<td><input name="t_cuenta" type="text" readonly value="<?= $fila->t_cuenta ?>"</td>
+												<input name="name" type="hidden" readonly value="<?= $fila->name ?>">
+												<td><?= $fila->name ?></td>
+												<td><input name="identificador" type="text" readonly value="<?= $fila->identificador ?>"></td>
+												<td><input name="email" type="text" readonly value="<?= $fila->email ?>"></td>
+												<td><input name="tele" type="text" readonly value="<?= $fila->telefono ?>"></td>
+												<td><input name="pais_i" type="text" readonly value="<?= $fila->pais ?>"></td>
+												<td><input name="modalidad" type="text" readonly value="<?= $fila->modalidad ?>"></td>
+												<td><input name="fecha_primer_pago" type="text" readonly value="<?= $fila->fecha_primer_pago ?>"></td>
+												<td><input name="monto" type="text" readonly value="<?= $fila->monto ?>"></td>
+												<td><input name="n_banco" type="text" readonly value="<?= $fila->n_banco ?>"></td>
+												<td><input name="t_cuenta" type="text" readonly value="<?= $fila->t_cuenta ?>"></td>
 												<td>
 												<a  class="btn btn-danger" href="{{ route('registers.deletepre', $fila->id_registro) }}" title="Eliminar">
 												<i class="fa fa-trash-o"></i>
 													Eliminar
 												</a>
 												<hr> 
-												<button type="submit" class="btn btn-info" title="Aprobar">
+												<a  class="btn btn-info" href="{{ route('registers.pregistro', $fila->id_registro) }}" title="Aprobar">
 												<i class="fa fa-check"></i>
 													Aprobar
-												</button>
+												</a>
 												</td>
 											 @endif
 											</tr>
 										@endforeach 
 										</tbody>
 									</table>
-                                 </div>
+                                  </div>
+                               </form>
                                 </div>
                               </div>
 							</div>

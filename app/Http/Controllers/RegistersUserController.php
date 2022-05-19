@@ -31,22 +31,19 @@ class RegistersUserController extends Controller
         
     }
 
-    public function store(Request $request)
-    {
-        $validator  = $request->validate([
-            'email' => 'required|unique:users',
-            'identificador' => 'required|unique:datos_users',
-        ]);
-
-        $id_rol = request('rol');
-
-        if($id_rol == "")
-        {
+    public function pregistro($id){
+             
+            $pre = DB::table('preregistros')->select('*')
+                        ->where('preregistros.id_registro', $id)
+                        ->first();
+            // echo '<pre>';
+            //     print_r($pre);
+            // echo '</pre>';
             try {
 
                 $user = User::create([
-                'name' => request('name'),
-                'email' => request('email'),
+                'name' => $pre->name,
+                'email' => $pre->email,
                 'password' => '1234',
                 'id_rol' => '2',
                 'bloqueo' => 0,
@@ -58,14 +55,14 @@ class RegistersUserController extends Controller
 
                     $date_first_pay = date("Y-m-d");
                     $datos_users = DatosUsers::create([
-                    'telefono' => request('tele'),
-                    'fecha_nacimiento' => request('fecha_n'),
-                    'nacionalidad' => request('nacion'),
-                    'pais' => request('pais_i'),
-                    'nombre_referido' => request('nombre_r'),
-                    'f_primer_pago' => $date_first_pay,
-                    'monto' => request('monto'),
-                    'identificador' => request('identificador'),
+                    'telefono' => $pre->telefono,
+                    'fecha_nacimiento' => $pre->fecha_nacimiento,
+                    'nacionalidad' => $pre->nacionalidad,
+                    'pais' => $pre->pais,
+                    'nombre_referido' =>  $pre->nombre_r,
+                    'f_primer_pago' => $pre->fecha_primer_pago,
+                    'monto' => $pre->monto,
+                    'identificador' => $pre->identificador,
                     'id_user' => $id,
                     ]);
 
@@ -77,7 +74,7 @@ class RegistersUserController extends Controller
                         //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
                         if ($dia == 6)
                         {
-                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
+                            $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
                         }
                         if ($dia == 0)
                         {
@@ -89,7 +86,7 @@ class RegistersUserController extends Controller
                         }
 
                         $sql = DB::table('bonos')->select('days')
-                                    ->where('id_bono', request('modalidad'))
+                                    ->where('id_bono', $pre->modalidad)
                                     ->get();
 
                         $dias = $sql[0]->days;                        
@@ -123,20 +120,25 @@ class RegistersUserController extends Controller
                         {
                             $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
+                        if ($dia == 2)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+                        }
 
                         $sql = DB::table('bonos')->select('interests')
-                                    ->where('id_bono', request('modalidad'))
+                                    ->where('id_bono', $pre->modalidad)
                                     ->get();
 
-                        $monto = request('monto');
+
+                        $monto = $pre->monto;
                         $p_intereses = $sql[0]->interests;
                         $m_intereses = $monto * ($p_intereses / 100);
                         $saldo = $monto + $m_intereses;
 
-                        $modalidad = request('modalidad');
+                        $modalidad = $pre->modalidad;
 
                         $line = Lines::create([
-                            'id_bono' => request('modalidad'),
+                            'id_bono' => $pre->modalidad,
                             'id_user' => $id,
                             'block' => 0,
                         ]);
@@ -150,10 +152,10 @@ class RegistersUserController extends Controller
                         try {
 
                             $banco = Banco::create([
-                                'name_banco' => request('n_banco'),
-                                'tipo_cuenta' => request('t_cuenta'),
-                                'titular' => request('anombre'),
-                                'numero' => request('ncuenta'),
+                                'name_banco' => $pre->n_banco,
+                                'tipo_cuenta' => $pre->t_cuenta,
+                                'titular' => $pre->anombre,
+                                'numero' => $pre->ncuenta,
                                 'id_user' => $id,     
                                 'code_transaction' => "Null",
                             ]);
@@ -163,14 +165,14 @@ class RegistersUserController extends Controller
                                 $transaciones = Transactions::create([
                                     'id_user' => $id,
                                     'id_solicitud' => 0,
-                                    'id_bono' => request('modalidad'),
+                                    'id_bono' => $pre->modalidad,
                                     'cicle' => 1,
                                     'dias' => $dias,     
                                     'date_mov' => $fecha,
                                     'date_sistema' => $fecha2,
                                     'date_close' => $date_close,
                                     'date_pay' => $date_pay,
-                                    'monto' => request('monto'),
+                                    'monto' => $pre->monto,
                                     'p_intereses' => $p_intereses,
                                     'm_intereses' => $m_intereses,
                                     'saldo' => $saldo,
@@ -180,7 +182,7 @@ class RegistersUserController extends Controller
 
                                 if($banco == TRUE)
                                 {
-                                    $email = request('email');
+                                    $email = $pre->email;
                                     $creado = 1;
                                     DB::update('update preregistros set creado = ? where email = ?',[$creado,$email]); 
                                 }
@@ -203,10 +205,18 @@ class RegistersUserController extends Controller
 
                 } catch (\Exception $e) {
                 return $e->getMessage();
-            }       
-        }
-        else
-        {
+            }   
+            
+           return redirect()->to('inversionita')->with('success','Registro creado satisfactoriamente');
+       }
+
+    public function store(Request $request)
+    {
+        $validator  = $request->validate([
+            'email' => 'required|unique:users',
+            'identificador' => 'required|unique:datos_users',
+        ]);
+        
             try {
 
                 $user = User::create([
@@ -284,6 +294,10 @@ class RegistersUserController extends Controller
                         {
                             $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
                         }
+                        if ($dia == 2)
+                        {
+                            $date_pay = date("Y-m-d",strtotime($date_close."+ 6 days"));
+                        }
 
                         $monto = request('monto');
                         $p_intereses = request('p_intereses');
@@ -354,7 +368,7 @@ class RegistersUserController extends Controller
                 } catch (\Exception $e) {
                 return $e->getMessage();
             }
-        }    
+
         return redirect()->to('registers')->with('success','Registro creado satisfactoriamente');
     }
 
