@@ -231,7 +231,8 @@ class RegistersUserController extends Controller
 
                 try {
 
-                    $date_first_pay = date("Y-m-d");
+                    // $date_first_pay = date("Y-m-d");
+                    $date_first_pay = request('fecha_primer_pago');
                     $datos_users = DatosUsers::create([
                     'telefono' => request('tele'),
                     'fecha_nacimiento' => request('fecha_n'),

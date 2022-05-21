@@ -81,10 +81,20 @@
                                             'transactions.solicitud' => '1',
                                          ]));
                 if($update == TRUE)
-                {
+                {                    
+
                     $info = Transactions::select('*')
                             ->where('id', $id_line)
                             ->first();
+                    
+                    $reinversion = Solicitudes::create([
+                        'id_line' => $info->id_line,
+                        'id_transaction' => $info->id,
+                        'monto' => $info->saldo,
+                        'concepto' => 'Reinvertir',
+                        'estatus' => 'A',
+                        'tipo' => 'RI',
+                    ]);
 
                     $fecha = $info->date_pay;
                     $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
@@ -92,15 +102,15 @@
                     //Cuando el movimiento es en miercoles, jueves o viernes debe caer en lunes, se suman 5 dias
                     if ($dia == 6)
                     {
-                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
                     }
                     if ($dia == 0)
                     {
-                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
                     }
                     if ($dia == 1)
                     {
-                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
+                    $fecha2 = date("Y-m-d",strtotime($fecha."+ 5 days"));
                     }
 
                     $dias = $info->dias;
@@ -156,7 +166,7 @@
                     'solicitud' => '0',
                     ]);
 
-                    $vista = 'estado/'.strval($id_line);
+                    $vista = 'estado/'.strval($info->id_line);
                     return redirect()->to($vista);
                 }                
             }
@@ -335,70 +345,70 @@
             return view('auth.showLines', compact('list'));
         }
 
-        public function handle()
-        { 
-            $date = date('Y-m-d');
-            echo $date2 = date("Y-m-d",strtotime($date."+ 19 days"));      
-            $handle = fopen('export.xls', 'w');
+        // public function handle()
+        // { 
+        //     $date = date('Y-m-d');
+        //     echo $date2 = date("Y-m-d",strtotime($date."+ 19 days"));      
+        //     $handle = fopen('export.xls', 'w');
 
-            $data = DB::table('users as u')
-                        ->select('u.name', 's.monto', 's.concepto', 'b.b_name', 's.created_at')
-                        ->join('lines as l', 'l.id_line', '=', 'u.id')
-                        ->join('transactions as t', 't.id_line', '=', 'l.id_line')
-                        ->join('bonos as b', 'b.id_bono', '=', 'l.id_bono')
-                        ->join('solicitudes as s', 's.id_transaction', '=', 't.id')
-                        ->where('u.bloqueo', 0)
-                        ->where('l.block', 0)
-                        ->where('t.date_close', $date2)
-                        ->where('s.estatus', 'P')
-                        ->get();
-            $array = $data->toArray();
+        //     $data = DB::table('users as u')
+        //                 ->select('u.name', 's.monto', 's.concepto', 'b.b_name', 's.created_at')
+        //                 ->join('lines as l', 'l.id_line', '=', 'u.id')
+        //                 ->join('transactions as t', 't.id_line', '=', 'l.id_line')
+        //                 ->join('bonos as b', 'b.id_bono', '=', 'l.id_bono')
+        //                 ->join('solicitudes as s', 's.id_transaction', '=', 't.id')
+        //                 ->where('u.bloqueo', 0)
+        //                 ->where('l.block', 0)
+        //                 ->where('t.date_close', $date2)
+        //                 ->where('s.estatus', 'P')
+        //                 ->get();
+        //     $array = $data->toArray();
             
-            foreach ($array as $item) 
-            {
-                print_r($info = (array) $item);
-                fputcsv($handle, $info, ';');
-            }
-            fclose($handle);
+        //     foreach ($array as $item) 
+        //     {
+        //         print_r($info = (array) $item);
+        //         fputcsv($handle, $info, ';');
+        //     }
+        //     fclose($handle);
 
-        }
+        // }
 
-        public function script2()
-        { 
-            echo $date = date('2022-04-26');            
-
-            $data = DB::table('users as u')
-                        ->select(
-                            't.id_user',
-                            't.id_solicitud',
-                            't.id_bono',
-                            't.cicle',
-                            't.dias',
-                            't.date_mov',
-                            't.date_sistema',
-                            't.date_close',
-                            't.date_pay',
-                            't.monto',
-                            't.p_intereses',
-                            't.m_intereses',
-                            't.saldo',
-                            't.id_line',
-                            't.solicitud'
-                        )
-                        ->join('lines as l', 'l.id_line', '=', 'u.id')
-                        ->join('transactions as t', 't.id_line', '=', 'l.id_line')
-                        ->where('u.bloqueo', 0)
-                        ->where('l.block', 0)
-                        ->where('t.date_pay', $date)
-                        ->get();
-            $array = $data->toArray();
+        // public function script2()
+        // { 
+        //     echo $date = date('2022-04-26');            
+   
+        //     $data = DB::table('users as u')
+        //                 ->select(
+        //                     't.id_user',
+        //                     't.id_solicitud',
+        //                  't.id_bono',
+        //                     't.cicle',
+        //                     't.dias',
+        //                     't.date_mov',
+        //                     't.date_sistema',
+        //                     't.date_close',
+        //                     't.date_pay',
+        //                     't.monto',
+        //                     't.p_intereses',
+        //                     't.m_intereses',
+        //                     't.saldo',
+        //                     't.id_line',
+        //                     't.solicitud'
+        //                 )
+        //                 ->join('lines as l', 'l.id_line', '=', 'u.id')
+        //                 ->join('transactions as t', 't.id_line', '=', 'l.id_line')
+        //                 ->where('u.bloqueo', 0)
+        //                 ->where('l.block', 0)
+        //                 ->where('t.date_pay', $date)
+        //                 ->get();
+        //     $array = $data->toArray();
             
-            foreach ($array as $item) 
-            {
-                echo "<pre>";
-                print_r($info = (array) $item);
-                echo "</pre>";
-            }
-        }
+        //     foreach ($array as $item) 
+        //     {
+        //         echo "<pre>";
+        //         print_r($info = (array) $item);
+        //         echo "</pre>";
+        //     }
+        // }
     }
 ?>
