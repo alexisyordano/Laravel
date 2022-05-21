@@ -1,8 +1,8 @@
 <?php
     //Conexion a la Db//
-    $username = "root";
+    $username = "id18801359_root";
     $password = "";
-    $database = "finanzasdevs";
+    $database = "id18801359_finanzasdevs";
     $mysqli = new mysqli("localhost", $username, $password, $database);
 
     //Busco usuarios activos

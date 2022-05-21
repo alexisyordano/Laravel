@@ -55,8 +55,8 @@ class SessionController extends Controller
     {
         if(Auth::check())
         {
-            $inversiones = DB::table('lines')->select('*')
-            ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
+            $inversiones = DB::table('dblines')->select('*')
+            ->join('bonos', 'bonos.id_bono', '=', 'dblines.id_bono')                                
             ->where('id_user', auth()->id())
             ->where('lines.block' , '0')
             ->get();

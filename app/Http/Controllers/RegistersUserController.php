@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Bonos;
 use App\Models\Banco;
-use App\Models\Lines;
+use App\Models\Dblines;
 use App\Models\DatosUsers;
 use App\Models\Transactions;
 use App\Models\Preregistros;
@@ -137,13 +137,13 @@ class RegistersUserController extends Controller
 
                         $modalidad = $pre->modalidad;
 
-                        $line = Lines::create([
+                        $line = Dblines::create([
                             'id_bono' => $pre->modalidad,
                             'id_user' => $id,
                             'block' => 0,
                         ]);
 
-                        $id_line = Lines::select('id_line')
+                        $id_line = Dblines::select('id_line')
                                         ->where('id_bono', $modalidad)
                                         ->where ('id_user', $id)
                                         ->first()
@@ -307,13 +307,13 @@ class RegistersUserController extends Controller
 
                         $modalidad = request('id_bono');
 
-                        $line = Lines::create([
+                        $line = Dblines::create([
                             'id_bono' => request('id_bono'),
                             'id_user' => $id,
                             'block' => 0,
                         ]);                        
                         
-                        $id_line = Lines::select('id_line')
+                        $id_line = Dblines::select('id_line')
                                     ->where('id_bono', $modalidad)
                                     ->where ('id_user', $id)
                                     ->first()
@@ -485,13 +485,13 @@ class RegistersUserController extends Controller
 
                 $modalidad = request('id_bono');
                 $id = request('id');
-                $line = Lines::create([
+                $line = Dblines::create([
                     'id_bono' => request('id_bono'),
                     'id_user' => request('id'),
                     'block' => 0,
                 ]);
 
-                $id_line = Lines::select('id_line')
+                $id_line = Dblines::select('id_line')
                                     ->where('id_bono', $modalidad)
                                     ->where ('id_user', $id)
                                     ->first()

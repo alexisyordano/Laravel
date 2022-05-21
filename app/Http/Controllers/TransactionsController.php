@@ -6,7 +6,7 @@
     use App\Models\User;
     use App\Models\Solicitudes;
     use App\Models\Transactions;
-    use App\Models\Lines;
+    use App\Models\Dblines;
     use Illuminate\Support\Facades\DB;
 /**/
     Class TransactionsController extends Controller 
@@ -29,16 +29,16 @@
         {            
             if(Auth::check())
             {
-                $inversiones = DB::table('lines')->select('*')
-                                    ->join('bonos', 'bonos.id_bono', '=', 'lines.id_bono')                                
+                $inversiones = DB::table('dblines')->select('*')
+                                    ->join('bonos', 'bonos.id_bono', '=', 'dblines.id_bono')                                
                                     ->where('id_user', auth()->id())
-                                    ->where('lines.block' , '0')
+                                    ->where('dblines.block' , '0')
                                     ->get();
 
                 $transacciones = DB::table('transactions')->select('*')
                                 ->join('bonos', 'bonos.id_bono', '=', 'transactions.id_bono')
-                                ->join('lines', 'lines.id_line', '=', 'transactions.id_line')
-                                ->where('lines.block' , '0')
+                                ->join('dblines', 'dblines.id_line', '=', 'transactions.id_line')
+                                ->where('dblines.block' , '0')
                                 ->where('transactions.id_user', '=', auth()->id())
                                 ->where('transactions.id_line', '=', $id)
                                 ->orderBy('transactions.date_sistema', 'asc')
@@ -58,7 +58,7 @@
             if(Auth::check())
             {
                 $solicitudes = Solicitudes::select('solicitudes.id_sol','u.name', 'solicitudes.monto', 'solicitudes.concepto', 'solicitudes.created_at')
-                ->join('lines as l', 'l.id_line', '=', 'solicitudes.id_line')
+                ->join('dblines as l', 'l.id_line', '=', 'solicitudes.id_line')
                 ->join('users as u', 'u.id', '=', 'l.id_user')
                 ->where('solicitudes.estatus', 'P')
                 ->get();
@@ -75,7 +75,7 @@
             try 
             {
                 $update = Transactions::where('transactions.id', $id_line)
-                                        ->join('lines', 'lines.id_line', '=', 'transactions.id_line')
+                                        ->join('dblines', 'dblines.id_line', '=', 'transactions.id_line')
                                         ->where('lines.block' , '0')
                                         ->update(([
                                             'transactions.solicitud' => '1',
@@ -273,7 +273,7 @@
                          ]);
 
             $solicitudes = Solicitudes::select('solicitudes.id_sol','u.name', 'solicitudes.monto', 'solicitudes.concepto', 'solicitudes.created_at')
-                ->join('lines as l', 'l.id_line', '=', 'solicitudes.id_line')
+                ->join('dblines as l', 'l.id_line', '=', 'solicitudes.id_line')
                 ->join('users as u', 'u.id', '=', 'l.id_user')
                 ->where('solicitudes.estatus', 'P')
                 ->get();
@@ -310,9 +310,9 @@
 
         public function showLines()
         {
-            $list = Lines::select('*')
-                            ->join('users as u', 'u.id', '=', 'lines.id_user')
-                            ->join('bonos as b', 'b.id_bono', '=', 'lines.id_bono')
+            $list = Dblines::select('*')
+                            ->join('users as u', 'u.id', '=', 'dblines.id_user')
+                            ->join('bonos as b', 'b.id_bono', '=', 'dblines.id_bono')
                             ->get();
                 
             return view('auth.showLines', compact('list'));
@@ -323,7 +323,7 @@
             
             if (request('Bloquear'))
             {
-                $update = Lines::where('id_line', request('id_line'))
+                $update = Dblines::where('id_line', request('id_line'))
                                         ->update([
                                             'block' => '1',
                                          ]);
@@ -331,84 +331,18 @@
             }
             if (request('Desbloquear'))
             {
-                $update = Lines::where('id_line', request('id_line'))
+                $update = Dblines::where('id_line', request('id_line'))
                                         ->update([
                                             'block' => '0',
                                          ]);
             }
 
-            $list = Lines::select('*')
-                            ->join('users as u', 'u.id', '=', 'lines.id_user')
-                            ->join('bonos as b', 'b.id_bono', '=', 'lines.id_bono')
+            $list = Dblines::select('*')
+                            ->join('users as u', 'u.id', '=', 'dblines.id_user')
+                            ->join('bonos as b', 'b.id_bono', '=', 'dblines.id_bono')
                             ->get();
 
             return view('auth.showLines', compact('list'));
         }
-
-        // public function handle()
-        // { 
-        //     $date = date('Y-m-d');
-        //     echo $date2 = date("Y-m-d",strtotime($date."+ 19 days"));      
-        //     $handle = fopen('export.xls', 'w');
-
-        //     $data = DB::table('users as u')
-        //                 ->select('u.name', 's.monto', 's.concepto', 'b.b_name', 's.created_at')
-        //                 ->join('lines as l', 'l.id_line', '=', 'u.id')
-        //                 ->join('transactions as t', 't.id_line', '=', 'l.id_line')
-        //                 ->join('bonos as b', 'b.id_bono', '=', 'l.id_bono')
-        //                 ->join('solicitudes as s', 's.id_transaction', '=', 't.id')
-        //                 ->where('u.bloqueo', 0)
-        //                 ->where('l.block', 0)
-        //                 ->where('t.date_close', $date2)
-        //                 ->where('s.estatus', 'P')
-        //                 ->get();
-        //     $array = $data->toArray();
-            
-        //     foreach ($array as $item) 
-        //     {
-        //         print_r($info = (array) $item);
-        //         fputcsv($handle, $info, ';');
-        //     }
-        //     fclose($handle);
-
-        // }
-
-        // public function script2()
-        // { 
-        //     echo $date = date('2022-04-26');            
-   
-        //     $data = DB::table('users as u')
-        //                 ->select(
-        //                     't.id_user',
-        //                     't.id_solicitud',
-        //                  't.id_bono',
-        //                     't.cicle',
-        //                     't.dias',
-        //                     't.date_mov',
-        //                     't.date_sistema',
-        //                     't.date_close',
-        //                     't.date_pay',
-        //                     't.monto',
-        //                     't.p_intereses',
-        //                     't.m_intereses',
-        //                     't.saldo',
-        //                     't.id_line',
-        //                     't.solicitud'
-        //                 )
-        //                 ->join('lines as l', 'l.id_line', '=', 'u.id')
-        //                 ->join('transactions as t', 't.id_line', '=', 'l.id_line')
-        //                 ->where('u.bloqueo', 0)
-        //                 ->where('l.block', 0)
-        //                 ->where('t.date_pay', $date)
-        //                 ->get();
-        //     $array = $data->toArray();
-            
-        //     foreach ($array as $item) 
-        //     {
-        //         echo "<pre>";
-        //         print_r($info = (array) $item);
-        //         echo "</pre>";
-        //     }
-        // }
     }
 ?>
