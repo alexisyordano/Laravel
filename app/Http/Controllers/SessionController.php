@@ -58,7 +58,7 @@ class SessionController extends Controller
             $inversiones = DB::table('dblines')->select('*')
             ->join('bonos', 'bonos.id_bono', '=', 'dblines.id_bono')                                
             ->where('id_user', auth()->id())
-            ->where('lines.block' , '0')
+            ->where('dblines.block' , '0')
             ->get();
             return view('auth.profile', compact('inversiones'));
         }

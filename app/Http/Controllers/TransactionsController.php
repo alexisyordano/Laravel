@@ -76,7 +76,7 @@
             {
                 $update = Transactions::where('transactions.id', $id_line)
                                         ->join('dblines', 'dblines.id_line', '=', 'transactions.id_line')
-                                        ->where('lines.block' , '0')
+                                        ->where('dblines.block' , '0')
                                         ->update(([
                                             'transactions.solicitud' => '1',
                                          ]));
