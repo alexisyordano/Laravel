@@ -19,7 +19,8 @@
 							<div class="panel-heading">
 								<h3 class="panel-title">Solicitudes pendientes</h3>
 							</div>
-							<div class="panel-body">																	
+							<div class="panel-body">
+							<div class="table-responsive">																	
 								<table id="table" class="table table-striped">
 									<thead>
 										<tr>
@@ -47,7 +48,8 @@
 										</form>								
 										@endforeach											
 									</tbody>
-								</table>								
+								</table>
+                              </div>								
 							</div>
 						</div>
 					</div>

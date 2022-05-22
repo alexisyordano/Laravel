@@ -32,14 +32,11 @@ class RegistersUserController extends Controller
     }
 
     public function pregistro($id){
-             
+
             $pre = DB::table('preregistros')->select('*')
                         ->where('preregistros.id_registro', $id)
                         ->first();
-            // echo '<pre>';
-            //     print_r($pre);
-            // echo '</pre>';
-            try {
+             try {
 
                 $user = User::create([
                 'name' => $pre->name,
@@ -644,8 +641,18 @@ class RegistersUserController extends Controller
         return view('auth.preregisters', compact('bonos'));
     }
 
-    public function InsertRegister()
+    public function InsertRegister(Request $request)
     {
+        $messages=[
+            'email.unique' => 'Este correo ya esta registrado',
+            'identificador.unique' => 'El identificador ya existe',
+        ];
+
+        $validator  = $request->validate([
+            'email' => 'required|unique:preregistros',
+            'identificador' => 'required|unique:preregistros',
+        ],$messages);
+
         $pre = Preregistros::create([
             'name' => request('name'),
             'email' => request('email'),

@@ -23,54 +23,56 @@
                                     @endif
 
                                     <div id="refres">
-									<table id="table" class="table table-striped table-bordered">
-										<thead>
-											<tr>
-												<th>Nombre</th>
-												<th>Email</th>
-												<th>Acciones</th>
-											</tr>
-										</thead>
-										<tbody>
-                                        @foreach($users as $user)
-											<tr>
-												<td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
-												<td>
-													<a class="btn btn-primary btn-sm" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
-														data-attr="{{ route('registers.edit', $user) }}" title="Actualizar">
-														Actualizar
-														<i class="fa fa-refresh"></i>
-													</a>
-                                                    <a  class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('registers.deleteusers', $user->id) }}" title="Eliminar">
-                                                        <i class="fa fa-trash-o"></i>
-                                                        Eliminar
-                                                    </a>
-                                                    <a  class="btn btn-success btn-sm" data-toggle="modal" id="smallButtonPass" data-target="#smallModalPass" data-attr="{{ route('registers.password', $user) }}" title="Password">
-                                                        <i class="fa fa-solid fa-lock"></i>
-                                                        Cambiar clave
-                                                    </a>
-                                                    <a  class="btn btn-info btn-sm" href="{{route('registers.add', $user->id)}}" title="Agregar">
-                                                        <i class="fa fa-solid fa-plus"></i>
-                                                        Añadir
-                                                    </a>
-                                                    
-                                                    @if($user->bloqueo == 0)
-                                                        <button class="btn btn-warning btn-sm"  type="submit" id="{{$user->id}}"  value="{{route('registers.bloqueo', $user->id)}}">
-                                                            <i class="fa fa-solid fa-lock"></i> Bloquear    
-                                                        </button>
-                                                    @endif
+                                    <div class="table-responsive">
+                                        <table id="table" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th width="20%">Nombre</th>
+                                                    <th>Email</th>
+                                                    <th width="100%">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($users as $user)
+                                                <tr>
+                                                    <td>{{ $user->name }}</td>
+                                                    <td>{{ $user->email }}</td>
+                                                    <td>
+                                                        <a class="btn btn-primary btn-sm" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
+                                                            data-attr="{{ route('registers.edit', $user) }}" title="Actualizar">
+                                                            Actualizar
+                                                            <i class="fa fa-refresh"></i>
+                                                        </a>
+                                                        <a  class="btn btn-danger btn-sm" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('registers.deleteusers', $user->id) }}" title="Eliminar">
+                                                            <i class="fa fa-trash-o"></i>
+                                                            Eliminar
+                                                        </a>
+                                                        <a  class="btn btn-success btn-sm" data-toggle="modal" id="smallButtonPass" data-target="#smallModalPass" data-attr="{{ route('registers.password', $user) }}" title="Password">
+                                                            <i class="fa fa-solid fa-lock"></i>
+                                                            Cambiar clave
+                                                        </a>
+                                                        <a  class="btn btn-info btn-sm" href="{{route('registers.add', $user->id)}}" title="Agregar">
+                                                            <i class="fa fa-solid fa-plus"></i>
+                                                            Añadir
+                                                        </a>
+                                                        
+                                                        @if($user->bloqueo == 0)
+                                                            <button class="btn btn-warning btn-sm"  type="submit" id="{{$user->id}}"  value="{{route('registers.bloqueo', $user->id)}}">
+                                                                <i class="fa fa-solid fa-lock"></i> Bloquear    
+                                                            </button>
+                                                        @endif
 
-                                                    @if($user->bloqueo != 0)
-                                                        <button class="btn btn-default btn-sm" type="submit" id="{{$user->id}}" value="{{route('registers.activar', $user->id)}}">
-                                                            <i class="fa fa-solid fa-check"></i> Activar    
-                                                        </button>
-                                                    @endif
-											    </td>
-											</tr>
-                                        @endforeach 
-										</tbody>
-									</table>
+                                                        @if($user->bloqueo != 0)
+                                                            <button class="btn btn-default btn-sm" type="submit" id="{{$user->id}}" value="{{route('registers.activar', $user->id)}}">
+                                                                <i class="fa fa-solid fa-check"></i> Activar    
+                                                            </button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach 
+                                            </tbody>
+                                        </table>
+                                   </div>
                                   </div>
 							    </div>
                             </div>

@@ -20,38 +20,40 @@
                                             <i class="fa fa-check-circle"></i> {{ session()->get('success') }}
                                         </div>
                                     @endif
-									<table id="table" class="table table-striped table-bordered">
-										<thead>
-											<tr>
-												<th>Nombre</th>
-												<th>Dias</th>
-												<th>Intereses</th>
-                                                <th>Ciclos</th>
-                                                <th>Acciones</th>
-											</tr>
-										</thead>
-										<tbody>
-                                        @foreach($bonos as $bono)
-											<tr>
-												<td>{{ $bono->b_name }}</td>
-                                                <td>{{ $bono->days }}</td>                                                
-                                                <td>{{ $bono->interests }}</td>
-                                                <td>{{ $bono->cicles }}</td>
-												<td>
-													<a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
-														data-attr="{{ route('bonos.edit', $bono->id_bono) }}" title="Actualizar">
-														Actualizar
-														<i class="fa fa-refresh"></i>
-													</a>
-                                                    <a  class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('bonos.delete', $bono->id_bono) }}" title="Eliminar">
-                                                        <i class="fa fa-trash-o"></i>
-                                                        Eliminar
-                                                    </a>
-											   </td>
-											</tr>
-                                        @endforeach 
-										</tbody>
-									</table>
+                                    <div class="table-responsive">
+                                        <table id="table" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Dias</th>
+                                                    <th>Intereses</th>
+                                                    <th>Ciclos</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($bonos as $bono)
+                                                <tr>
+                                                    <td>{{ $bono->b_name }}</td>
+                                                    <td>{{ $bono->days }}</td>                                                
+                                                    <td>{{ $bono->interests }}</td>
+                                                    <td>{{ $bono->cicles }}</td>
+                                                    <td>
+                                                        <a class="btn btn-primary" data-toggle="modal" id="mediumButton" data-target="#mediumModal"
+                                                            data-attr="{{ route('bonos.edit', $bono->id_bono) }}" title="Actualizar">
+                                                            Actualizar
+                                                            <i class="fa fa-refresh"></i>
+                                                        </a>
+                                                        <a  class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('bonos.delete', $bono->id_bono) }}" title="Eliminar">
+                                                            <i class="fa fa-trash-o"></i>
+                                                            Eliminar
+                                                        </a>
+                                                </td>
+                                                </tr>
+                                            @endforeach 
+                                            </tbody>
+                                        </table>
+                                    </div>
 								</div>
 							</div>
 							<!-- END TABLE STRIPED -->
