@@ -18,6 +18,7 @@ class SessionController extends Controller
 
     public function store(Request $request, User $user)
     {
+        date_default_timezone_set('America/Lima');
         
         //DB::connection()->enableQueryLog();
         //$queries = DB::getQueryLog();
@@ -53,6 +54,7 @@ class SessionController extends Controller
 
     public function profile()
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $inversiones = DB::table('dblines')->select('*')
@@ -71,7 +73,7 @@ class SessionController extends Controller
 
     public function changePass(Request $request)
     {
-        
+        date_default_timezone_set('America/Lima');
         $pass = Hash::make($request->input('password'));
         $id = $request->input('id');
         DB::update('update users set password = ? where id = ?',[$pass,$id]);
@@ -80,6 +82,7 @@ class SessionController extends Controller
 
     public function destroy(Request $request)
     {
+        date_default_timezone_set('America/Lima');
         auth()->logout();
         return redirect()->to('login');
     }

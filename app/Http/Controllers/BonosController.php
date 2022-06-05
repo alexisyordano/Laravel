@@ -44,6 +44,7 @@ class BonosController extends Controller
      */
     public function store(Request $request)
     {
+        date_default_timezone_set('America/Lima');
         $messages=[
             'b_name.unique' => 'Este bono ya existe',
         ];
@@ -76,6 +77,7 @@ class BonosController extends Controller
      */
     public function show()
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $bonos = Bonos::all();
@@ -90,6 +92,7 @@ class BonosController extends Controller
 
     public function edit($id)
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $bono = Bonos::select('*')->where('id_bono', $id)->first();
@@ -110,6 +113,7 @@ class BonosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        date_default_timezone_set('America/Lima');
         $name = $request->input('b_name');
         $days = $request->input('days');
         $interests = $request->input('interests');
@@ -119,6 +123,7 @@ class BonosController extends Controller
 
     public function delete($id)
     {
+        date_default_timezone_set('America/Lima');
         $bono = Bonos::select('*')->where('id_bono', $id)->first();
         return view('bonos.delete', compact('bono'));
     }
@@ -131,6 +136,7 @@ class BonosController extends Controller
      */
     public function destroy($id)
     {
+        date_default_timezone_set('America/Lima');
         $bono = Bonos::where('id_bono', $id)->delete();
         return redirect()->to('bonos')->with('success', 'Bono Eliminado');
     }

@@ -18,6 +18,7 @@ class RegistersUserController extends Controller
 {
     public function create()
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $role = Role::all();
@@ -31,8 +32,9 @@ class RegistersUserController extends Controller
         
     }
 
-    public function pregistro($id){
-
+    public function pregistro($id)
+    {
+        date_default_timezone_set('America/Lima');
             $pre = DB::table('preregistros')->select('*')
                         ->where('preregistros.id_registro', $id)
                         ->first();
@@ -126,7 +128,6 @@ class RegistersUserController extends Controller
                                     ->where('id_bono', $pre->modalidad)
                                     ->get();
 
-
                         $monto = $pre->monto;
                         $p_intereses = $sql[0]->interests;
                         $m_intereses = $monto * ($p_intereses / 100);
@@ -205,10 +206,11 @@ class RegistersUserController extends Controller
             }   
             
            return redirect()->to('inversionita')->with('success','Registro creado satisfactoriamente');
-       }
+    }
 
     public function store(Request $request)
     {
+        date_default_timezone_set('America/Lima');
         $validator  = $request->validate([
             'email' => 'required|unique:users',
             'identificador' => 'required|unique:datos_users',
@@ -313,6 +315,7 @@ class RegistersUserController extends Controller
                         $id_line = Dblines::select('id_line')
                                     ->where('id_bono', $modalidad)
                                     ->where ('id_user', $id)
+                                    ->orderBy('created_at', 'desc')
                                     ->first()
                                     ->id_line;
 
@@ -372,6 +375,7 @@ class RegistersUserController extends Controller
 
     public function add($id)
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {   $id = $id;
             $bonos = Bonos::all();
@@ -385,6 +389,7 @@ class RegistersUserController extends Controller
 
     public function bloqueo(Request $request, $id)
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {   
             $id = $id;
@@ -403,6 +408,7 @@ class RegistersUserController extends Controller
 
     public function activar(Request $request, $id)
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {   
             $id = $id;
@@ -421,8 +427,9 @@ class RegistersUserController extends Controller
 
     public function InsertAdd(Request $request)
     {
+        date_default_timezone_set('America/Lima');
         try {
-            $date_first_pay = date("Y-m-d");
+            $date_first_pay = request("fecha_primer_pago");
             $fecha = $date_first_pay;
             $fecha2 = date("Y-m-d",strtotime($fecha."+ 3 days"));
             $dia = date("w", strtotime($fecha2));
@@ -491,6 +498,7 @@ class RegistersUserController extends Controller
                 $id_line = Dblines::select('id_line')
                                     ->where('id_bono', $modalidad)
                                     ->where ('id_user', $id)
+                                    ->orderBy('created_at', 'desc')
                                     ->first()
                                     ->id_line;
                         
@@ -543,13 +551,14 @@ class RegistersUserController extends Controller
 
     public function select($id)
     {
-       
+        date_default_timezone_set('America/Lima');
        $bono = Bonos::select('*')->where('id_bono', $id)->first();
        return json_encode($bono);  
     }
 
     public function show()
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $users = User::all();
@@ -563,6 +572,7 @@ class RegistersUserController extends Controller
 
     public function edit(Request $request, User $user)
     { 
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $id = $user->id; 
@@ -583,7 +593,7 @@ class RegistersUserController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        date_default_timezone_set('America/Lima');
         $UserName = $name = $request->input('name');
 
         $name = $request->input('name');
@@ -625,6 +635,7 @@ class RegistersUserController extends Controller
 
     public function search(Request $request)
     {
+        date_default_timezone_set('America/Lima');
         $results = User::where('name', 'LIKE', "%{$request->search}%")->get();
         $response = array();
         foreach($results as $results)
@@ -637,22 +648,27 @@ class RegistersUserController extends Controller
 
     public function preregister()
     {
+        date_default_timezone_set('America/Lima');
         $bonos = Bonos::limit(1)->get();
         return view('auth.preregisters', compact('bonos'));
     }
 
     public function InsertRegister(Request $request)
     {
+        date_default_timezone_set('America/Lima');
+        
         $messages=[
-            'email.unique' => 'Este correo ya esta registrado',
-            'identificador.unique' => 'El identificador ya existe',
+            'identificador.unique' => 'La cédula o el email ya existe',
         ];
 
         $validator  = $request->validate([
-            'email' => 'required|unique:preregistros',
             'identificador' => 'required|unique:preregistros',
         ],$messages);
 
+        $validator  = $request->validate([
+            'email' => 'required|unique:preregistros',
+        ],$messages);
+        
         $pre = Preregistros::create([
             'name' => request('name'),
             'email' => request('email'),
@@ -677,6 +693,7 @@ class RegistersUserController extends Controller
 
     public function inversionita()
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $inv = Preregistros::all();
@@ -690,6 +707,7 @@ class RegistersUserController extends Controller
 
     public function deletepre($id)
     {
+        date_default_timezone_set('America/Lima');
         $inv = Preregistros::where('id_registro', $id)->delete();
         return redirect()->to('inversionita')->with('success', 'Inversionita Eliminado');
     }
@@ -697,12 +715,14 @@ class RegistersUserController extends Controller
 
     public function delete($id)
     {
+        date_default_timezone_set('America/Lima');
         $user = User::find($id);
         return view('auth.delete', compact('user'));
     }
 
     public function destroy($id)
     {
+        date_default_timezone_set('America/Lima');
         $user = User::find($id);
         $user->delete();
         return redirect()->to('show')->with('success', 'Usuario Eliminado');
@@ -715,6 +735,7 @@ class RegistersUserController extends Controller
 
     public function updatePass(Request $request, User $user)
     {
+        date_default_timezone_set('America/Lima');
         $request->validate([
             'password' => 'required',
         ]);

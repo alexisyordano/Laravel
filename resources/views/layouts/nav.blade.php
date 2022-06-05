@@ -13,7 +13,16 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-question-circle"></i> <span>Ayuda</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Descargar Guia</a></li>
+								@if( Auth::user()->id_rol  == '1' )	
+									<li>
+										<a href="./GuiaAdmin.pdf" target="_blanck">Descargar Guia</a>
+									</li>
+								@endif
+								@if( Auth::user()->id_rol  == '2' )	
+									<li>
+										<a href="./Guia.pdf" target="_blanck">Descargar Guia</a>
+									</li>
+								@endif
 							</ul>
 						</li>
 						<li class="dropdown">

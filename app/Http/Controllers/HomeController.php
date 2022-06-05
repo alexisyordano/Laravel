@@ -12,6 +12,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        date_default_timezone_set('America/Lima');
         if(Auth::check())
         {
             $inversiones = DB::table('dblines')->select('*')
@@ -30,6 +31,6 @@ class HomeController extends Controller
 
     public function download()
     {
-        return redirect()->to('/Scripts/Report.php');
+        return redirect()->to('/Report.php');
     }
 }

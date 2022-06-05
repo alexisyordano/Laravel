@@ -110,7 +110,7 @@
                                                     </div> 
 
                                                     <div class="col-md-6">
-                                                        <input type="text" name="identificador" required id="identificador" class="form-control" placeholder="DNI/Cédula/Pasaporte">
+                                                        <input type="number" name="identificador" required id="identificador" class="form-control" placeholder="DNI/Cédula/Pasaporte">
                                                         <br>
                                                     </div>
 

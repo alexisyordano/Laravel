@@ -27,7 +27,7 @@
 						    </li>
 							<li><a href="{{ route('transactions.solicitudes') }}" class="active"><i class="lnr lnr-cog"></i><span>Solicitudes</span></a></li>
 							<li><a href="{{ route('transactions.showLines') }}" class="active"><i class="lnr lnr-cog"></i><span>Lineas</span></a></li>
-							<li><a href="{{ route('home.download') }}" class="active"><i class="lnr lnr-download"></i><span>Desacargar Reporte</span></a></li>
+							<li><a href="{{ route('home.download') }}" class="active"><i class="lnr lnr-download"></i><span>Descargar Reporte</span></a></li>
 						@endif
 						<!-- End view Admin !-->
 

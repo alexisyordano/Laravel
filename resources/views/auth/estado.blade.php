@@ -45,24 +45,30 @@
 												<th>{{ $transaccion->cicle }}</th>
 												<th>{{ $newDate = date("d-m-Y", strtotime($transaccion->date_mov)); }}</th>
 												<th>{{ $newDate = date("d-m-Y", strtotime($transaccion->date_sistema)); }}</th>
-												<th>{{ $transaccion->b_name }}</th>
+												<th>@if($transaccion->id_solicitud == 0)
+														{{ $transaccion->b_name }}
+													@endif
+													@if($transaccion->id_solicitud <> 0)
+														{{ $transaccion->concepto }}
+													@endif
+												</th>
 												<th>{{ $newDate = date("d-m-Y", strtotime($transaccion->date_close)); }}</th>
 												<th>{{ $newDate = date("d-m-Y", strtotime($transaccion->date_pay)); }}</th>
 												<th>{{ $valor =  number_format($transaccion->monto, 2, ',', '.') }}$</th>
 												<th>{{ $valor =  number_format($transaccion->m_intereses, 2, ',', '.') }}$</th>
 												<th>{{ $valor =  number_format($transaccion->saldo, 2, ',', '.') }}$</th>
 												<th>
-													<?php $date = date("Y-m-d");?>
+													<?php $date = date('Y-m-d');  ?>
 													@if($date >= $transaccion->date_sistema && $date <= $transaccion->date_close && $transaccion->solicitud == 0)
-														<a  class="btn btn-info btn-xs" id="BtnReinvetir" href="{{ route('transactions.reinvertir', $transaccion->id) }}" title="Reinvertir">
-															RI
-														</a>
-														<a  class="btn btn-success btn-xs" data-toggle="modal" id="BtnAbono" data-target="#ModalAbono" data-attr="{{ route('transactions.abono', $transaccion->id) }}" title="Abonar">
-															A
-														</a>
-														<a  class="btn btn-primary btn-xs" data-toggle="modal" id="BtnRetiro" data-target="#ModalRetiro" data-attr="{{ route('transactions.retiro', $transaccion->id) }}" title="Retirar">
-															R
-														</a>
+													<a  class="btn btn-info btn-xs" id="BtnReinvetir" href="{{ route('transactions.reinvertir', $transaccion->id) }}" title="Reinvertir">
+                                                        RI
+                                                    </a>
+													<a  class="btn btn-success btn-xs" data-toggle="modal" id="BtnAbono" data-target="#ModalAbono" data-attr="{{ route('transactions.abono', $transaccion->id) }}" title="Abonar">
+                                                        A
+                                                    </a>
+													<a  class="btn btn-primary btn-xs" data-toggle="modal" id="BtnRetiro" data-target="#ModalRetiro" data-attr="{{ route('transactions.retiro', $transaccion->id) }}" title="Retirar">
+                                                        R
+                                                    </a>
 													@endif
 												</th>
 												</tr>

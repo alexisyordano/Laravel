@@ -1,9 +1,11 @@
 <?php
     //Conexion a la Db//
-    $username = "id18801359_root";
+    $username = "root";
     $password = "";
-    $database = "id18801359_finanzasdevs";
+    $database = "laravel";
     $mysqli = new mysqli("localhost", $username, $password, $database);
+    
+    date_default_timezone_set('America/Lima');
 
     //Busco usuarios activos
     $sql1 = "SELECT * FROM users WHERE bloqueo = '0'";

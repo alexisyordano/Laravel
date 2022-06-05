@@ -77,10 +77,13 @@
 				top: -20px;
 			}
 
-			div.right{
-				display: flex;
-				justify-content: center;
-				align-items: center;
+			.prueba{
+				position: absolute;
+				float:right;
+				left:-50px;
+				color:#000;
+				border : 2px solid #000;
+				
 			}
 	}
 	

@@ -29,9 +29,9 @@
 											<th>Opciones</th>
 										</tr>											
 									</thead>
-									<tbody>										
+									<tbody>	
+									    <form action="" method="post">
 										@foreach($list as $lineas)
-										<form action="" method="post">
 										@csrf
 										<tr>												
 											<input type="hidden" value="{{ $lineas->id_line }}" name="id_line">
@@ -39,14 +39,20 @@
 											<th>{{ $lineas->b_name }}</th>
 											<th>
 												@if($lineas->block == 1)
-													<input type="submit" class="btn btn-success" value="Desbloquear" name="Desbloquear">
+													<a  class="btn btn-success" href="{{ route('transactions.unblock', $lineas->id_line) }}" title="Desbloquear">
+													<i class="fa fa-trash-o"></i>
+														Desbloquear
+													</a>
 												@elseif($lineas->block == 0)
-													<input type="submit" class="btn btn-danger" value="Bloquear" name="Bloquear">
+													<a  class="btn btn-danger" href="{{ route('transactions.block', $lineas->id_line) }}" title="Bloquear">
+													<i class="fa fa-trash-o"></i>
+														Bloquear
+													</a>
 												@endif
 											</th>		
 										</tr>
-										</form>								
-										@endforeach											
+										@endforeach	
+										</form>	
 									</tbody>
 								</table>
                               </div>								
